@@ -26,8 +26,8 @@ public class HelloWorldTest implements TestCase
         Class.AddMethod (MainMethod);
 
         File.AddClass (Class);
-        // TODO: Actually generate the output to file
         System.out.println (File.ToOutputString ());
+        File.Write ();
     }
 
     @Override

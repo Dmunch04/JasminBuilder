@@ -1,5 +1,6 @@
 package me.Munchii.JasminBuilder.Methods;
 
+import me.Munchii.JasminBuilder.Blocks.JasminBlock;
 import me.Munchii.JasminBuilder.Builder;
 import me.Munchii.JasminBuilder.Instructions.JasminInstruction;
 import me.Munchii.JasminBuilder.JasminValue;
@@ -18,8 +19,9 @@ public class JasminMethod implements Builder
     private List<MethodAccessSpec> AccessSpec;
     private String MethodName;
     private DataType MethodReturnType;
-    private List<JasminStatement> Statements;
     private List<DataType> Args;
+    private List<JasminStatement> Statements;
+    private List<JasminBlock> Blocks;
 
     private int Stack;
     private int Locals;
@@ -36,12 +38,14 @@ public class JasminMethod implements Builder
         this.AccessSpec.add (AccessSpec);
         this.MethodName = MethodName;
         this.MethodReturnType = MethodReturnType;
-        this.Statements = new ArrayList<JasminStatement> ();
 
         if (Args != null)
             this.Args = asList (Args);
         else
             this.Args = new ArrayList<DataType> ();
+
+        this.Statements = new ArrayList<JasminStatement> ();
+        this.Blocks = new ArrayList<JasminBlock> ();
 
         this.Stack = 0;
         this.Locals = Args != null ? Args.length : 0;
@@ -64,6 +68,11 @@ public class JasminMethod implements Builder
         for (JasminStatement Statement : Statements)
         {
             Builder.append ("\t").append (Statement.ToOutputString ()).append ("\n");
+        }
+
+        for (JasminBlock Block : Blocks)
+        {
+            Builder.append (Block.ToOutputString ());
         }
 
         // If the user haven't added a return statement, return void
@@ -172,7 +181,13 @@ public class JasminMethod implements Builder
 
     public JasminMethod AddStatement (JasminStatement Statement)
     {
-        this.Statements.add (Statement);
+        Statements.add (Statement);
+        return this;
+    }
+
+    public JasminMethod AddBlock (JasminBlock Block)
+    {
+        Blocks.add (Block);
         return this;
     }
 
@@ -195,14 +210,19 @@ public class JasminMethod implements Builder
         return MethodReturnType;
     }
 
+    public List<DataType> GetArgs ()
+    {
+        return Args;
+    }
+
     public List<JasminStatement> GetStatements ()
     {
         return Statements;
     }
 
-    public List<DataType> GetArgs ()
+    public List<JasminBlock> GetBlocks ()
     {
-        return Args;
+        return Blocks;
     }
 
     public void SetArgs (List<DataType> Args)

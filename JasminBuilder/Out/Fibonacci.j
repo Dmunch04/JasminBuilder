@@ -17,7 +17,6 @@
 .method public static main([Ljava/lang/String;)V
 	.limit stack 2
 	.limit locals 1
-	return
 	new Fibonacci
 	dup
 	invokespecial Fibonacci/<init>()V
@@ -28,4 +27,5 @@
 	getstatic java/lang/System/out Ljava/io/PrintStream;
 	iconst_0
 	invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+	return
 .end method

@@ -13,8 +13,7 @@ public class MethodCreator
     public static JasminMethod CreateMainMethod ()
     {
         JasminMethod Method = new JasminMethod (MethodAccessSpec.Public, "main", DataType.Void, DataType.MakeArray (1, DataType.StringInstance))
-                .AddAccessSpec (MethodAccessSpec.Static)
-                .AddNoParameterStatement (NoParameterType.Return);
+                .AddAccessSpec (MethodAccessSpec.Static);
 
         return Method;
     }

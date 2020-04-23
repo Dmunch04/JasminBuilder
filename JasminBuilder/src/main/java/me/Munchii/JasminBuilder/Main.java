@@ -18,7 +18,6 @@ public class Main
 
     // TODO: Implement local variables - not done
     // TODO: Implement blocks (for switch, for, while, if, etc. statements) - mostly done
-    // TODO: Add a new access spec system for fields and classes, so they can have multiple access spec (like methods can), instead of just one
 
     public static void main (String... Args)
     {
@@ -32,6 +31,12 @@ public class Main
                 .AddStatement (new NoParameterStatement (NoParameterType.Nop));
 
         Method.AddBlock (Block);
+
+        JasminVariable var = new JasminVariable ("myVar", new JasminValue ("Hello, World!", DataType.String));
+        Method.DeclareVariable (var);
+        JasminVariable second = new JasminVariable ("aa", var);
+        Method.DeclareVariable (second);
+        Method.StoreVariable (second, new JasminValue ("Hello, World!2", DataType.String));
 
         JasminClass Class = new JasminClass (ClassAccessSpec.Public, "MyClass");
         Class.AddField (new JasminField (FieldAccessSpec.Public, "bar", DataType.Integer));

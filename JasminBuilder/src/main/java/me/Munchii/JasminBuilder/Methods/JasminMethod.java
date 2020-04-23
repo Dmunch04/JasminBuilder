@@ -3,13 +3,17 @@ package me.Munchii.JasminBuilder.Methods;
 import me.Munchii.JasminBuilder.Blocks.JasminBlock;
 import me.Munchii.JasminBuilder.Builder;
 import me.Munchii.JasminBuilder.Instructions.JasminInstruction;
+import me.Munchii.JasminBuilder.JasminPassable;
 import me.Munchii.JasminBuilder.JasminValue;
+import me.Munchii.JasminBuilder.JasminVariable;
 import me.Munchii.JasminBuilder.Statements.*;
 import me.Munchii.JasminBuilder.Types.*;
 import me.Munchii.JasminBuilder.Utils.Helper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 
@@ -26,6 +30,9 @@ public class JasminMethod implements Builder
     private int Stack;
     private int Locals;
     private boolean DidReturn;
+
+    private Map<String, JasminVariable> Variables;
+    private int VariableIndex;
 
     public JasminMethod (MethodAccessSpec AccessSpec, String MethodName, DataType MethodReturnType)
     {
@@ -50,6 +57,25 @@ public class JasminMethod implements Builder
         this.Stack = 0;
         this.Locals = Args != null ? Args.length : 0;
         this.DidReturn = false;
+
+        this.Variables = new HashMap<String, JasminVariable> ();
+        this.VariableIndex = 0;
+
+        if (AccessSpec != MethodAccessSpec.Static)
+        {
+            Variables.put ("this", new JasminVariable ("this", VariableIndex, new JasminValue (null, DataType.Void)));
+            VariableIndex++;
+        }
+
+        if (Args != null)
+        {
+            for (int Index = 0; Index < Args.length; Index++)
+            {
+                String ArgName = "arg" + (Index + 1);
+                Variables.put (ArgName, new JasminVariable (ArgName, VariableIndex, new JasminValue (null, Args[Index])));
+                VariableIndex++;
+            }
+        }
     }
 
     @Override
@@ -130,6 +156,12 @@ public class JasminMethod implements Builder
         return this;
     }
 
+    public JasminMethod AddLocalVariableStatement (LocalVariableType Type, int Index)
+    {
+        AddStatement (new LocalVariableStatement (Type, Index));
+        return this;
+    }
+
     public JasminMethod AddBranchStatement (BranchType Type, String Label)
     {
         AddStatement (new BranchStatement (Type, Label));
@@ -189,6 +221,41 @@ public class JasminMethod implements Builder
     {
         Blocks.add (Block);
         return this;
+    }
+
+    public JasminMethod DeclareVariable (JasminVariable Variable)
+    {
+        if (Variable.GetIndex() == -1)
+            Variable.SetIndex (VariableIndex);
+
+        AddStatements (Variable.GetValue ().PushToStack ());
+        AddStatement (Variable.Store ());
+
+        VariableIndex++;
+
+        return this;
+    }
+
+    public JasminMethod StoreVariable (JasminVariable Variable, JasminPassable Value)
+    {
+        AddStatements (Value.PushToStack ());
+        AddStatement (Variable.Store ());
+
+        return this;
+    }
+
+    public JasminMethod LoadVariable (String Name)
+    {
+        System.out.println (Variables);
+
+        if (Variables.containsKey (Name))
+        {
+            AddStatements (Variables.get (Name).PushToStack ());
+
+            return this;
+        }
+
+        throw new IllegalArgumentException ("No variable with name exists: " + Name);
     }
 
     // ========================

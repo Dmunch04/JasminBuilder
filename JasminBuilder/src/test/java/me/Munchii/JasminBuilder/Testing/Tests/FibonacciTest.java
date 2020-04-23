@@ -30,15 +30,18 @@ public class FibonacciTest implements TestCase
 
         JasminMethod FibMethod = new JasminMethod (MethodAccessSpec.Public, "Fib", DataType.Integer, DataType.Integer)
                 // TODO: Compare arg (if arg == 0 or arg == 1, return arg)
-                .AddNoParameterStatement (NoParameterType.LoadInteger1)
+                //.AddNoParameterStatement (NoParameterType.LoadInteger1)
+                .LoadVariable ("arg1")
                 .AddNoParameterStatement (NoParameterType.IntegerConstant1)
                 .AddBranchStatement (BranchType.IfIntegerCompareGreaterThan, "FibThing")
 
-                .AddNoParameterStatement (NoParameterType.LoadInteger1)
+                .LoadVariable ("arg1")
+                //.AddNoParameterStatement (NoParameterType.LoadInteger1)
 
                 // TODO: Call Fib(arg-1) + Fib(arg-2)
                 .AddBlock (new JasminBlock ("FibThing")
                         // this.Fib(n - 1)
+                        // TODO: How would you add, load, declare etc. variables in blocks?
                         .AddStatement (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable0))
                         .AddStatement (new NoParameterStatement (NoParameterType.LoadInteger1))
                         .AddStatement (new NoParameterStatement (NoParameterType.IntegerConstant1))

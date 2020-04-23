@@ -1,8 +1,8 @@
 .class public HelloWorld
 .super java/lang/Object
 
-; Method: public static void main (string[]);
-.method public static main([Ljava/lang/String;)V
+; Method: static public void main (string[]);
+.method static public main([Ljava/lang/String;)V
 	.limit stack 2
 	.limit locals 1
 	getstatic java/lang/System/out Ljava/io/PrintStream;

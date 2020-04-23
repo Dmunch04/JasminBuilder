@@ -4,7 +4,11 @@ import me.Munchii.JasminBuilder.Statements.JasminStatement;
 import me.Munchii.JasminBuilder.Types.DataType;
 import me.Munchii.JasminBuilder.Utils.Helper;
 
-public class JasminValue
+import java.util.List;
+
+import static java.util.Arrays.asList;
+
+public class JasminValue implements JasminPassable
 {
 
     private Object Value;
@@ -31,9 +35,10 @@ public class JasminValue
         return Value.toString ();
     }
 
-    public JasminStatement PushToStack ()
+    @Override
+    public List<JasminStatement> PushToStack ()
     {
-        return Helper.PushValueToStack (this);
+        return asList (Helper.PushValueToStack (this));
     }
 
     public Object GetValue ()
@@ -41,6 +46,7 @@ public class JasminValue
         return Value;
     }
 
+    @Override
     public DataType GetType ()
     {
         return Type;

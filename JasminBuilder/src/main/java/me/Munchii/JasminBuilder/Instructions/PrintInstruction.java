@@ -1,5 +1,6 @@
 package me.Munchii.JasminBuilder.Instructions;
 
+import me.Munchii.JasminBuilder.JasminPassable;
 import me.Munchii.JasminBuilder.JasminValue;
 import me.Munchii.JasminBuilder.Methods.JasminMethod;
 import me.Munchii.JasminBuilder.Types.DataType;
@@ -10,21 +11,11 @@ import me.Munchii.JasminBuilder.Utils.Helper;
 public class PrintInstruction implements JasminInstruction
 {
 
-    // TODO: Allow for local variables to be passed
+    private JasminPassable Value;
 
-    private JasminValue Value;
-    private int VariableIndex;
-    private DataType ValueType;
-
-    public PrintInstruction (JasminValue Value)
+    public PrintInstruction (JasminPassable Value)
     {
         this.Value = Value;
-    }
-
-    public PrintInstruction (int VariableIndex, DataType ValueType)
-    {
-        this.VariableIndex = VariableIndex;
-        this.ValueType = ValueType;
     }
 
     @Override
@@ -32,7 +23,7 @@ public class PrintInstruction implements JasminInstruction
     {
         // Printing requires stack +2
         Method.AddFieldManipulationStatement (FieldManipulationType.GetStatic, "java/lang/System/out", DataType.MakeCustomClassInstance ("java/io/PrintStream"))
-                .AddStatement (Helper.PushValueToStack (Value))
+                .AddStatements (Value.PushToStack ())
                 .AddMethodInvokationStatement (MethodInvokationType.InvokeVirtual, "java/io/PrintStream/println", DataType.Void, DataType.StringInstance)
                 .AddStackLimit (2);
     }

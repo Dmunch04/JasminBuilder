@@ -1,19 +1,20 @@
 package me.Munchii.JasminBuilder.Classes;
 
+import me.Munchii.JasminBuilder.Blocks.JasminBlock;
 import me.Munchii.JasminBuilder.Builder;
 import me.Munchii.JasminBuilder.Fields.JasminField;
 import me.Munchii.JasminBuilder.Methods.JasminMethod;
 import me.Munchii.JasminBuilder.Types.DataType;
+import me.Munchii.JasminBuilder.Utils.Helper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class JasminClass implements Builder
 {
 
-    // TODO: Add constructor method for class
-
-    private ClassAccessSpec AccessSpec;
+    private List<ClassAccessSpec> AccessSpec;
     private String ClassName;
     private String Super;
     private List<String> Implements;
@@ -28,7 +29,8 @@ public class JasminClass implements Builder
 
     public JasminClass (ClassAccessSpec AccessSpec, String ClassName, String Super)
     {
-        this.AccessSpec = AccessSpec;
+        this.AccessSpec = new ArrayList<ClassAccessSpec> ();
+        this.AccessSpec.add (AccessSpec);
         this.ClassName = ClassName;
         this.Super = Super;
         this.Implements = new ArrayList<String> ();
@@ -41,7 +43,7 @@ public class JasminClass implements Builder
     {
         StringBuilder Builder = new StringBuilder ();
         Builder.append (".class").append (" ");
-        Builder.append (AccessSpec.GetRepresentation ()).append (" ");
+        AccessSpec.forEach (Spec -> Builder.append (Spec.GetRepresentation ()).append (" "));
         Builder.append (ClassName).append ("\n");
         Builder.append (".super").append (" ");
         Builder.append (Super).append ("\n");
@@ -64,6 +66,20 @@ public class JasminClass implements Builder
 
         for (JasminMethod Method : Methods)
         {
+            StringBuilder MethodComment = new StringBuilder ();
+            MethodComment.append ("; Method: ");
+            // Access specs
+            Method.GetAccessSpec ().forEach (Spec -> MethodComment.append (Spec.GetRepresentation ()).append (" "));
+            // Return type
+            MethodComment.append (Helper.GetDataTypeName (Method.GetMethodReturnType ())).append (" ");
+            // Method name
+            MethodComment.append (Method.GetMethodName ()).append (" (");
+            // Args
+            String Args = String.join (", ", Method.GetArgs ().stream ().map (Helper::GetDataTypeName).collect (Collectors.toList ()));
+            MethodComment.append (Args).append (");");
+
+            Builder.append (MethodComment.toString ()).append ("\n");
+
             Builder.append (Method.ToOutputString ()).append ("\n").append ("\n");
         }
 
@@ -76,9 +92,24 @@ public class JasminClass implements Builder
     // Getters & Setters
     // ========================
 
-    public ClassAccessSpec GetAccessSpec ()
+    public List<ClassAccessSpec> GetAccessSpec ()
     {
         return AccessSpec;
+    }
+
+    public JasminClass AddAccessSpec (ClassAccessSpec AccessSpec)
+    {
+        if (!this.AccessSpec.contains (AccessSpec))
+            this.AccessSpec.add (AccessSpec);
+
+        return this;
+    }
+
+    public JasminClass RemoveAccessSpec (ClassAccessSpec AccessSpec)
+    {
+        this.AccessSpec.remove (AccessSpec);
+
+        return this;
     }
 
     public String GetClassName ()
@@ -96,14 +127,16 @@ public class JasminClass implements Builder
         return Implements;
     }
 
-    public void AddImplement (DataType Type)
+    public JasminClass AddImplement (DataType Type)
     {
-        AddImplement (Type.GetRepresentation ());
+        return AddImplement (Type.GetRepresentation ());
     }
 
-    public void AddImplement (String Class)
+    public JasminClass AddImplement (String Class)
     {
         Implements.add (Class);
+
+        return this;
     }
 
     public List<JasminField> GetFields ()
@@ -111,9 +144,11 @@ public class JasminClass implements Builder
         return Fields;
     }
 
-    public void AddField (JasminField Field)
+    public JasminClass AddField (JasminField Field)
     {
         Fields.add (Field);
+
+        return this;
     }
 
     public List<JasminMethod> GetMethods ()
@@ -121,9 +156,11 @@ public class JasminClass implements Builder
         return Methods;
     }
 
-    public void AddMethod (JasminMethod Method)
+    public JasminClass AddMethod (JasminMethod Method)
     {
         Methods.add (Method);
+
+        return this;
     }
 
 }

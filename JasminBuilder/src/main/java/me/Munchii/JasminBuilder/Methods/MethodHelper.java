@@ -91,9 +91,9 @@ public class MethodHelper
         return Method;
     }
 
-    public JasminMethod LoadConstant (Object Value)
+    public JasminMethod LoadConstant (Object Value, DataType Type)
     {
-        LoadConstant (new JasminValue(Value));
+        LoadConstant (new JasminValue(Value, Type));
         return Method;
     }
 
@@ -107,9 +107,9 @@ public class MethodHelper
         return Method;
     }
 
-    public JasminMethod LoadConstantWide (Object Value)
+    public JasminMethod LoadConstantWide (Object Value, DataType Type)
     {
-        LoadConstantWide (new JasminValue (Value));
+        LoadConstantWide (new JasminValue (Value, Type));
         return Method;
     }
 

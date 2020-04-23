@@ -1,5 +1,6 @@
 package me.Munchii.JasminBuilder.Testing.Tests;
 
+import me.Munchii.JasminBuilder.Blocks.JasminBlock;
 import me.Munchii.JasminBuilder.Classes.ClassAccessSpec;
 import me.Munchii.JasminBuilder.Classes.JasminClass;
 import me.Munchii.JasminBuilder.Instructions.PrintInstruction;
@@ -7,12 +8,13 @@ import me.Munchii.JasminBuilder.JasminFile;
 import me.Munchii.JasminBuilder.JasminValue;
 import me.Munchii.JasminBuilder.Methods.JasminMethod;
 import me.Munchii.JasminBuilder.Methods.MethodAccessSpec;
+import me.Munchii.JasminBuilder.Statements.MethodInvokationStatement;
+import me.Munchii.JasminBuilder.Statements.NoParameterStatement;
 import me.Munchii.JasminBuilder.Testing.TestCase;
-import me.Munchii.JasminBuilder.Types.DataType;
-import me.Munchii.JasminBuilder.Types.MethodInvokationType;
-import me.Munchii.JasminBuilder.Types.NoParameterType;
-import me.Munchii.JasminBuilder.Types.ObjectType;
+import me.Munchii.JasminBuilder.Types.*;
 import me.Munchii.JasminBuilder.Utils.MethodCreator;
+
+import static java.util.Arrays.asList;
 
 public class FibonacciTest implements TestCase
 {
@@ -27,12 +29,39 @@ public class FibonacciTest implements TestCase
         JasminMethod InitMethod = MethodCreator.CreateConstructorMethod ();
 
         JasminMethod FibMethod = new JasminMethod (MethodAccessSpec.Public, "Fib", DataType.Integer, DataType.Integer)
-                // Push the argument onto the stack
-                .AddNoParameterStatement (NoParameterType.LoadInteger0)
-
                 // TODO: Compare arg (if arg == 0 or arg == 1, return arg)
+                .AddNoParameterStatement (NoParameterType.LoadInteger1)
+                .AddNoParameterStatement (NoParameterType.IntegerConstant1)
+                .AddBranchStatement (BranchType.IfIntegerCompareGreaterThan, "FibThing")
+
+                .AddNoParameterStatement (NoParameterType.LoadInteger1)
 
                 // TODO: Call Fib(arg-1) + Fib(arg-2)
+                .AddBlock (new JasminBlock ("FibThing")
+                        // this.Fib(n - 1)
+                        .AddStatement (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable0))
+                        .AddStatement (new NoParameterStatement (NoParameterType.LoadInteger1))
+                        .AddStatement (new NoParameterStatement (NoParameterType.IntegerConstant1))
+                        .AddStatement (new NoParameterStatement (NoParameterType.SubtractInteger))
+                        .AddStatement (new MethodInvokationStatement (MethodInvokationType.InvokeVirtual, "Fibonacci/Fib", DataType.Integer, asList (DataType.Integer)))
+                        .AddStatement (new NoParameterStatement (NoParameterType.StoreInteger2))
+
+                        // this.Fib(n - 2)
+                        .AddStatement (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable0))
+                        .AddStatement (new NoParameterStatement (NoParameterType.LoadInteger1))
+                        .AddStatement (new NoParameterStatement (NoParameterType.IntegerConstant2))
+                        .AddStatement (new NoParameterStatement (NoParameterType.SubtractInteger))
+                        .AddStatement (new MethodInvokationStatement (MethodInvokationType.InvokeVirtual, "Fibonacci/Fib", DataType.Integer, asList (DataType.Integer)))
+                        .AddStatement (new NoParameterStatement (NoParameterType.StoreInteger3))
+
+                        // left + right
+                        .AddStatement (new NoParameterStatement (NoParameterType.LoadInteger2))
+                        .AddStatement (new NoParameterStatement (NoParameterType.LoadInteger3))
+                        .AddStatement (new NoParameterStatement (NoParameterType.AddInteger))
+
+                        // return
+                        .AddStatement (new NoParameterStatement (NoParameterType.ReturnInteger))
+                )
 
                 // Return the value
                 .AddNoParameterStatement (NoParameterType.ReturnInteger);

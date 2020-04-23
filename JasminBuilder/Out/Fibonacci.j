@@ -1,6 +1,7 @@
 .class public Fibonacci
 .super java/lang/Object
 
+; Method: public void <init> ();
 .method public <init>()V
 	; Call super method
 	aload_0
@@ -8,12 +9,35 @@
 	return
 .end method
 
+; Method: public int Fib (int);
 .method public Fib(I)I
 	.limit locals 1
-	iload_0
+	iload_1
+	iconst_1
+	if_icmpgt FibThing
+	iload_1
 	ireturn
+FibThing:
+	aload_0
+	iload_1
+	iconst_1
+	isub
+	invokevirtual Fibonacci/Fib(I)I
+	istore_2
+	aload_0
+	iload_1
+	iconst_2
+	isub
+	invokevirtual Fibonacci/Fib(I)I
+	istore_3
+	iload_2
+	iload_3
+	iadd
+	ireturn
+
 .end method
 
+; Method: public static void main (string[]);
 .method public static main([Ljava/lang/String;)V
 	.limit stack 2
 	.limit locals 1

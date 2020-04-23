@@ -1,6 +1,5 @@
 package me.Munchii.JasminBuilder.Utils;
 
-import me.Munchii.JasminBuilder.JasminType;
 import me.Munchii.JasminBuilder.JasminValue;
 import me.Munchii.JasminBuilder.Statements.*;
 import me.Munchii.JasminBuilder.Types.*;
@@ -39,6 +38,69 @@ public class Helper
             return asList (Types);
         else
             return new ArrayList<DataType> ();
+    }
+
+    public static String GetDataTypeName (DataType Type)
+    {
+        switch (Type)
+        {
+            case Byte: return "byte";
+            case Char: return "char";
+            case Double: return "double";
+            case Float: return "float";
+            case Integer: return "int";
+            case Long: return "long";
+            case String:
+            case StringInstance: return "string";
+            case Object:
+            case ObjectInstance: return "object";
+            case Void: return "void";
+            case Short: return "short";
+            case Custom:
+            case CustomInstance: return GetCustomDataTypeName (Type);
+            case Array: return GetDataTypeArrayName (Type);
+            case Boolean: return "bool";
+        }
+
+        throw new IllegalArgumentException ("Could not match value");
+    }
+
+    public static String GetCustomDataTypeName (DataType Type)
+    {
+        String Rep = Type.GetRepresentation ();
+        Rep = Rep.replace ("[", "");
+
+        if (Rep.startsWith ("L") && Rep.endsWith (";"))
+            Rep = Rep.substring (1, Rep.length () - 1);
+
+        String[] ClassPaths = Rep.split ("/");
+
+        return ClassPaths[ClassPaths.length - 1];
+    }
+
+    public static String GetDataTypeArrayName (DataType Type)
+    {
+        String Rep = Type.GetRepresentation ();
+        int Dimensions = Rep.length () - Rep.replace ("[", "").length ();
+        Rep = Rep.replace ("[", "");
+
+        if (Rep.startsWith ("L") && Rep.endsWith (";"))
+            Rep = Rep.substring (1, Rep.length () - 1);
+
+        String[] ClassPaths = Rep.split ("/");
+        String ClassName = ClassPaths[ClassPaths.length - 1];
+
+        if (ClassName.equals ("String") || ClassName.equals ("Object"))
+        {
+            return ClassName.toLowerCase () + "[]".repeat (Dimensions);
+        }
+
+        // TODO: Fix that primitive types just gets displayed as their representation
+
+        else
+        {
+            return Rep + "[]".repeat (Dimensions);
+        }
     }
 
     public static JasminStatement PushValueToStack (JasminValue Value)

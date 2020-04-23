@@ -1,6 +1,5 @@
 package me.Munchii.JasminBuilder.Utils;
 
-import me.Munchii.JasminBuilder.JasminValue;
 import me.Munchii.JasminBuilder.Methods.JasminMethod;
 import me.Munchii.JasminBuilder.Methods.MethodAccessSpec;
 import me.Munchii.JasminBuilder.Types.DataType;
@@ -12,8 +11,8 @@ public class MethodCreator
 
     public static JasminMethod CreateMainMethod ()
     {
-        JasminMethod Method = new JasminMethod (MethodAccessSpec.Public, "main", DataType.Void, DataType.MakeArray (1, DataType.StringInstance))
-                .AddAccessSpec (MethodAccessSpec.Static);
+        JasminMethod Method = new JasminMethod (MethodAccessSpec.Static, "main", DataType.Void, DataType.MakeArray (1, DataType.StringInstance))
+                .AddAccessSpec (MethodAccessSpec.Public);
 
         return Method;
     }

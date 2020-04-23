@@ -1,17 +1,14 @@
 package me.Munchii.JasminBuilder;
 
+import me.Munchii.JasminBuilder.Statements.JasminStatement;
 import me.Munchii.JasminBuilder.Types.DataType;
+import me.Munchii.JasminBuilder.Utils.Helper;
 
 public class JasminValue
 {
 
     private Object Value;
     private DataType Type;
-
-    public JasminValue (Object Value)
-    {
-        this (Value, DataType.Void);
-    }
 
     public JasminValue (Object Value, DataType Type)
     {
@@ -32,6 +29,11 @@ public class JasminValue
         }
 
         return Value.toString ();
+    }
+
+    public JasminStatement PushToStack ()
+    {
+        return Helper.PushValueToStack (this);
     }
 
     public Object GetValue ()

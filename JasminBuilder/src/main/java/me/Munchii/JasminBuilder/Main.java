@@ -18,6 +18,7 @@ public class Main
 
     // TODO: Implement local variables - not done
     // TODO: Implement blocks (for switch, for, while, if, etc. statements) - mostly done
+    // TODO: Add a new access spec system for fields and classes, so they can have multiple access spec (like methods can), instead of just one
 
     public static void main (String... Args)
     {

@@ -1,6 +1,7 @@
 .class public HelloWorld
 .super java/lang/Object
 
+; Method: public static void main (string[]);
 .method public static main([Ljava/lang/String;)V
 	.limit stack 2
 	.limit locals 1

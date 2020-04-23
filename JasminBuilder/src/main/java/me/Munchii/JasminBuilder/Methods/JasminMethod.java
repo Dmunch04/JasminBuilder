@@ -94,14 +94,6 @@ public class JasminMethod implements Builder
         return this;
     }
 
-    public JasminMethod AddAccessSpec (MethodAccessSpec AccessSpec)
-    {
-        if (!this.AccessSpec.contains (AccessSpec))
-            this.AccessSpec.add (AccessSpec);
-
-        return this;
-    }
-
     public JasminMethod AddStackLimit (int Amount)
     {
         Stack += Amount;
@@ -152,7 +144,7 @@ public class JasminMethod implements Builder
 
     public JasminMethod AddNoParameterStatement (NoParameterType Type)
     {
-        // If the user defines their own return statement, we just add an placeholder
+        // If the user defines their own return statement, we don't need to add our own void return
         if (
                 Type == NoParameterType.Return ||
                 Type == NoParameterType.ReturnInteger ||
@@ -185,6 +177,14 @@ public class JasminMethod implements Builder
         return this;
     }
 
+    public JasminMethod AddStatements (List<JasminStatement> Statements)
+    {
+        for (JasminStatement Statement : Statements)
+            AddStatement (Statement);
+
+        return this;
+    }
+
     public JasminMethod AddBlock (JasminBlock Block)
     {
         Blocks.add (Block);
@@ -198,6 +198,21 @@ public class JasminMethod implements Builder
     public List<MethodAccessSpec> GetAccessSpec ()
     {
         return AccessSpec;
+    }
+
+    public JasminMethod AddAccessSpec (MethodAccessSpec AccessSpec)
+    {
+        if (!this.AccessSpec.contains (AccessSpec))
+            this.AccessSpec.add (AccessSpec);
+
+        return this;
+    }
+
+    public JasminMethod RemoveAccessSpec (MethodAccessSpec AccessSpec)
+    {
+        this.AccessSpec.remove (AccessSpec);
+
+        return this;
     }
 
     public String GetMethodName ()

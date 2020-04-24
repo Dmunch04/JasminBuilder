@@ -147,6 +147,7 @@ public class JasminClass implements Builder
     public JasminClass AddField (JasminField Field)
     {
         Fields.add (Field);
+        Field.Hook (this); // TODO: Hmm?
 
         return this;
     }

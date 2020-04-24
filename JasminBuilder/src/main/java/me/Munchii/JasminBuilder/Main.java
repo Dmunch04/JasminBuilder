@@ -16,8 +16,9 @@ import me.Munchii.JasminBuilder.Utils.MethodCreator;
 public class Main
 {
 
-    // TODO: Implement local variables - not done
+    // TODO: Implement local variables - partly done
     // TODO: Implement blocks (for switch, for, while, if, etc. statements) - mostly done
+    // TODO: Allow for variables to be defined by stack value?
 
     public static void main (String... Args)
     {
@@ -32,14 +33,22 @@ public class Main
 
         Method.AddBlock (Block);
 
+        JasminClass Class = new JasminClass (ClassAccessSpec.Public, "MyClass");
+
+        JasminField field = new JasminField (FieldAccessSpec.Private, "yeet", DataType.Integer);
+        field.Hook (Class); // TODO: Hmm?
+
         JasminVariable var = new JasminVariable ("myVar", new JasminValue ("Hello, World!", DataType.String));
         Method.DeclareVariable (var);
         JasminVariable second = new JasminVariable ("aa", var);
         Method.DeclareVariable (second);
         Method.StoreVariable (second, new JasminValue ("Hello, World!2", DataType.String));
+        JasminVariable third = new JasminVariable ("bb", field);
+        Method.DeclareVariable (third);
 
-        JasminClass Class = new JasminClass (ClassAccessSpec.Public, "MyClass");
+        //JasminClass Class = new JasminClass (ClassAccessSpec.Public, "MyClass");
         Class.AddField (new JasminField (FieldAccessSpec.Public, "bar", DataType.Integer));
+        Class.AddField (field);
         Class.AddMethod (MethodCreator.CreateConstructorMethod ());
         Class.AddMethod (MethodCreator.CreateMainMethod ());
         Class.AddMethod (Method);

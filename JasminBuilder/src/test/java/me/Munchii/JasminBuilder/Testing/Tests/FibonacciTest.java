@@ -6,6 +6,7 @@ import me.Munchii.JasminBuilder.Classes.JasminClass;
 import me.Munchii.JasminBuilder.Instructions.PrintInstruction;
 import me.Munchii.JasminBuilder.JasminFile;
 import me.Munchii.JasminBuilder.JasminValue;
+import me.Munchii.JasminBuilder.JasminVariable;
 import me.Munchii.JasminBuilder.Methods.JasminMethod;
 import me.Munchii.JasminBuilder.Methods.MethodAccessSpec;
 import me.Munchii.JasminBuilder.Statements.MethodInvokationStatement;
@@ -41,21 +42,27 @@ public class FibonacciTest implements TestCase
                 // TODO: Call Fib(arg-1) + Fib(arg-2)
                 .AddBlock (new JasminBlock ("FibThing")
                         // this.Fib(n - 1)
-                        // TODO: How would you add, load, declare etc. variables in blocks?
-                        .AddStatement (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable0))
-                        .AddStatement (new NoParameterStatement (NoParameterType.LoadInteger1))
+                        //.AddStatement (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable0))
+                        .LoadVariable ("this")
+                        //.AddStatement (new NoParameterStatement (NoParameterType.LoadInteger1))
+                        .LoadVariable ("arg1")
+                        // TODO: Use `ExpressionBuilder` here instead
                         .AddStatement (new NoParameterStatement (NoParameterType.IntegerConstant1))
                         .AddStatement (new NoParameterStatement (NoParameterType.SubtractInteger))
                         .AddStatement (new MethodInvokationStatement (MethodInvokationType.InvokeVirtual, "Fibonacci/Fib", DataType.Integer, asList (DataType.Integer)))
-                        .AddStatement (new NoParameterStatement (NoParameterType.StoreInteger2))
+                        //.AddStatement (new NoParameterStatement (NoParameterType.StoreInteger2))
+                        .DeclareStackVariable (new JasminVariable ("fib1", new JasminValue (0, DataType.Integer)))
 
                         // this.Fib(n - 2)
-                        .AddStatement (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable0))
-                        .AddStatement (new NoParameterStatement (NoParameterType.LoadInteger1))
+                        //.AddStatement (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable0))
+                        .LoadVariable ("this")
+                        //.AddStatement (new NoParameterStatement (NoParameterType.LoadInteger1))
+                        .LoadVariable ("arg1")
                         .AddStatement (new NoParameterStatement (NoParameterType.IntegerConstant2))
                         .AddStatement (new NoParameterStatement (NoParameterType.SubtractInteger))
                         .AddStatement (new MethodInvokationStatement (MethodInvokationType.InvokeVirtual, "Fibonacci/Fib", DataType.Integer, asList (DataType.Integer)))
-                        .AddStatement (new NoParameterStatement (NoParameterType.StoreInteger3))
+                        //.AddStatement (new NoParameterStatement (NoParameterType.StoreInteger3))
+                        .DeclareStackVariable (new JasminVariable ("fib2", new JasminValue (0, DataType.Integer)))
 
                         // left + right
                         .AddStatement (new NoParameterStatement (NoParameterType.LoadInteger2))

@@ -7,6 +7,6 @@
 	.limit locals 1
 	getstatic java/lang/System/out Ljava/io/PrintStream;
 	ldc "Hello, World!"
-	invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+	invokevirtual java/io/PrintStream/println(java/lang/String)V
 	return
 .end method

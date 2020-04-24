@@ -63,7 +63,7 @@ public class JasminMethod implements Builder
 
         if (AccessSpec != MethodAccessSpec.Static)
         {
-            Variables.put ("this", new JasminVariable ("this", VariableIndex, new JasminValue (null, DataType.Void)));
+            Variables.put ("this", new JasminVariable ("this", VariableIndex, new JasminValue (null, DataType.CustomInstance)));
             VariableIndex++;
         }
 
@@ -98,6 +98,7 @@ public class JasminMethod implements Builder
 
         for (JasminBlock Block : Blocks)
         {
+            Block.Hook (this);
             Builder.append (Block.ToOutputString ());
         }
 
@@ -236,6 +237,19 @@ public class JasminMethod implements Builder
         return this;
     }
 
+    public List<JasminStatement> GetDeclareVariableStatements (JasminVariable Variable)
+    {
+        if (Variable.GetIndex() == -1)
+            Variable.SetIndex (VariableIndex);
+
+        List<JasminStatement> VariableStatements = new ArrayList<JasminStatement> (Variable.GetValue ().PushToStack ());
+        VariableStatements.add (Variable.Store ());
+
+        VariableIndex++;
+
+        return VariableStatements;
+    }
+
     public JasminMethod StoreVariable (JasminVariable Variable, JasminPassable Value)
     {
         AddStatements (Value.PushToStack ());
@@ -246,16 +260,41 @@ public class JasminMethod implements Builder
 
     public JasminMethod LoadVariable (String Name)
     {
-        System.out.println (Variables);
+        if (!Variables.containsKey (Name))
+            throw new IllegalArgumentException ("No variable with name exists: " + Name);
 
-        if (Variables.containsKey (Name))
-        {
-            AddStatements (Variables.get (Name).PushToStack ());
+        AddStatements (Variables.get (Name).PushToStack ());
+        return this;
+    }
 
-            return this;
-        }
+    public List<JasminStatement> GetLoadVariableStatements (String Name)
+    {
+        if (!Variables.containsKey (Name))
+            throw new IllegalArgumentException ("No variable with name exists: " + Name);
 
-        throw new IllegalArgumentException ("No variable with name exists: " + Name);
+        return Variables.get (Name).PushToStack ();
+    }
+
+    public JasminMethod DeclareStackVariable (JasminVariable Variable)
+    {
+        if (Variable.GetIndex() == -1)
+            Variable.SetIndex (VariableIndex);
+
+        Statements.add (Variable.Store ());
+
+        VariableIndex++;
+
+        return this;
+    }
+
+    public JasminStatement GetDeclareStackVariableStatement (JasminVariable Variable)
+    {
+        if (Variable.GetIndex() == -1)
+            Variable.SetIndex (VariableIndex);
+
+        VariableIndex++;
+
+        return Variable.Store ();
     }
 
     // ========================

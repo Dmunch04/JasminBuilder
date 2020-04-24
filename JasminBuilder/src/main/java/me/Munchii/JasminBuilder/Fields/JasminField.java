@@ -1,13 +1,21 @@
 package me.Munchii.JasminBuilder.Fields;
 
 import me.Munchii.JasminBuilder.Builder;
+import me.Munchii.JasminBuilder.Classes.JasminClass;
+import me.Munchii.JasminBuilder.JasminPassable;
 import me.Munchii.JasminBuilder.JasminValue;
+import me.Munchii.JasminBuilder.Statements.FieldManipulationStatement;
+import me.Munchii.JasminBuilder.Statements.JasminStatement;
 import me.Munchii.JasminBuilder.Types.DataType;
+import me.Munchii.JasminBuilder.Types.FieldManipulationType;
+import me.Munchii.JasminBuilder.Utils.Helper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class JasminField implements Builder
+import static java.util.Arrays.asList;
+
+public class JasminField implements Builder, JasminPassable
 {
 
     private List<FieldAccessSpec> AccessSpec;
@@ -42,6 +50,39 @@ public class JasminField implements Builder
             Builder.append (" = ").append (Value.ToOutputString ());
 
         return Builder.toString ();
+    }
+
+    @Override
+    public List<JasminStatement> PushToStack ()
+    {
+        if (Class == null)
+            throw new IllegalArgumentException ("Field class is not set!");
+
+        // TODO: How would we make field spec without knowing the class?
+        // Like this?
+        if (AccessSpec.contains (FieldAccessSpec.Static))
+            return asList (new FieldManipulationStatement (FieldManipulationType.GetStatic, Helper.MakeFieldSpec (Class.GetClassName (), FieldName), Descriptor.GetRepresentation ()));
+
+        return asList (new FieldManipulationStatement (FieldManipulationType.GetField, Helper.MakeFieldSpec (Class.GetClassName (), FieldName), Descriptor.GetRepresentation ()));
+    }
+
+    @Override
+    public DataType GetType ()
+    {
+        return Descriptor;
+    }
+
+    // Like this?
+    private JasminClass Class = null;
+    public JasminField Hook (JasminClass Class)
+    {
+        this.Class = Class;
+        return this;
+    }
+    public JasminField Dehook ()
+    {
+        this.Class = null;
+        return this;
     }
 
     // ========================

@@ -40,44 +40,44 @@ public class JasminVariable implements JasminPassable
             case Double: {
                 switch (Index)
                 {
-                    case 0: return new NoParameterStatement (NoParameterType.LoadDoubleFromLocalVariable0);
-                    case 1: return new NoParameterStatement (NoParameterType.LoadDoubleFromLocalVariable1);
-                    case 2: return new NoParameterStatement (NoParameterType.LoadDoubleFromLocalVariable2);
-                    case 3: return new NoParameterStatement (NoParameterType.LoadDoubleFromLocalVariable3);
-                    default: return new LocalVariableStatement (LocalVariableType.LoadDouble, Index);
+                    case 0: return new NoParameterStatement (NoParameterType.StoreDoubleIntoLocalVariable0);
+                    case 1: return new NoParameterStatement (NoParameterType.StoreDoubleIntoLocalVariable1);
+                    case 2: return new NoParameterStatement (NoParameterType.StoreDoubleIntoLocalVariable2);
+                    case 3: return new NoParameterStatement (NoParameterType.StoreDoubleIntoLocalVariable3);
+                    default: return new LocalVariableStatement (LocalVariableType.StoreDouble, Index);
                 }
             }
 
             case Float: {
                 switch (Index)
                 {
-                    case 0: return new NoParameterStatement (NoParameterType.LoadFloat0);
-                    case 1: return new NoParameterStatement (NoParameterType.LoadFloat1);
-                    case 2: return new NoParameterStatement (NoParameterType.LoadFloat2);
-                    case 3: return new NoParameterStatement (NoParameterType.LoadFloat3);
-                    default: return new LocalVariableStatement (LocalVariableType.LoadFloat, Index);
+                    case 0: return new NoParameterStatement (NoParameterType.StoreFloat0);
+                    case 1: return new NoParameterStatement (NoParameterType.StoreFloat1);
+                    case 2: return new NoParameterStatement (NoParameterType.StoreFloat2);
+                    case 3: return new NoParameterStatement (NoParameterType.StoreFloat3);
+                    default: return new LocalVariableStatement (LocalVariableType.StoreFloat, Index);
                 }
             }
 
             case Integer: {
                 switch (Index)
                 {
-                    case 0: return new NoParameterStatement (NoParameterType.LoadInteger0);
-                    case 1: return new NoParameterStatement (NoParameterType.LoadInteger1);
-                    case 2: return new NoParameterStatement (NoParameterType.LoadInteger2);
-                    case 3: return new NoParameterStatement (NoParameterType.LoadInteger3);
-                    default: return new LocalVariableStatement (LocalVariableType.LoadInteger, Index);
+                    case 0: return new NoParameterStatement (NoParameterType.StoreInteger0);
+                    case 1: return new NoParameterStatement (NoParameterType.StoreInteger1);
+                    case 2: return new NoParameterStatement (NoParameterType.StoreInteger2);
+                    case 3: return new NoParameterStatement (NoParameterType.StoreInteger3);
+                    default: return new LocalVariableStatement (LocalVariableType.StoreInteger, Index);
                 }
             }
 
             case Long: {
                 switch (Index)
                 {
-                    case 0: return new NoParameterStatement (NoParameterType.LoadLong0);
-                    case 1: return new NoParameterStatement (NoParameterType.LoadLong1);
-                    case 2: return new NoParameterStatement (NoParameterType.LoadLong2);
-                    case 3: return new NoParameterStatement (NoParameterType.LoadLong3);
-                    default: return new LocalVariableStatement (LocalVariableType.LoadLong, Index);
+                    case 0: return new NoParameterStatement (NoParameterType.StoreLong0);
+                    case 1: return new NoParameterStatement (NoParameterType.StoreLong1);
+                    case 2: return new NoParameterStatement (NoParameterType.StoreLong2);
+                    case 3: return new NoParameterStatement (NoParameterType.StoreLong3);
+                    default: return new LocalVariableStatement (LocalVariableType.StoreLong, Index);
                 }
             }
 

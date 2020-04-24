@@ -50,6 +50,6 @@ FibThing:
 	istore_0
 	getstatic java/lang/System/out Ljava/io/PrintStream;
 	iconst_0
-	invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
+	invokevirtual java/io/PrintStream/println(I)V
 	return
 .end method

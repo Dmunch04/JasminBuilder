@@ -9,6 +9,7 @@ import me.Munchii.JasminBuilder.Instructions.PrintInstruction;
 import me.Munchii.JasminBuilder.Methods.JasminMethod;
 import me.Munchii.JasminBuilder.Methods.MethodAccessSpec;
 import me.Munchii.JasminBuilder.Statements.NoParameterStatement;
+import me.Munchii.JasminBuilder.Types.BranchType;
 import me.Munchii.JasminBuilder.Types.DataType;
 import me.Munchii.JasminBuilder.Types.NoParameterType;
 import me.Munchii.JasminBuilder.Utils.MethodCreator;
@@ -22,6 +23,7 @@ public class Main
 
     public static void main (String... Args)
     {
+        /*
         JasminMethod Method = new JasminMethod (MethodAccessSpec.Public, "foo", DataType.Void, DataType.StringInstance, DataType.Float, DataType.Integer);
         Method.AddInstruction (new PrintInstruction (new JasminValue ("Hello, World", DataType.String)));
         Method.AddLocalsLimit (1);
@@ -54,6 +56,26 @@ public class Main
         Class.AddMethod (Method);
 
         JasminFile File = new JasminFile ("out/", "Test");
+        File.AddClass (Class);
+        System.out.println (File.ToOutputString ());
+        */
+
+        JasminFile File = new JasminFile ("/", "Test");
+        JasminClass Class = new JasminClass (ClassAccessSpec.Public, "For");
+        JasminMethod Method = new JasminMethod (MethodAccessSpec.Public, "Bar", DataType.Void, DataType.Integer)
+                .AddBranchStatement (BranchType.Goto, "Test")
+                .AddBlock (new JasminBlock ("Test")
+                        .AddStatement (new NoParameterStatement (NoParameterType.Nop))
+                        .LoadVariable ("arg1") // => no error
+                        .LoadVariable ("arg2") // => no error
+                )
+                .AddBlock (new JasminBlock ("Yeet")
+                        .AddStatement (new NoParameterStatement (NoParameterType.Nop))
+                        .LoadVariable ("this") // => no error
+                        .LoadVariable ("this2") // => error (variable doesn't exist)
+                );
+
+        Class.AddMethod (Method);
         File.AddClass (Class);
         System.out.println (File.ToOutputString ());
     }

@@ -18,6 +18,8 @@ import static java.util.Arrays.asList;
 public class JasminField implements Builder, JasminPassable
 {
 
+    // TODO: Surely there must be a better way, than using the `Hook` method
+
     private List<FieldAccessSpec> AccessSpec;
     private String FieldName;
     private DataType Descriptor;

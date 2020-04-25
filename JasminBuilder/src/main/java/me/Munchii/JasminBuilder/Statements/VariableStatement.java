@@ -41,12 +41,8 @@ public class VariableStatement implements JasminStatement
         {
             StringBuilder Builder = new StringBuilder ();
 
-            // Stack shouldn't have a value
-            if (Type != VariableType.Stack)
-            {
-                for (JasminStatement Statement : Value.PushToStack ())
-                    Builder.append (Statement.ToOutputString ()).append ("\n");
-            }
+            for (JasminStatement Statement : Value.PushToStack ())
+                Builder.append (Statement.ToOutputString ()).append ("\n");
 
             Builder.append (Variable.Store ().ToOutputString ());
 
@@ -57,11 +53,6 @@ public class VariableStatement implements JasminStatement
         return "";
     }
 
-    public String GetName ()
-    {
-        return Name;
-    }
-
     public VariableType GetType ()
     {
         return Type;
@@ -70,5 +61,15 @@ public class VariableStatement implements JasminStatement
     public JasminVariable GetVariable ()
     {
         return Variable;
+    }
+
+    public JasminPassable GetValue ()
+    {
+        return Value;
+    }
+
+    public String GetName ()
+    {
+        return Name;
     }
 }

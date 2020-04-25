@@ -1,6 +1,5 @@
 package me.Munchii.JasminBuilder.Blocks;
 
-import me.Munchii.JasminBuilder.Builder;
 import me.Munchii.JasminBuilder.JasminPassable;
 import me.Munchii.JasminBuilder.JasminVariable;
 import me.Munchii.JasminBuilder.Methods.JasminMethod;
@@ -23,9 +22,25 @@ public class JasminBlock
         this.Statements = new ArrayList<JasminStatement> ();
     }
 
-    public List<JasminStatement> Write (JasminMethod Method)
+    public void Write (JasminMethod Method)
     {
-        return null;
+        for (JasminStatement Statement : Statements)
+        {
+            if (Statement instanceof VariableStatement)
+            {
+                VariableStatement Variable = (VariableStatement) Statement;
+                switch (Variable.GetType ())
+                {
+                    case Declare: Method.DeclareVariable (Variable.GetVariable ());
+                    case Store: Method.StoreVariable (Variable.GetVariable (), Variable.GetValue ());
+                    case Load: Method.LoadVariable (Variable.GetName ());
+                }
+
+                continue;
+            }
+
+            Method.AddStatement (Statement);
+        }
     }
 
     public JasminBlock AddStatement (JasminStatement Statement)
@@ -55,6 +70,11 @@ public class JasminBlock
     public String GetLabel ()
     {
         return Name;
+    }
+
+    public List<JasminStatement> GetStatements ()
+    {
+        return Statements;
     }
 
 }

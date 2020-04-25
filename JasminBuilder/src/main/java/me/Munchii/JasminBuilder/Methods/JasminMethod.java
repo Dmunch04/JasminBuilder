@@ -34,6 +34,8 @@ public class JasminMethod implements Builder
     private Map<String, JasminVariable> Variables;
     private int VariableIndex;
 
+    private JasminScope Scope;
+
     public JasminMethod (MethodAccessSpec AccessSpec, String MethodName, DataType MethodReturnType)
     {
         this (AccessSpec, MethodName, MethodReturnType, null);
@@ -60,6 +62,8 @@ public class JasminMethod implements Builder
 
         this.Variables = new HashMap<String, JasminVariable> ();
         this.VariableIndex = 0;
+
+        this.Scope = new JasminScope ();
 
         if (AccessSpec != MethodAccessSpec.Static)
         {
@@ -91,17 +95,28 @@ public class JasminMethod implements Builder
         if (Locals != 0)
             Builder.append ("\t").append (".limit locals").append (" ").append (Locals).append ("\n");
 
-        for (JasminStatement Statement : Statements)
+        //for (JasminStatement Statement : Statements)
+        for (JasminStatement Statement : Scope.GetStatements ())
         {
             Builder.append ("\t").append (Statement.ToOutputString ()).append ("\n");
         }
 
+        JasminScope OuterScope = Scope;
         for (JasminBlock Block : Blocks)
         {
+            Scope = new JasminScope ();
             Builder.append ("\n").append (Block.GetLabel ()).append (":\n");
+            Block.Write (this);
+
+            for (JasminStatement Statement : Scope.GetStatements ())
+            {
+                Builder.append ("\t").append (Statement.ToOutputString ()).append ("\n");
+            }
         }
+        Scope = OuterScope;
 
         // If the user haven't added a return statement, return void
+        // TODO: Well doesn't work well with scopes ay
         if (!DidReturn)
             Builder.append ("\t").append ("return").append ("\n");
 
@@ -134,7 +149,8 @@ public class JasminMethod implements Builder
 
     public JasminMethod AddComment (String Comment)
     {
-        Statements.add (new CommentStatement (Comment));
+        //Statements.add (new CommentStatement (Comment));
+        AddStatement (new CommentStatement (Comment));
         return this;
     }
 
@@ -205,14 +221,17 @@ public class JasminMethod implements Builder
 
     public JasminMethod AddStatement (JasminStatement Statement)
     {
-        Statements.add (Statement);
+        //Statements.add (Statement);
+        Scope.AddStatement (Statement);
         return this;
     }
 
     public JasminMethod AddStatements (List<JasminStatement> Statements)
     {
-        for (JasminStatement Statement : Statements)
-            AddStatement (Statement);
+        //for (JasminStatement Statement : Statements)
+            //AddStatement (Statement);
+
+        Scope.AddStatements (Statements);
 
         return this;
     }

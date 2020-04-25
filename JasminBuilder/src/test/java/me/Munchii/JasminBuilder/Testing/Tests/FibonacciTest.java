@@ -50,8 +50,7 @@ public class FibonacciTest implements TestCase
                         .AddStatement (new NoParameterStatement (NoParameterType.IntegerConstant1))
                         .AddStatement (new NoParameterStatement (NoParameterType.SubtractInteger))
                         .AddStatement (new MethodInvokationStatement (MethodInvokationType.InvokeVirtual, "Fibonacci/Fib", DataType.Integer, asList (DataType.Integer)))
-                        //.AddStatement (new NoParameterStatement (NoParameterType.StoreInteger2))
-                        .DeclareStackVariable (new JasminVariable ("fib1", new JasminValue (0, DataType.Integer)))
+                        .AddStatement (new NoParameterStatement (NoParameterType.StoreInteger2))
 
                         // this.Fib(n - 2)
                         //.AddStatement (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable0))
@@ -61,8 +60,7 @@ public class FibonacciTest implements TestCase
                         .AddStatement (new NoParameterStatement (NoParameterType.IntegerConstant2))
                         .AddStatement (new NoParameterStatement (NoParameterType.SubtractInteger))
                         .AddStatement (new MethodInvokationStatement (MethodInvokationType.InvokeVirtual, "Fibonacci/Fib", DataType.Integer, asList (DataType.Integer)))
-                        //.AddStatement (new NoParameterStatement (NoParameterType.StoreInteger3))
-                        .DeclareStackVariable (new JasminVariable ("fib2", new JasminValue (0, DataType.Integer)))
+                        .AddStatement (new NoParameterStatement (NoParameterType.StoreInteger3))
 
                         // left + right
                         .AddStatement (new NoParameterStatement (NoParameterType.LoadInteger2))

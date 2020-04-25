@@ -17,6 +17,7 @@
 	if_icmpgt FibThing
 	iload_1
 	ireturn
+
 FibThing:
 	aload_0
 	iload_1
@@ -34,7 +35,6 @@ FibThing:
 	iload_3
 	iadd
 	ireturn
-
 .end method
 
 ; Method: static public void main (string[]);

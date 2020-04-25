@@ -23,11 +23,22 @@ public class JasminField implements Builder, JasminPassable
     private DataType Descriptor;
     private JasminValue Value;
 
+    /**
+     * @param AccessSpec The access modifiers for the field
+     * @param FieldName The fields name. Used together with class name to access it later on
+     * @param Descriptor The fields data type
+     */
     public JasminField (FieldAccessSpec AccessSpec, String FieldName, DataType Descriptor)
     {
         this (AccessSpec, FieldName, Descriptor, null);
     }
 
+    /**
+     * @param AccessSpec The access modifiers for the field
+     * @param FieldName The fields name. Used together with class name to access it later on
+     * @param Descriptor The fields data type
+     * @param Value The fields type
+     */
     public JasminField (FieldAccessSpec AccessSpec, String FieldName, DataType Descriptor, JasminValue Value)
     {
         this.AccessSpec = new ArrayList<FieldAccessSpec> ();

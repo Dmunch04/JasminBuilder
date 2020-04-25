@@ -98,8 +98,7 @@ public class JasminMethod implements Builder
 
         for (JasminBlock Block : Blocks)
         {
-            Block.Hook (this);
-            Builder.append (Block.ToOutputString ());
+            Builder.append ("\n").append (Block.GetLabel ()).append (":\n");
         }
 
         // If the user haven't added a return statement, return void
@@ -224,6 +223,10 @@ public class JasminMethod implements Builder
         return this;
     }
 
+    /**
+     * @param Variable The target variable which will be initialized with it's value
+     * @return Returns the updated method
+     */
     public JasminMethod DeclareVariable (JasminVariable Variable)
     {
         if (Variable.GetIndex() == -1)
@@ -235,19 +238,6 @@ public class JasminMethod implements Builder
         VariableIndex++;
 
         return this;
-    }
-
-    public List<JasminStatement> GetDeclareVariableStatements (JasminVariable Variable)
-    {
-        if (Variable.GetIndex() == -1)
-            Variable.SetIndex (VariableIndex);
-
-        List<JasminStatement> VariableStatements = new ArrayList<JasminStatement> (Variable.GetValue ().PushToStack ());
-        VariableStatements.add (Variable.Store ());
-
-        VariableIndex++;
-
-        return VariableStatements;
     }
 
     public JasminMethod StoreVariable (JasminVariable Variable, JasminPassable Value)
@@ -265,36 +255,6 @@ public class JasminMethod implements Builder
 
         AddStatements (Variables.get (Name).PushToStack ());
         return this;
-    }
-
-    public List<JasminStatement> GetLoadVariableStatements (String Name)
-    {
-        if (!Variables.containsKey (Name))
-            throw new IllegalArgumentException ("No variable with name exists: " + Name);
-
-        return Variables.get (Name).PushToStack ();
-    }
-
-    public JasminMethod DeclareStackVariable (JasminVariable Variable)
-    {
-        if (Variable.GetIndex() == -1)
-            Variable.SetIndex (VariableIndex);
-
-        Statements.add (Variable.Store ());
-
-        VariableIndex++;
-
-        return this;
-    }
-
-    public JasminStatement GetDeclareStackVariableStatement (JasminVariable Variable)
-    {
-        if (Variable.GetIndex() == -1)
-            Variable.SetIndex (VariableIndex);
-
-        VariableIndex++;
-
-        return Variable.Store ();
     }
 
     // ========================

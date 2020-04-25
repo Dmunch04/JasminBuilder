@@ -10,13 +10,20 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The `JasminFile` class represents a Jasmin file. It can hold several classes
+ */
 public class JasminFile implements Builder
 {
 
-    private String OutputPath;
-    private String FileName;
-    private List<JasminClass> Classes;
+    private final String OutputPath;
+    private final String FileName;
+    private final List<JasminClass> Classes;
 
+    /**
+     * @param OutputPath The destination directory for the file
+     * @param FileName The output files name
+     */
     public JasminFile (String OutputPath, String FileName)
     {
         this.OutputPath = OutputPath;
@@ -24,6 +31,9 @@ public class JasminFile implements Builder
         this.Classes = new ArrayList<JasminClass> ();
     }
 
+    /**
+     * Writes all the classes into a file
+     */
     public void Write ()
     {
         Path FilePath = Paths.get (OutputPath, FileName);
@@ -67,11 +77,17 @@ public class JasminFile implements Builder
     // Getters & Setters
     // ========================
 
+    /**
+     * @return A list of all the files classes
+     */
     public List<JasminClass> GetClasses ()
     {
         return Classes;
     }
 
+    /**
+     * @param Class The class to be added to the file
+     */
     public void AddClass (JasminClass Class)
     {
         Classes.add (Class);

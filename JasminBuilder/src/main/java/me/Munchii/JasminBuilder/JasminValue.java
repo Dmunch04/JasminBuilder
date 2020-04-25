@@ -8,18 +8,26 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-public class JasminValue implements JasminPassable
+/**
+ * The `JasminValue` class represents a single anonymous value in Jasmin
+ */
+public class JasminValue implements Builder, JasminPassable
 {
 
     private Object Value;
     private DataType Type;
 
+    /**
+     * @param Value The value
+     * @param Type The data type of the value
+     */
     public JasminValue (Object Value, DataType Type)
     {
         this.Value = Value;
         this.Type = Type;
     }
 
+    @Override
     public String ToOutputString ()
     {
         if (Value instanceof String)
@@ -41,6 +49,9 @@ public class JasminValue implements JasminPassable
         return asList (Helper.PushValueToStack (this));
     }
 
+    /**
+     * @return The value
+     */
     public Object GetValue ()
     {
         return Value;

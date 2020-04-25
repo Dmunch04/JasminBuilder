@@ -11,19 +11,32 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
+/**
+ * `JasminVariable` represents a local variable in Jasmin.
+ * It holds extra information which will not be used when writing to Jasmin code, but to make it easier for the user
+ */
 public class JasminVariable implements JasminPassable
 {
 
-    private String Name;
+    private final String Name;
     private int Index;
-    private JasminPassable Value;
-    private DataType Type;
+    private final JasminPassable Value;
+    private final DataType Type;
 
+    /**
+     * @param Name The name of the variable
+     * @param Value The value of the variable
+     */
     public JasminVariable (String Name, JasminPassable Value)
     {
         this (Name, -1, Value);
     }
 
+    /**
+     * @param Name The name of the variable
+     * @param Index The variables local index (Use with caution)
+     * @param Value The variables value
+     */
     public JasminVariable (String Name, int Index, JasminPassable Value)
     {
         this.Name = Name;
@@ -32,9 +45,12 @@ public class JasminVariable implements JasminPassable
         this.Type = Value.GetType ();
     }
 
-    // TODO: Implement rest
+    /**
+     * @return A statement that stores the top most stack value into the variable
+     */
     public JasminStatement Store ()
     {
+        // TODO: Implement rest of the types
         switch (Type)
         {
             case Double: {
@@ -101,10 +117,10 @@ public class JasminVariable implements JasminPassable
         throw new IllegalArgumentException ("Could not match data type: " + Type.GetRepresentation ());
     }
 
-    // TODO: Implement rest
     @Override
     public List<JasminStatement> PushToStack ()
     {
+        // TODO: Implement rest of the types
         switch (Type)
         {
             case Double: {
@@ -171,21 +187,33 @@ public class JasminVariable implements JasminPassable
         throw new IllegalArgumentException ("Could not match data type: " + Type.GetRepresentation ());
     }
 
+    /**
+     * @return The name of the variable
+     */
     public String GetName ()
     {
         return Name;
     }
 
+    /**
+     * @return The local index of the variable
+     */
     public int GetIndex ()
     {
         return Index;
     }
 
+    /**
+     * @param Index The new local index for the variable
+     */
     public void SetIndex (int Index)
     {
         this.Index = Index;
     }
 
+    /**
+     * @return The variables value
+     */
     public JasminPassable GetValue ()
     {
         return Value;

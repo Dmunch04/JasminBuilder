@@ -8,6 +8,7 @@ import me.Munchii.JasminBuilder.Fields.JasminField;
 import me.Munchii.JasminBuilder.Instructions.PrintInstruction;
 import me.Munchii.JasminBuilder.Methods.JasminMethod;
 import me.Munchii.JasminBuilder.Methods.MethodAccessSpec;
+import me.Munchii.JasminBuilder.References.VariableReference;
 import me.Munchii.JasminBuilder.Statements.NoParameterStatement;
 import me.Munchii.JasminBuilder.Types.BranchType;
 import me.Munchii.JasminBuilder.Types.DataType;
@@ -60,20 +61,29 @@ public class Main
         System.out.println (File.ToOutputString ());
         */
 
+        // TODO: Find a better way to handle variable references (not having to specify types)
+        // TODO: Find a way to push and store all different value types
+        // TODO: Handle fields better?
+        // TODO: Handle variable references better?
+
         JasminFile File = new JasminFile ("/", "Test");
-        JasminClass Class = new JasminClass (ClassAccessSpec.Public, "For");
+        JasminClass Class = new JasminClass (ClassAccessSpec.Public, "Foo");
         JasminMethod Method = new JasminMethod (MethodAccessSpec.Public, "Bar", DataType.Void, DataType.Integer)
+                .AddInstruction (new PrintInstruction (new VariableReference ("arg1", DataType.Integer)))
+                .AddBlock (new JasminBlock ("a").AddInstruction (new PrintInstruction (new VariableReference ("arg1", DataType.Integer))));
+                /*
                 .AddBranchStatement (BranchType.Goto, "Test")
                 .AddBlock (new JasminBlock ("Test")
                         .AddStatement (new NoParameterStatement (NoParameterType.Nop))
-                        .LoadVariable ("arg1") // => no error
-                        .LoadVariable ("arg2") // => no error
+                        .LoadVariable (new VariableReference ("arg1")) // => no error
+                        .LoadVariable (new VariableReference ("arg2")) // => no error
                 )
                 .AddBlock (new JasminBlock ("Yeet")
                         .AddStatement (new NoParameterStatement (NoParameterType.Nop))
-                        .LoadVariable ("this") // => no error
-                        .LoadVariable ("this2") // => error (variable doesn't exist)
+                        .LoadVariable (new VariableReference ("this")) // => no error
+                        .LoadVariable (new VariableReference ("this2")) // => error (variable doesn't exist)
                 );
+                */
 
         Class.AddMethod (Method);
         File.AddClass (Class);

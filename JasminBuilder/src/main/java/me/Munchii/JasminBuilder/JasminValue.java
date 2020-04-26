@@ -40,6 +40,16 @@ public class JasminValue implements Builder, JasminPassable
             return "";
         }
 
+        else if (Value == Boolean.TRUE)
+        {
+            return "1";
+        }
+
+        else if (Value == Boolean.FALSE)
+        {
+            return "0";
+        }
+
         return Value.toString ();
     }
 

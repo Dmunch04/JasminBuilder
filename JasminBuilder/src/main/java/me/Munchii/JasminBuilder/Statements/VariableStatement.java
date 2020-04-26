@@ -2,6 +2,7 @@ package me.Munchii.JasminBuilder.Statements;
 
 import me.Munchii.JasminBuilder.JasminPassable;
 import me.Munchii.JasminBuilder.JasminVariable;
+import me.Munchii.JasminBuilder.References.VariableReference;
 import me.Munchii.JasminBuilder.Types.VariableType;
 
 public class VariableStatement implements JasminStatement
@@ -71,5 +72,10 @@ public class VariableStatement implements JasminStatement
     public String GetName ()
     {
         return Name;
+    }
+
+    public VariableReference GetReference ()
+    {
+        return new VariableReference (Name);
     }
 }

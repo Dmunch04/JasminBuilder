@@ -9,6 +9,7 @@ import me.Munchii.JasminBuilder.JasminValue;
 import me.Munchii.JasminBuilder.JasminVariable;
 import me.Munchii.JasminBuilder.Methods.JasminMethod;
 import me.Munchii.JasminBuilder.Methods.MethodAccessSpec;
+import me.Munchii.JasminBuilder.References.VariableReference;
 import me.Munchii.JasminBuilder.Statements.MethodInvokationStatement;
 import me.Munchii.JasminBuilder.Statements.NoParameterStatement;
 import me.Munchii.JasminBuilder.Testing.TestCase;
@@ -32,20 +33,20 @@ public class FibonacciTest implements TestCase
         JasminMethod FibMethod = new JasminMethod (MethodAccessSpec.Public, "Fib", DataType.Integer, DataType.Integer)
                 // TODO: Compare arg (if arg == 0 or arg == 1, return arg)
                 //.AddNoParameterStatement (NoParameterType.LoadInteger1)
-                .LoadVariable ("arg1")
+                .LoadVariable (new VariableReference ("arg1"))
                 .AddNoParameterStatement (NoParameterType.IntegerConstant1)
                 .AddBranchStatement (BranchType.IfIntegerCompareGreaterThan, "FibThing")
 
-                .LoadVariable ("arg1")
+                .LoadVariable (new VariableReference ("arg1"))
                 //.AddNoParameterStatement (NoParameterType.LoadInteger1)
 
                 // TODO: Call Fib(arg-1) + Fib(arg-2)
                 .AddBlock (new JasminBlock ("FibThing")
                         // this.Fib(n - 1)
                         //.AddStatement (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable0))
-                        .LoadVariable ("this")
+                        .LoadVariable (new VariableReference ("this"))
                         //.AddStatement (new NoParameterStatement (NoParameterType.LoadInteger1))
-                        .LoadVariable ("arg1")
+                        .LoadVariable (new VariableReference ("arg1"))
                         // TODO: Use `ExpressionBuilder` here instead
                         .AddStatement (new NoParameterStatement (NoParameterType.IntegerConstant1))
                         .AddStatement (new NoParameterStatement (NoParameterType.SubtractInteger))
@@ -54,9 +55,9 @@ public class FibonacciTest implements TestCase
 
                         // this.Fib(n - 2)
                         //.AddStatement (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable0))
-                        .LoadVariable ("this")
+                        .LoadVariable (new VariableReference ("this"))
                         //.AddStatement (new NoParameterStatement (NoParameterType.LoadInteger1))
-                        .LoadVariable ("arg1")
+                        .LoadVariable (new VariableReference ("arg1"))
                         .AddStatement (new NoParameterStatement (NoParameterType.IntegerConstant2))
                         .AddStatement (new NoParameterStatement (NoParameterType.SubtractInteger))
                         .AddStatement (new MethodInvokationStatement (MethodInvokationType.InvokeVirtual, "Fibonacci/Fib", DataType.Integer, asList (DataType.Integer)))

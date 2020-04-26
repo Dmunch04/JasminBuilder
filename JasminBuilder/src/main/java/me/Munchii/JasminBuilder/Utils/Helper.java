@@ -112,7 +112,7 @@ public class Helper
 
                 return new IntegerPushStatement (IntegerPushType.BiPush, NewValue);
             }
-            // TODO: Is this the correct way?
+            // TODO: Is this the correct way? Probably not, but maybe?
             case Char: {
                 return new NoParameterStatement (NoParameterType.LoadCharFromArray);
             }
@@ -162,6 +162,7 @@ public class Helper
                 return new NoParameterStatement (NoParameterType.Nop);
             }
             // AKA null
+            // TODO: Should we introduce a `Null` type? If so, Couldn't it get confused with `Void` in some cases?
             case Void: {
                 return new NoParameterStatement (NoParameterType.PushNull);
             }
@@ -170,29 +171,29 @@ public class Helper
 
                 return new IntegerPushStatement (IntegerPushType.SiPush, NewValue);
             }
-            // TODO: Is this the correct way?
+            // TODO: Is this the correct way? I suppose it is
             case Custom:
             case CustomInstance: {
                 String NewValue = String.valueOf (Value.GetValue ());
 
                 return new LoadConstantStatement (LoadConstantType.LoadConstant, new JasminValue (NewValue, DataType.Custom));
             }
-            // TODO: Find a way
             case Array: {
-                return new NoParameterStatement(NoParameterType.Nop);
+                // TODO: Get the type?
+                return new ObjectStatement (ObjectType.ANewArray, DataType.StringInstance.GetRepresentation ());
             }
-            // TODO: Is this the correct way??
+            // TODO: Is this the correct way?? I suppose it is
             case Boolean: {
                 boolean NewValue = (boolean) Value.GetValue ();
 
-                if (NewValue == true)
+                if (NewValue)
                 {
-                    return new NoParameterStatement(NoParameterType.IntegerConstant1);
+                    return new NoParameterStatement (NoParameterType.IntegerConstant1);
                 }
 
                 else
                 {
-                    return new NoParameterStatement(NoParameterType.IntegerConstant0);
+                    return new NoParameterStatement (NoParameterType.IntegerConstant0);
                 }
             }
         }

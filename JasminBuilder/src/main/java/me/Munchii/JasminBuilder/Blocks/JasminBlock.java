@@ -1,11 +1,15 @@
 package me.Munchii.JasminBuilder.Blocks;
 
+import me.Munchii.JasminBuilder.Instructions.JasminInstruction;
 import me.Munchii.JasminBuilder.JasminPassable;
+import me.Munchii.JasminBuilder.JasminValue;
 import me.Munchii.JasminBuilder.JasminVariable;
 import me.Munchii.JasminBuilder.Methods.JasminMethod;
-import me.Munchii.JasminBuilder.Statements.JasminStatement;
-import me.Munchii.JasminBuilder.Statements.VariableStatement;
-import me.Munchii.JasminBuilder.Types.VariableType;
+import me.Munchii.JasminBuilder.References.VariableReference;
+import me.Munchii.JasminBuilder.StatementHolder;
+import me.Munchii.JasminBuilder.Statements.*;
+import me.Munchii.JasminBuilder.Types.*;
+import me.Munchii.JasminBuilder.Utils.Helper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +17,7 @@ import java.util.List;
 /**
  * JasminBlock represents a block in Jasmin. It has a label and a list of statements
  */
-public class JasminBlock
+public class JasminBlock implements StatementHolder<JasminBlock>
 {
 
     private final String Name;
@@ -42,7 +46,19 @@ public class JasminBlock
                 {
                     case Declare: Method.DeclareVariable (Variable.GetVariable ());
                     case Store: Method.StoreVariable (Variable.GetVariable (), Variable.GetValue ());
-                    case Load: Method.LoadVariable (Variable.GetName ());
+                    case Load: Method.LoadVariable (Variable.GetReference ());
+                }
+
+                continue;
+            }
+
+            else if (Statement instanceof LimitStatement)
+            {
+                LimitStatement Limit = (LimitStatement) Statement;
+                switch (Limit.GetType ())
+                {
+                    case Stack: Method.AddStackLimit (Limit.GetAmount ());
+                    case Locals: Method.AddLocalsLimit (Limit.GetAmount ());
                 }
 
                 continue;
@@ -50,6 +66,84 @@ public class JasminBlock
 
             Method.AddStatement (Statement);
         }
+    }
+
+    public JasminBlock AddInstruction (JasminInstruction Instruction)
+    {
+        Instruction.Write (this);
+        return this;
+    }
+
+    public JasminBlock AddStackLimit (int Amount)
+    {
+        Statements.add (new LimitStatement (LimitType.Stack, Amount));
+        return this;
+    }
+
+    public JasminBlock AddLocalsLimit (int Amount)
+    {
+        Statements.add (new LimitStatement (LimitType.Locals, Amount));
+        return this;
+    }
+
+    public JasminBlock AddComment (String Comment)
+    {
+        AddStatement (new CommentStatement(Comment));
+        return this;
+    }
+
+    public JasminBlock AddMethodInvokationStatement (MethodInvokationType Type, String MethodName, DataType MethodReturnType, DataType... Args)
+    {
+        AddStatement (new MethodInvokationStatement(Type, MethodName, MethodReturnType, Helper.DataTypeArrayToList (Args)));
+        return this;
+    }
+
+    public JasminBlock AddFieldManipulationStatement (FieldManipulationType Type, String FieldSpec, DataType FieldType)
+    {
+        AddStatement (new FieldManipulationStatement (Type, FieldSpec, FieldType.GetRepresentation ()));
+        return this;
+    }
+
+    public JasminBlock AddLoadConstantStatement (LoadConstantType Type, JasminValue Value)
+    {
+        AddStatement (new LoadConstantStatement (Type, Value));
+        return this;
+    }
+
+    public JasminBlock AddLocalVariableStatement (LocalVariableType Type, int Index)
+    {
+        AddStatement (new LocalVariableStatement (Type, Index));
+        return this;
+    }
+
+    public JasminBlock AddBranchStatement (BranchType Type, String Label)
+    {
+        AddStatement (new BranchStatement (Type, Label));
+        return this;
+    }
+
+    public JasminBlock AddObjectStatement (ObjectType Type, String Class)
+    {
+        AddStatement (new ObjectStatement (Type, Class));
+        return this;
+    }
+
+    public JasminBlock AddNoParameterStatement (NoParameterType Type)
+    {
+        AddStatement (new NoParameterStatement (Type));
+        return this;
+    }
+
+    public JasminBlock AddSwitchStatement (SwitchType Type)
+    {
+        AddStatement (new SwitchStatement (Type));
+        return this;
+    }
+
+    public JasminBlock AddIntegerPushStatement (IntegerPushType Type, int Value)
+    {
+        AddStatement (new IntegerPushStatement (Type, Value));
+        return this;
     }
 
     /**
@@ -94,14 +188,24 @@ public class JasminBlock
     }
 
     /**
-     * @param Name The variables name
+     * @param Reference The variable reference
      * @return The updated block
      */
-    public JasminBlock LoadVariable (String Name)
+    public JasminBlock LoadVariable (VariableReference Reference)
     {
-        Statements.add (new VariableStatement (VariableType.Load, Name));
+        Statements.add (new VariableStatement (VariableType.Load, Reference.Name));
         return this;
     }
+
+    public JasminBlock AddValue (JasminPassable Value)
+    {
+        AddStatements (Value.PushToStack ());
+        return this;
+    }
+
+    // ========================
+    // Getters & Setters
+    // ========================
 
     /**
      * @return The blocks label

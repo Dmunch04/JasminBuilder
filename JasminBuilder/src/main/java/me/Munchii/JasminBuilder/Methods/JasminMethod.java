@@ -1,11 +1,9 @@
 package me.Munchii.JasminBuilder.Methods;
 
+import me.Munchii.JasminBuilder.*;
 import me.Munchii.JasminBuilder.Blocks.JasminBlock;
-import me.Munchii.JasminBuilder.Builder;
 import me.Munchii.JasminBuilder.Instructions.JasminInstruction;
-import me.Munchii.JasminBuilder.JasminPassable;
-import me.Munchii.JasminBuilder.JasminValue;
-import me.Munchii.JasminBuilder.JasminVariable;
+import me.Munchii.JasminBuilder.References.VariableReference;
 import me.Munchii.JasminBuilder.Statements.*;
 import me.Munchii.JasminBuilder.Types.*;
 import me.Munchii.JasminBuilder.Utils.Helper;
@@ -17,7 +15,7 @@ import java.util.Map;
 
 import static java.util.Arrays.asList;
 
-public class JasminMethod implements Builder
+public class JasminMethod implements Builder, StatementHolder<JasminMethod>
 {
 
     private List<MethodAccessSpec> AccessSpec;
@@ -149,7 +147,6 @@ public class JasminMethod implements Builder
 
     public JasminMethod AddComment (String Comment)
     {
-        //Statements.add (new CommentStatement (Comment));
         AddStatement (new CommentStatement (Comment));
         return this;
     }
@@ -221,17 +218,16 @@ public class JasminMethod implements Builder
 
     public JasminMethod AddStatement (JasminStatement Statement)
     {
-        //Statements.add (Statement);
-        Scope.AddStatement (Statement);
+        if (CheckStatement (Statement))
+            Scope.AddStatement (Statement);
+
         return this;
     }
 
     public JasminMethod AddStatements (List<JasminStatement> Statements)
     {
-        //for (JasminStatement Statement : Statements)
-            //AddStatement (Statement);
-
-        Scope.AddStatements (Statements);
+        if (CheckStatements (Statements))
+            Scope.AddStatements (Statements);
 
         return this;
     }
@@ -267,13 +263,68 @@ public class JasminMethod implements Builder
         return this;
     }
 
-    public JasminMethod LoadVariable (String Name)
+    public JasminMethod LoadVariable (VariableReference Reference)
     {
-        if (!Variables.containsKey (Name))
-            throw new IllegalArgumentException ("No variable with name exists: " + Name);
+        if (!Variables.containsKey (Reference.Name))
+            throw new IllegalArgumentException ("No variable with name exists: " + Reference.Name);
 
-        AddStatements (Variables.get (Name).PushToStack ());
+        AddStatements (Variables.get (Reference.Name).PushToStack ());
         return this;
+    }
+
+    public JasminMethod AddValue (JasminPassable Value)
+    {
+        if (Value instanceof VariableReference)
+            return LoadVariable ((VariableReference) Value);
+
+        AddStatements (Value.PushToStack ());
+        return this;
+    }
+
+    // ========================
+    // Helpers
+    // ========================
+
+    // TODO: Is this really the best way? I guess but eh
+    private boolean CheckStatement (JasminStatement Statement)
+    {
+        if (Statement instanceof VariableStatement)
+        {
+            VariableStatement Variable = (VariableStatement) Statement;
+            switch (Variable.GetType ())
+            {
+                case Declare: DeclareVariable (Variable.GetVariable ());
+                case Store: StoreVariable (Variable.GetVariable (), Variable.GetValue ());
+                case Load: LoadVariable (Variable.GetReference ());
+            }
+
+            return false;
+        }
+
+        else if (Statement instanceof LimitStatement)
+        {
+            LimitStatement Limit = (LimitStatement) Statement;
+            switch (Limit.GetType ())
+            {
+                case Stack: AddStackLimit (Limit.GetAmount ());
+                case Locals: AddLocalsLimit (Limit.GetAmount ());
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean CheckStatements (List<JasminStatement> Statements)
+    {
+        for (JasminStatement Statement : Statements)
+        {
+            if (CheckStatement (Statement))
+                return true;
+        }
+
+        return false;
     }
 
     // ========================

@@ -21,7 +21,7 @@ public class JasminVariable implements JasminPassable
     private final String Name;
     private int Index;
     private final JasminPassable Value;
-    private final DataType Type;
+    private DataType Type;
 
     /**
      * @param Name The name of the variable
@@ -102,7 +102,8 @@ public class JasminVariable implements JasminPassable
             case Object:
             case ObjectInstance:
             case Custom:
-            case CustomInstance: {
+            case CustomInstance:
+            case Array: {
                 switch (Index)
                 {
                     case 0: return new NoParameterStatement (NoParameterType.StoreReferenceIntoLocalVariable0);
@@ -172,7 +173,8 @@ public class JasminVariable implements JasminPassable
             case Object:
             case ObjectInstance:
             case Custom:
-            case CustomInstance: {
+            case CustomInstance:
+            case Array: {
                 switch (Index)
                 {
                     case 0: return asList (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable0));

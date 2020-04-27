@@ -386,4 +386,22 @@ public class JasminMethod implements Builder, StatementHolder<JasminMethod>
         Args.add (Arg);
     }
 
+    public Map<String, JasminVariable> GetVariables ()
+    {
+        return Variables;
+    }
+
+    public JasminVariable GetVariable (String Name)
+    {
+        if (!Variables.containsKey (Name))
+            throw new IllegalArgumentException ("No variable with name exists: " + Name);
+
+        return Variables.get (Name);
+    }
+
+    public JasminVariable GetVariable (VariableReference Reference)
+    {
+        return GetVariable (Reference.Name);
+    }
+
 }

@@ -3,6 +3,7 @@ package me.Munchii.JasminBuilder.Statements;
 import me.Munchii.JasminBuilder.JasminPassable;
 import me.Munchii.JasminBuilder.JasminVariable;
 import me.Munchii.JasminBuilder.References.VariableReference;
+import me.Munchii.JasminBuilder.Types.DataType;
 import me.Munchii.JasminBuilder.Types.VariableType;
 
 public class VariableStatement implements JasminStatement

@@ -22,8 +22,7 @@ public class MethodCreator
         JasminMethod Method = new JasminMethod (MethodAccessSpec.Public, "<init>", DataType.Void);
         Method.AddComment ("Call super method")
                 .AddNoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable0)
-                .AddMethodInvokationStatement (MethodInvokationType.InvokeSpecial, "java/lang/Object/<init>", DataType.Void)
-                .AddNoParameterStatement (NoParameterType.Return);
+                .AddMethodInvokationStatement (MethodInvokationType.InvokeSpecial, "java/lang/Object/<init>", DataType.Void);
 
         return Method;
     }

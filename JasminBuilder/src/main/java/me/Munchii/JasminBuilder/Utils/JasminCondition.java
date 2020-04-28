@@ -27,20 +27,24 @@ public class JasminCondition
         return new JasminCondition (Value1, Value2, ConditionType.NotEquals);
     }
 
-    // TODO: Make the rest..
-
-    public JasminCondition And (JasminCondition Condition)
+    public static JasminCondition LessThan (JasminPassable Value1, JasminPassable Value2)
     {
-        // TODO
-
-        return this;
+        return new JasminCondition (Value1, Value2, ConditionType.LessThan);
     }
 
-    public JasminCondition Or (JasminCondition Condition)
+    public static JasminCondition LessThanEquals (JasminPassable Value1, JasminPassable Value2)
     {
-        // TODO
+        return new JasminCondition (Value1, Value2, ConditionType.LessThanEquals);
+    }
 
-        return this;
+    public static JasminCondition GreaterThan (JasminPassable Value1, JasminPassable Value2)
+    {
+        return new JasminCondition (Value1, Value2, ConditionType.GreaterThan);
+    }
+
+    public static JasminCondition GreaterThanEquals (JasminPassable Value1, JasminPassable Value2)
+    {
+        return new JasminCondition (Value1, Value2, ConditionType.GreaterThanEquals);
     }
 
 }

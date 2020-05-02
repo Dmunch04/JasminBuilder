@@ -4,21 +4,22 @@ import me.Munchii.JasminBuilder.JasminPassable;
 import me.Munchii.JasminBuilder.JasminVariable;
 import me.Munchii.JasminBuilder.References.VariableReference;
 import me.Munchii.JasminBuilder.Types.VariableType;
+import me.Munchii.JasminBuilder.Variable;
 
 public class VariableStatement implements JasminStatement
 {
 
     private VariableType Type;
-    private JasminVariable Variable;
+    private Variable Variable;
     private JasminPassable Value;
     private String Name;
 
-    public VariableStatement (VariableType Type, JasminVariable Variable)
+    public VariableStatement (VariableType Type, Variable Variable)
     {
         this (Type, Variable, Variable.GetValue ());
     }
 
-    public VariableStatement (VariableType Type, JasminVariable Variable, JasminPassable Value)
+    public VariableStatement (VariableType Type, Variable Variable, JasminPassable Value)
     {
         this.Type = Type;
         this.Variable = Variable;
@@ -59,7 +60,7 @@ public class VariableStatement implements JasminStatement
         return Type;
     }
 
-    public JasminVariable GetVariable ()
+    public Variable GetVariable ()
     {
         return Variable;
     }

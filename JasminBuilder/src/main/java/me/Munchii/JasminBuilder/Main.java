@@ -1,17 +1,14 @@
 package me.Munchii.JasminBuilder;
 
+import me.Munchii.JasminBuilder.Blocks.JasminBlock;
 import me.Munchii.JasminBuilder.Classes.ClassAccessSpec;
 import me.Munchii.JasminBuilder.Classes.JasminClass;
 import me.Munchii.JasminBuilder.Fields.FieldAccessSpec;
 import me.Munchii.JasminBuilder.Fields.JasminField;
 import me.Munchii.JasminBuilder.Instructions.InitFieldInstruction;
-import me.Munchii.JasminBuilder.Instructions.PrintInstruction;
-import me.Munchii.JasminBuilder.Logging.Logger;
 import me.Munchii.JasminBuilder.Methods.JasminMethod;
 import me.Munchii.JasminBuilder.Methods.MethodAccessSpec;
-import me.Munchii.JasminBuilder.References.VariableReference;
 import me.Munchii.JasminBuilder.Types.DataType;
-import me.Munchii.JasminBuilder.Utils.ExpressionBuilder;
 import me.Munchii.JasminBuilder.Utils.MethodCreator;
 
 public class Main
@@ -25,7 +22,6 @@ public class Main
         // TODO: How should conditions work?
         // TODO: Make instructions for control-flow, loops, field init, etc.
         // TODO: Allow for multiple AccessSpec in constructor for `Field`, `Method` and `Class`
-        // TODO: Fix arrays and figure out how they should work
 
         // TODO: Fix tests to use new variable system
 
@@ -42,10 +38,15 @@ public class Main
 
         //* Method declaration and building should from now on be SEPARATED! Else you can't get variables like `this`, `arg1`, `arg2`, .. `argN`
         JasminMethod Method = new JasminMethod (MethodAccessSpec.Public, "Bar", DataType.Void, DataType.Integer);
-        JasminVariable Variable = new JasminVariable ("Yeet", ExpressionBuilder.Negate (ExpressionBuilder.Add (Method.GetVariable ("arg1"), new JasminValue (10, DataType.Integer))));
-        Method.DeclareVariable (Variable);
-        Method.AddInstruction (new PrintInstruction (Variable));
-        Method.AddInstruction (new PrintInstruction (Method.GetVariable (new VariableReference ("arg1"))));
+        JasminBlock Block = new JasminBlock ("BLOCK");
+        JasminArray Array = new JasminArray ("a", DataType.Integer, 5);
+        Array.AddElement (new JasminValue (10, DataType.Integer));
+        Block.DeclareVariable (Array);
+        Block.StoreVariable (Array, new JasminValue (5, DataType.Integer));
+        Method.AddBlock (Block);
+
+        // TODO: This here will NOT work because blocks are evaluated after the methods main block, so the id would just be -1
+        Method.DeclareVariable (new JasminVariable ("b", Array.GetElement (0)));
 
         Class.AddField (Field);
         Class.AddMethod (Method);

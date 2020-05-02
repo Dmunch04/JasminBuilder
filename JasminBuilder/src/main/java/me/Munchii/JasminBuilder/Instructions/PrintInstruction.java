@@ -24,7 +24,7 @@ public class PrintInstruction implements JasminInstruction
     public void Write (JasminMethod Method)
     {
         // Printing requires stack +2
-        Method.AddFieldManipulationStatement (FieldManipulationType.GetStatic, "java/lang/System/out", DataType.MakeCustomClassInstance ("java/io/PrintStream"))
+        Method.AddFieldManipulationStatement (FieldManipulationType.GetStatic, "java/lang/System/out", DataType.MakeReferenceInstance("java/io/PrintStream"))
                 //.AddStatements (Value.PushToStack ())
                 .AddValue (Value)
                 .AddMethodInvokationStatement (MethodInvokationType.InvokeVirtual, "java/io/PrintStream/println", DataType.Void, Value.GetType ())
@@ -35,7 +35,7 @@ public class PrintInstruction implements JasminInstruction
     public void Write (JasminBlock Block)
     {
         // Printing require stack +2
-        Block.AddFieldManipulationStatement (FieldManipulationType.GetStatic, "java/lang/System/out", DataType.MakeCustomClassInstance ("java/io/PrintStream"))
+        Block.AddFieldManipulationStatement (FieldManipulationType.GetStatic, "java/lang/System/out", DataType.MakeReferenceInstance("java/io/PrintStream"))
                 .AddStatements (Value.PushToStack ()) //- this would still work, but not recommended i guess
                 .AddValue (Value)
                 .AddMethodInvokationStatement (MethodInvokationType.InvokeVirtual, "java/io/PrintStream/println", DataType.Void, Value.GetType ())

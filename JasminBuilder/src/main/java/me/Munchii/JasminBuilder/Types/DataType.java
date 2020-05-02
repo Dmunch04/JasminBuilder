@@ -10,34 +10,44 @@ public enum DataType
     // | Note: The amount of '[' is the amount of dimensions
 
     // https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html -> "Table 4.2. Interpretation of FieldType characters"
+    Boolean ("Z"),
     Byte ("B"),
     Char ("C"),
     Double ("D"),
     Float ("F"),
     Integer ("I"),
     Long ("J"),
-    String ("java/lang/String"),
-    StringInstance ("Ljava/lang/String;"),
-    Object ("java/lang/Object"),
-    ObjectInstance ("Ljava/lang/Object;"),
     Void ("V"),
     Short ("S"),
-    CustomInstance ("L"),
-    Custom (""),
-    Array (""),
-    Boolean ("Z");
 
-    public static DataType MakeCustomClassInstance (String Class)
+    // TODO: Maybe find a way to collapse reference and reference instance? Since they're the same thing pretty much
+    Reference (""),
+    ReferenceInstance (""),
+    Array ("");
+
+    private String Representation;
+
+    private DataType (String Representation)
     {
-        DataType Type = CustomInstance;
+        this.Representation = Representation;
+    }
+
+    public String GetRepresentation ()
+    {
+        return Representation;
+    }
+
+    public static DataType MakeReferenceInstance (String Class)
+    {
+        DataType Type = ReferenceInstance;
         Type.Representation = "L" + Class + ";";
 
         return Type;
     }
 
-    public static DataType MakeCustomClass (String Class)
+    public static DataType MakeReference (String Class)
     {
-        DataType Type = Custom;
+        DataType Type = Reference;
         Type.Representation = Class;
 
         return Type;
@@ -51,16 +61,21 @@ public enum DataType
         return Type;
     }
 
-    private String Representation;
-
-    private DataType (String Representation)
+    public static DataType MakeInstance (DataType ClassType)
     {
-        this.Representation = Representation;
+        DataType Type = ReferenceInstance;
+        Type.Representation = "L" + ClassType.Representation + ";";
+
+        return Type;
     }
 
-    public String GetRepresentation ()
-    {
-        return Representation;
-    }
+    public static final DataType String = MakeReference ("java/lang/String");
+    public static final DataType StringInstance = MakeInstance (String);
+    public static final DataType Object = MakeReference ("java/lang/Object");
+    public static final DataType ObjectInstance = MakeInstance (Object);
+    public static final DataType System = MakeReference ("java/lang/System");
+    public static final DataType SystemInstance = MakeInstance (System);
+    public static final DataType Math = MakeReference ("java/lang/Math");
+    public static final DataType MathInstance = MakeInstance (Math);
 
 }

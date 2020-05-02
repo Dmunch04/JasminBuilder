@@ -1,12 +1,9 @@
 package me.Munchii.JasminBuilder.Blocks;
 
+import me.Munchii.JasminBuilder.*;
 import me.Munchii.JasminBuilder.Instructions.JasminInstruction;
-import me.Munchii.JasminBuilder.JasminPassable;
-import me.Munchii.JasminBuilder.JasminValue;
-import me.Munchii.JasminBuilder.JasminVariable;
 import me.Munchii.JasminBuilder.Methods.JasminMethod;
 import me.Munchii.JasminBuilder.References.VariableReference;
-import me.Munchii.JasminBuilder.StatementHolder;
 import me.Munchii.JasminBuilder.Statements.*;
 import me.Munchii.JasminBuilder.Types.*;
 import me.Munchii.JasminBuilder.Utils.Helper;
@@ -17,7 +14,7 @@ import java.util.List;
 /**
  * JasminBlock represents a block in Jasmin. It has a label and a list of statements
  */
-public class JasminBlock implements StatementHolder<JasminBlock>
+public class JasminBlock
 {
 
     private final String Name;
@@ -44,9 +41,9 @@ public class JasminBlock implements StatementHolder<JasminBlock>
                 VariableStatement Variable = (VariableStatement) Statement;
                 switch (Variable.GetType ())
                 {
-                    case Declare: Method.DeclareVariable (Variable.GetVariable ());
-                    case Store: Method.StoreVariable (Variable.GetVariable (), Variable.GetValue ());
-                    case Load: Method.LoadVariable (Variable.GetReference ());
+                    case Declare: Method.DeclareVariable (Variable.GetVariable ()); break;
+                    case Store: Method.StoreVariable (Variable.GetVariable (), Variable.GetValue ()); break;
+                    case Load: Method.LoadVariable (Variable.GetReference ()); break;
                 }
 
                 continue;
@@ -57,8 +54,8 @@ public class JasminBlock implements StatementHolder<JasminBlock>
                 LimitStatement Limit = (LimitStatement) Statement;
                 switch (Limit.GetType ())
                 {
-                    case Stack: Method.AddStackLimit (Limit.GetAmount ());
-                    case Locals: Method.AddLocalsLimit (Limit.GetAmount ());
+                    case Stack: Method.AddStackLimit (Limit.GetAmount ()); break;
+                    case Locals: Method.AddLocalsLimit (Limit.GetAmount ()); break;
                 }
 
                 continue;
@@ -170,7 +167,7 @@ public class JasminBlock implements StatementHolder<JasminBlock>
      * @param Variable The variable to be declared
      * @return The updated block
      */
-    public JasminBlock DeclareVariable (JasminVariable Variable)
+    public JasminBlock DeclareVariable (Variable Variable)
     {
         Statements.add (new VariableStatement (VariableType.Declare, Variable));
         return this;
@@ -181,7 +178,7 @@ public class JasminBlock implements StatementHolder<JasminBlock>
      * @param Value The value the variable should store
      * @return The updated block
      */
-    public JasminBlock StoreVariable (JasminVariable Variable, JasminPassable Value)
+    public JasminBlock StoreVariable (Variable Variable, JasminPassable Value)
     {
         Statements.add (new VariableStatement (VariableType.Store, Variable, Value));
         return this;

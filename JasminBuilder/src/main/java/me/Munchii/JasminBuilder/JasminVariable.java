@@ -7,6 +7,7 @@ import me.Munchii.JasminBuilder.Types.DataType;
 import me.Munchii.JasminBuilder.Types.LocalVariableType;
 import me.Munchii.JasminBuilder.Types.NoParameterType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -15,7 +16,7 @@ import static java.util.Arrays.asList;
  * `JasminVariable` represents a local variable in Jasmin.
  * It holds extra information which will not be used when writing to Jasmin code, but to make it easier for the user
  */
-public class JasminVariable implements JasminPassable
+public class JasminVariable implements Variable, JasminPassable
 {
 
     private final String Name;
@@ -48,6 +49,7 @@ public class JasminVariable implements JasminPassable
     /**
      * @return A statement that stores the top most stack value into the variable
      */
+    @Override
     public JasminStatement Store ()
     {
         // TODO: Implement rest of the types
@@ -97,12 +99,8 @@ public class JasminVariable implements JasminPassable
                 }
             }
 
-            case String:
-            case StringInstance:
-            case Object:
-            case ObjectInstance:
-            case Custom:
-            case CustomInstance:
+            case Reference:
+            case ReferenceInstance:
             case Array: {
                 switch (Index)
                 {
@@ -116,6 +114,16 @@ public class JasminVariable implements JasminPassable
         }
 
         throw new IllegalArgumentException ("Could not match data type: " + Type.GetRepresentation ());
+    }
+
+    @Override
+    public List<JasminStatement> Declare ()
+    {
+        List<JasminStatement> Statements = new ArrayList<JasminStatement> ();
+        Statements.addAll (Value.PushToStack ());
+        Statements.add (Store ());
+
+        return Statements;
     }
 
     @Override
@@ -168,12 +176,8 @@ public class JasminVariable implements JasminPassable
                 }
             }
 
-            case String:
-            case StringInstance:
-            case Object:
-            case ObjectInstance:
-            case Custom:
-            case CustomInstance:
+            case Reference:
+            case ReferenceInstance:
             case Array: {
                 switch (Index)
                 {
@@ -200,6 +204,7 @@ public class JasminVariable implements JasminPassable
     /**
      * @return The local index of the variable
      */
+    @Override
     public int GetIndex ()
     {
         return Index;
@@ -208,6 +213,7 @@ public class JasminVariable implements JasminPassable
     /**
      * @param Index The new local index for the variable
      */
+    @Override
     public void SetIndex (int Index)
     {
         this.Index = Index;

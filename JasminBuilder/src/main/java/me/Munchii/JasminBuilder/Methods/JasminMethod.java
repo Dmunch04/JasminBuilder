@@ -15,7 +15,7 @@ import java.util.Map;
 
 import static java.util.Arrays.asList;
 
-public class JasminMethod implements Builder, StatementHolder<JasminMethod>
+public class JasminMethod implements Builder
 {
 
     private List<MethodAccessSpec> AccessSpec;
@@ -65,7 +65,7 @@ public class JasminMethod implements Builder, StatementHolder<JasminMethod>
 
         if (AccessSpec != MethodAccessSpec.Static)
         {
-            Variables.put ("this", new JasminVariable ("this", VariableIndex, new JasminValue (null, DataType.CustomInstance)));
+            Variables.put ("this", new JasminVariable ("this", VariableIndex, new JasminValue (null, DataType.ReferenceInstance)));
             VariableIndex++;
         }
 
@@ -93,7 +93,6 @@ public class JasminMethod implements Builder, StatementHolder<JasminMethod>
         if (Locals != 0)
             Builder.append ("\t").append (".limit locals").append (" ").append (Locals).append ("\n");
 
-        //for (JasminStatement Statement : Statements)
         for (JasminStatement Statement : Scope.GetStatements ())
         {
             Builder.append ("\t").append (Statement.ToOutputString ()).append ("\n");
@@ -242,23 +241,32 @@ public class JasminMethod implements Builder, StatementHolder<JasminMethod>
      * @param Variable The target variable which will be initialized with it's value
      * @return Returns the updated method
      */
-    public JasminMethod DeclareVariable (JasminVariable Variable)
+    public JasminMethod DeclareVariable (Variable Variable)
     {
         if (Variable.GetIndex() == -1)
             Variable.SetIndex (VariableIndex);
 
-        AddStatements (Variable.GetValue ().PushToStack ());
-        AddStatement (Variable.Store ());
+        AddStatements (Variable.Declare ());
 
         VariableIndex++;
 
         return this;
     }
 
-    public JasminMethod StoreVariable (JasminVariable Variable, JasminPassable Value)
+    public JasminMethod StoreVariable (Variable Variable, JasminPassable Value)
     {
+        if (Variable instanceof JasminArray)
+        {
+            AddStatements (Variable.PushToStack ());
+            AddStatement (Helper.PushValueToStack (new JasminValue (((JasminArray) Variable).GetIndexPointer (), DataType.Integer)));
+
+            ((JasminArray) Variable).AddElement (Value);
+        }
+
         AddStatements (Value.PushToStack ());
-        AddStatement (Variable.Store ());
+
+        if (Variable instanceof JasminArray) AddStatement (((JasminArray) Variable).StoreElement ());
+        else AddStatement (Variable.Store ());
 
         return this;
     }

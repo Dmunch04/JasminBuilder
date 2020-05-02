@@ -50,14 +50,10 @@ public class Helper
             case Float: return "float";
             case Integer: return "int";
             case Long: return "long";
-            case String:
-            case StringInstance: return "string";
-            case Object:
-            case ObjectInstance: return "object";
             case Void: return "void";
             case Short: return "short";
-            case Custom:
-            case CustomInstance: return GetCustomDataTypeName (Type);
+            case Reference:
+            case ReferenceInstance: return GetCustomDataTypeName (Type);
             case Array: return GetDataTypeArrayName (Type);
             case Boolean: return "bool";
         }
@@ -150,17 +146,6 @@ public class Helper
                 if (NewValue == 1) return new NoParameterStatement (NoParameterType.LongConstant1);
                 else return new LoadConstantStatement (LoadConstantType.LoadConstantW, new JasminValue (NewValue, DataType.Long));
             }
-            case String:
-            case StringInstance: {
-                String NewValue = String.valueOf (Value.GetValue ());
-
-                // TODO: Idk about `StringInstance`
-                return new LoadConstantStatement (LoadConstantType.LoadConstant, new JasminValue (NewValue, DataType.String));
-            }
-            case Object:
-            case ObjectInstance: {
-                return new NoParameterStatement (NoParameterType.Nop);
-            }
             // AKA null
             // TODO: Should we introduce a `Null` type? If so, Couldn't it get confused with `Void` in some cases?
             case Void: {
@@ -172,11 +157,11 @@ public class Helper
                 return new IntegerPushStatement (IntegerPushType.SiPush, NewValue);
             }
             // TODO: Is this the correct way? I suppose it is
-            case Custom:
-            case CustomInstance: {
+            case Reference:
+            case ReferenceInstance: {
                 String NewValue = String.valueOf (Value.GetValue ());
 
-                return new LoadConstantStatement (LoadConstantType.LoadConstant, new JasminValue (NewValue, DataType.Custom));
+                return new LoadConstantStatement (LoadConstantType.LoadConstant, new JasminValue (NewValue, DataType.Reference));
             }
             case Array: {
                 // TODO: Get the type?

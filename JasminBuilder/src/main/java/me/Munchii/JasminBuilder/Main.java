@@ -16,8 +16,8 @@ public class Main
 
     public static void main (String... Args)
     {
-        // TODO: Find a way to push and store all different value types - mostly done
-        // TODO: Find a way to represent arrays and push items into the array and load them from array
+        // TODO: Find a way to push and store all different value types -> mostly done
+        // TODO: Find a way to represent arrays and push items into the array and load them from array -> done?
         // TODO: How can we stop/prevent the user from chaining on the `JasminMethod` constructor method?
         // TODO: How should conditions work?
         // TODO: Make instructions for control-flow, loops, field init, etc.

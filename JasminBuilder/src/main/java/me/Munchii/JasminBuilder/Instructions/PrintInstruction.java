@@ -1,8 +1,8 @@
 package me.Munchii.JasminBuilder.Instructions;
 
 import me.Munchii.JasminBuilder.Blocks.JasminBlock;
+import me.Munchii.JasminBuilder.DataTypes.DataType;
 import me.Munchii.JasminBuilder.DataTypes.ReferenceType;
-import me.Munchii.JasminBuilder.DataTypes.VoidType;
 import me.Munchii.JasminBuilder.JasminPassable;
 import me.Munchii.JasminBuilder.Methods.JasminMethod;
 import me.Munchii.JasminBuilder.Types.FieldManipulationType;
@@ -26,9 +26,8 @@ public class PrintInstruction implements JasminInstruction
     {
         // Printing requires stack +2
         Method.AddFieldManipulationStatement (FieldManipulationType.GetStatic, "java/lang/System/out", new ReferenceType ("java/io/PrintStream", true))
-                //.AddStatements (Value.PushToStack ())
                 .AddValue (Value)
-                .AddMethodInvokationStatement (MethodInvokationType.InvokeVirtual, "java/io/PrintStream/println", new VoidType (), Value.GetType ())
+                .AddMethodInvokationStatement (MethodInvokationType.InvokeVirtual, "java/io/PrintStream/println", DataType.Void, Value.GetType ())
                 .AddStackLimit (2);
     }
 
@@ -37,9 +36,8 @@ public class PrintInstruction implements JasminInstruction
     {
         // Printing require stack +2
         Block.AddFieldManipulationStatement (FieldManipulationType.GetStatic, "java/lang/System/out", new ReferenceType ("java/io/PrintStream", true))
-                .AddStatements (Value.PushToStack ()) //- this would still work, but not recommended i guess
                 .AddValue (Value)
-                .AddMethodInvokationStatement (MethodInvokationType.InvokeVirtual, "java/io/PrintStream/println", new VoidType (), Value.GetType ())
+                .AddMethodInvokationStatement (MethodInvokationType.InvokeVirtual, "java/io/PrintStream/println", DataType.Void, Value.GetType ())
                 .AddStackLimit (2);
     }
 

@@ -3,17 +3,13 @@ package me.Munchii.JasminBuilder.Testing.Tests;
 import me.Munchii.JasminBuilder.Blocks.JasminBlock;
 import me.Munchii.JasminBuilder.Classes.ClassAccessSpec;
 import me.Munchii.JasminBuilder.Classes.JasminClass;
-import me.Munchii.JasminBuilder.DataTypes.IntegerType;
-import me.Munchii.JasminBuilder.DataTypes.LongType;
-import me.Munchii.JasminBuilder.DataTypes.VoidType;
+import me.Munchii.JasminBuilder.DataTypes.DataType;
 import me.Munchii.JasminBuilder.Instructions.PrintInstruction;
 import me.Munchii.JasminBuilder.JasminFile;
 import me.Munchii.JasminBuilder.JasminValue;
-import me.Munchii.JasminBuilder.JasminVariable;
 import me.Munchii.JasminBuilder.Methods.JasminMethod;
 import me.Munchii.JasminBuilder.Methods.MethodAccessSpec;
 import me.Munchii.JasminBuilder.References.VariableReference;
-import me.Munchii.JasminBuilder.Statements.MethodInvokationStatement;
 import me.Munchii.JasminBuilder.Statements.NoParameterStatement;
 import me.Munchii.JasminBuilder.Testing.TestCase;
 import me.Munchii.JasminBuilder.Types.*;
@@ -33,7 +29,7 @@ public class FibonacciTest implements TestCase
 
         JasminMethod InitMethod = MethodCreator.CreateConstructorMethod ();
 
-        JasminMethod FibMethod = new JasminMethod ("Fib", new LongType (), asList (MethodAccessSpec.Public), new LongType ())
+        JasminMethod FibMethod = new JasminMethod ("Fib", DataType.Long, asList (MethodAccessSpec.Public), DataType.Long)
                 // TODO: Compare arg (if arg == 0 or arg == 1, return arg)
                 // if (arg1 > 1) { %fib% }
                 .LoadVariable (new VariableReference ("arg1"))
@@ -49,15 +45,15 @@ public class FibonacciTest implements TestCase
                         .LoadVariable (new VariableReference ("arg1"))
                         .AddNoParameterStatement (NoParameterType.LongConstant1)
                         .AddNoParameterStatement (NoParameterType.SubtractLong)
-                        .AddMethodInvokationStatement (MethodInvokationType.InvokeVirtual, "Fibonacci/Fib", new LongType (), new LongType ())
+                        .AddMethodInvokationStatement (MethodInvokationType.InvokeVirtual, "Fibonacci/Fib", DataType.Long, DataType.Long)
                         .AddNoParameterStatement (NoParameterType.StoreLong2)
 
                         // this.Fib(n - 2)
                         .LoadVariable (new VariableReference ("this"))
                         .LoadVariable (new VariableReference ("arg1"))
-                        .AddLoadConstantStatement (LoadConstantType.LoadConstant2Wide, new JasminValue (2L, new LongType ()))
+                        .AddLoadConstantStatement (LoadConstantType.LoadConstant2Wide, new JasminValue (2L, DataType.Long))
                         .AddNoParameterStatement (NoParameterType.SubtractLong)
-                        .AddMethodInvokationStatement (MethodInvokationType.InvokeVirtual, "Fibonacci/Fib", new LongType (), new LongType ())
+                        .AddMethodInvokationStatement (MethodInvokationType.InvokeVirtual, "Fibonacci/Fib", DataType.Long, DataType.Long)
                         .AddNoParameterStatement (NoParameterType.StoreLong3)
 
                         // left + right
@@ -77,17 +73,17 @@ public class FibonacciTest implements TestCase
                 // Create a new instance of this class so we can access non-static fields and functions
                 .AddObjectStatement (ObjectType.New, "Fibonacci")
                 .AddNoParameterStatement (NoParameterType.DuplicateTopStackValue)
-                .AddMethodInvokationStatement (MethodInvokationType.InvokeSpecial, "Fibonacci/<init>", new VoidType ())
+                .AddMethodInvokationStatement (MethodInvokationType.InvokeSpecial, "Fibonacci/<init>", DataType.Void)
                 .AddNoParameterStatement (NoParameterType.StoreReferenceIntoLocalVariable1)
 
                 // Call the `Fib` function and store the result
                 .AddNoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable1)
-                .AddMethodInvokationStatement (MethodInvokationType.InvokeVirtual, "Fibonacci/Fib", new IntegerType (), new IntegerType ())
+                .AddMethodInvokationStatement (MethodInvokationType.InvokeVirtual, "Fibonacci/Fib", DataType.Integer, DataType.Integer)
                 .AddNoParameterStatement (NoParameterType.StoreInteger0)
 
                 // Print the result
                 // TODO: Fix this when local variables have been implemented and print instruction can take in one as argument
-                .AddInstruction (new PrintInstruction (new JasminValue (0, new IntegerType ())));
+                .AddInstruction (new PrintInstruction (new JasminValue (0, DataType.Integer)));
 
         Class.AddMethod (InitMethod);
         Class.AddMethod (FibMethod);

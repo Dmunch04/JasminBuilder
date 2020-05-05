@@ -3,7 +3,6 @@ package me.Munchii.JasminBuilder.Methods;
 import me.Munchii.JasminBuilder.*;
 import me.Munchii.JasminBuilder.Blocks.JasminBlock;
 import me.Munchii.JasminBuilder.DataTypes.DataType;
-import me.Munchii.JasminBuilder.DataTypes.IntegerType;
 import me.Munchii.JasminBuilder.Instructions.JasminInstruction;
 import me.Munchii.JasminBuilder.References.VariableReference;
 import me.Munchii.JasminBuilder.Statements.*;
@@ -259,7 +258,7 @@ public class JasminMethod implements Builder
         if (Variable instanceof JasminArray)
         {
             AddStatements (Variable.PushToStack ());
-            AddStatement (Helper.PushValueToStack (new JasminValue (((JasminArray) Variable).GetIndexPointer (), new IntegerType ())));
+            AddStatement (Helper.PushValueToStack (new JasminValue (((JasminArray) Variable).GetIndexPointer (), DataType.Integer)));
 
             ((JasminArray) Variable).AddElement (Value);
         }

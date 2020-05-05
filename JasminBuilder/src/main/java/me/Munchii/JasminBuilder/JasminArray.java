@@ -75,7 +75,7 @@ public class JasminArray implements Variable, JasminPassable
 
         if (Dimensions == 1)
         {
-            Statements.add (Helper.PushValueToStack (new JasminValue (Size, new IntegerType ())));
+            Statements.add (Helper.PushValueToStack (new JasminValue (Size, DataType.Integer)));
             Statements.add (new ObjectStatement (ObjectType.ANewArray, Type.GetRepresentation ()));
         }
 
@@ -84,7 +84,7 @@ public class JasminArray implements Variable, JasminPassable
             for (int Dimension = 0; Dimension < Dimensions; Dimension++)
             {
                 // TODO: Allow for multiple sizes, ex. `String[x][y]` instead of `String[x][x]`
-                Statements.add (Helper.PushValueToStack (new JasminValue (Size, new IntegerType ())));
+                Statements.add (Helper.PushValueToStack (new JasminValue (Size, DataType.Integer)));
             }
 
             Statements.add (new MultiANewArrayStatement (Type, Dimensions));
@@ -98,7 +98,7 @@ public class JasminArray implements Variable, JasminPassable
             if (Element != null)
             {
                 Statements.addAll (PushToStack ());
-                Statements.add (Helper.PushValueToStack (new JasminValue (ElementIndex, new IntegerType ())));
+                Statements.add (Helper.PushValueToStack (new JasminValue (ElementIndex, DataType.Integer)));
                 Statements.addAll (Element.PushToStack ());
                 Statements.add (StoreElement ());
             }
@@ -208,7 +208,7 @@ public class JasminArray implements Variable, JasminPassable
             {
                 List<JasminStatement> Statements = new ArrayList<JasminStatement> ();
                 Statements.addAll (Load ());
-                Statements.add (Helper.PushValueToStack (new JasminValue (ElementIndex, new IntegerType ())));
+                Statements.add (Helper.PushValueToStack (new JasminValue (ElementIndex, DataType.Integer)));
                 Statements.add (LoadElement ());
 
                 return Statements;
@@ -250,7 +250,7 @@ public class JasminArray implements Variable, JasminPassable
     public JasminPassable GetValue ()
     {
         // TODO: Is this really the best way lol?
-        return Elements.length > 0 ? Elements[0] : new JasminValue (0, new IntegerType ());
+        return Elements.length > 0 ? Elements[0] : new JasminValue (0, DataType.Integer);
     }
 
     @Override

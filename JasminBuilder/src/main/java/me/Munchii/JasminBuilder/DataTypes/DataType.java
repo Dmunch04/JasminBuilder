@@ -32,6 +32,7 @@ public abstract class DataType
         return Type;
     }
 
+    // Common java std classes
     public static final DataType String = new ReferenceType ("java/lang/String");
     public static final DataType StringInstance = new ReferenceType (String.Representation, true);
     public static final DataType Object = new ReferenceType ("java/lang/Object");
@@ -41,6 +42,17 @@ public abstract class DataType
     public static final DataType Math = new ReferenceType ("java/lang/Math");
     public static final DataType MathInstance = new ReferenceType (Math.Representation, true);
 
+    // All types so they're easier to access
+    public static final DataType Boolean = new BooleanType ();
+    public static final DataType Byte = new ByteType ();
+    public static final DataType Char = new CharType ();
+    public static final DataType Double = new DoubleType ();
+    public static final DataType Float = new FloatType ();
+    public static final DataType Integer = new IntegerType ();
+    public static final DataType Long = new LongType ();
+    public static final DataType Short = new ShortType ();
+    public static final DataType Void = new VoidType ();
+    // Use these with caution!!:
     public static final DataType EmptyArray = new ArrayType ();
     public static final DataType EmptyReference = new ReferenceType ("");
 

@@ -1,6 +1,7 @@
 package me.Munchii.JasminBuilder.Blocks;
 
 import me.Munchii.JasminBuilder.*;
+import me.Munchii.JasminBuilder.DataTypes.DataType;
 import me.Munchii.JasminBuilder.Instructions.JasminInstruction;
 import me.Munchii.JasminBuilder.Methods.JasminMethod;
 import me.Munchii.JasminBuilder.References.VariableReference;

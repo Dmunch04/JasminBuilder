@@ -1,7 +1,7 @@
 package me.Munchii.JasminBuilder;
 
+import me.Munchii.JasminBuilder.DataTypes.DataType;
 import me.Munchii.JasminBuilder.Statements.JasminStatement;
-import me.Munchii.JasminBuilder.Types.DataType;
 
 import java.util.List;
 

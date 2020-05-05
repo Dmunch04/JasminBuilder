@@ -1,15 +1,16 @@
 package me.Munchii.JasminBuilder.Classes;
 
-import me.Munchii.JasminBuilder.Blocks.JasminBlock;
 import me.Munchii.JasminBuilder.Builder;
+import me.Munchii.JasminBuilder.DataTypes.DataType;
 import me.Munchii.JasminBuilder.Fields.JasminField;
 import me.Munchii.JasminBuilder.Methods.JasminMethod;
-import me.Munchii.JasminBuilder.Types.DataType;
 import me.Munchii.JasminBuilder.Utils.Helper;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static java.util.Arrays.asList;
 
 public class JasminClass implements Builder
 {
@@ -22,15 +23,15 @@ public class JasminClass implements Builder
     private List<JasminField> Fields;
     private List<JasminMethod> Methods;
 
-    public JasminClass (ClassAccessSpec AccessSpec, String ClassName)
+    public JasminClass (String ClassName, ClassAccessSpec... AccessSpec)
     {
-        this (AccessSpec, ClassName, DataType.Object.GetRepresentation ());
+        this (ClassName, DataType.Object.GetRepresentation (), AccessSpec);
     }
 
-    public JasminClass (ClassAccessSpec AccessSpec, String ClassName, String Super)
+    public JasminClass (String ClassName, String Super, ClassAccessSpec... AccessSpec)
     {
         this.AccessSpec = new ArrayList<ClassAccessSpec> ();
-        this.AccessSpec.add (AccessSpec);
+        this.AccessSpec.addAll (asList (AccessSpec));
         this.ClassName = ClassName;
         this.Super = Super;
         this.Implements = new ArrayList<String> ();

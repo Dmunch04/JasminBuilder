@@ -2,11 +2,11 @@ package me.Munchii.JasminBuilder.Fields;
 
 import me.Munchii.JasminBuilder.Builder;
 import me.Munchii.JasminBuilder.Classes.JasminClass;
+import me.Munchii.JasminBuilder.DataTypes.DataType;
 import me.Munchii.JasminBuilder.JasminPassable;
 import me.Munchii.JasminBuilder.JasminValue;
 import me.Munchii.JasminBuilder.Statements.FieldManipulationStatement;
 import me.Munchii.JasminBuilder.Statements.JasminStatement;
-import me.Munchii.JasminBuilder.Types.DataType;
 import me.Munchii.JasminBuilder.Types.FieldManipulationType;
 import me.Munchii.JasminBuilder.Utils.Helper;
 
@@ -30,9 +30,9 @@ public class JasminField implements Builder, JasminPassable
      * @param FieldName The fields name. Used together with class name to access it later on
      * @param Descriptor The fields data type
      */
-    public JasminField (FieldAccessSpec AccessSpec, String FieldName, DataType Descriptor)
+    public JasminField (String FieldName, DataType Descriptor, FieldAccessSpec... AccessSpec)
     {
-        this (AccessSpec, FieldName, Descriptor, null);
+        this (FieldName, Descriptor, null, AccessSpec);
     }
 
     /**
@@ -41,10 +41,10 @@ public class JasminField implements Builder, JasminPassable
      * @param Descriptor The fields data type
      * @param Value The fields type
      */
-    public JasminField (FieldAccessSpec AccessSpec, String FieldName, DataType Descriptor, JasminValue Value)
+    public JasminField (String FieldName, DataType Descriptor, JasminValue Value, FieldAccessSpec... AccessSpec)
     {
         this.AccessSpec = new ArrayList<FieldAccessSpec> ();
-        this.AccessSpec.add (AccessSpec);
+        this.AccessSpec.addAll (asList (AccessSpec));
         this.FieldName = FieldName;
         this.Descriptor = Descriptor;
         this.Value = Value;

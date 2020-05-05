@@ -4,6 +4,7 @@ Core features finished and everything is stable. Variables, class, methods, fiel
 > **Note:** Method declaration and building should from now on be __SEPARATED__! Else you can't access variables like `this`, `arg1`, `arg2`, .. `argN`
 
 - `1.1.1`: Added basic arrays
+- `1.1.2`: Reworked the data type system. An example could be instead of doing `DataType.Integer`, you now do `new IntegerType()`
 
 <br>
 

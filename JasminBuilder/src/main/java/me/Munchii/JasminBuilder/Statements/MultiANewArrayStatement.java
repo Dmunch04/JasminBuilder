@@ -1,6 +1,6 @@
 package me.Munchii.JasminBuilder.Statements;
 
-import me.Munchii.JasminBuilder.Types.DataType;
+import me.Munchii.JasminBuilder.DataTypes.DataType;
 
 public class MultiANewArrayStatement implements JasminStatement
 {

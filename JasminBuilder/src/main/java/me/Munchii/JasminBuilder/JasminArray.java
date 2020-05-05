@@ -1,9 +1,11 @@
 package me.Munchii.JasminBuilder;
 
+import me.Munchii.JasminBuilder.DataTypes.ArrayType;
+import me.Munchii.JasminBuilder.DataTypes.DataType;
+import me.Munchii.JasminBuilder.DataTypes.IntegerType;
 import me.Munchii.JasminBuilder.Logging.Logger;
 import me.Munchii.JasminBuilder.Logging.Message;
 import me.Munchii.JasminBuilder.Statements.*;
-import me.Munchii.JasminBuilder.Types.DataType;
 import me.Munchii.JasminBuilder.Types.LocalVariableType;
 import me.Munchii.JasminBuilder.Types.NoParameterType;
 import me.Munchii.JasminBuilder.Types.ObjectType;
@@ -73,7 +75,7 @@ public class JasminArray implements Variable, JasminPassable
 
         if (Dimensions == 1)
         {
-            Statements.add (Helper.PushValueToStack (new JasminValue (Size, DataType.Integer)));
+            Statements.add (Helper.PushValueToStack (new JasminValue (Size, new IntegerType ())));
             Statements.add (new ObjectStatement (ObjectType.ANewArray, Type.GetRepresentation ()));
         }
 
@@ -82,7 +84,7 @@ public class JasminArray implements Variable, JasminPassable
             for (int Dimension = 0; Dimension < Dimensions; Dimension++)
             {
                 // TODO: Allow for multiple sizes, ex. `String[x][y]` instead of `String[x][x]`
-                Statements.add (Helper.PushValueToStack (new JasminValue (Size, DataType.Integer)));
+                Statements.add (Helper.PushValueToStack (new JasminValue (Size, new IntegerType ())));
             }
 
             Statements.add (new MultiANewArrayStatement (Type, Dimensions));
@@ -96,7 +98,7 @@ public class JasminArray implements Variable, JasminPassable
             if (Element != null)
             {
                 Statements.addAll (PushToStack ());
-                Statements.add (Helper.PushValueToStack (new JasminValue (ElementIndex, DataType.Integer)));
+                Statements.add (Helper.PushValueToStack (new JasminValue (ElementIndex, new IntegerType ())));
                 Statements.addAll (Element.PushToStack ());
                 Statements.add (StoreElement ());
             }
@@ -126,7 +128,7 @@ public class JasminArray implements Variable, JasminPassable
 
     public JasminStatement StoreElement ()
     {
-        switch (Type)
+        switch (Type.GetType ())
         {
             case Boolean:
             case Byte: return new NoParameterStatement (NoParameterType.StoreIntoByteBooleanArray);
@@ -144,8 +146,7 @@ public class JasminArray implements Variable, JasminPassable
             case Short: return new NoParameterStatement (NoParameterType.StoreIntoShortArray);
 
             case Array:
-            case Reference:
-            case ReferenceInstance: return new NoParameterStatement (NoParameterType.StoreIntoReferenceArray);
+            case Reference: return new NoParameterStatement (NoParameterType.StoreIntoReferenceArray);
         }
 
         Logger.Error (String.format (Message.CouldNotMatchType, Helper.GetDataTypeName (Type)));
@@ -155,7 +156,7 @@ public class JasminArray implements Variable, JasminPassable
 
     public JasminStatement LoadElement ()
     {
-        switch (Type)
+        switch (Type.GetType ())
         {
             case Boolean:
             case Byte: return new NoParameterStatement (NoParameterType.LoadByteBooleanFromArray);
@@ -173,8 +174,7 @@ public class JasminArray implements Variable, JasminPassable
             case Short: return new NoParameterStatement (NoParameterType.LoadShortFromArray);
 
             case Array:
-            case Reference:
-            case ReferenceInstance: return new NoParameterStatement (NoParameterType.LoadReferenceFromArray);
+            case Reference: return new NoParameterStatement (NoParameterType.LoadReferenceFromArray);
         }
 
         Logger.Error (String.format (Message.CouldNotMatchType, Helper.GetDataTypeName (Type)));
@@ -208,7 +208,7 @@ public class JasminArray implements Variable, JasminPassable
             {
                 List<JasminStatement> Statements = new ArrayList<JasminStatement> ();
                 Statements.addAll (Load ());
-                Statements.add (Helper.PushValueToStack (new JasminValue (ElementIndex, DataType.Integer)));
+                Statements.add (Helper.PushValueToStack (new JasminValue (ElementIndex, new IntegerType ())));
                 Statements.add (LoadElement ());
 
                 return Statements;
@@ -224,7 +224,7 @@ public class JasminArray implements Variable, JasminPassable
 
     private void CheckType (DataType TargetType)
     {
-        if (TargetType != Type)
+        if (!TargetType.Compare (Type))
         {
             Logger.Error (String.format (Message.ValueMustBeSameType, Helper.GetDataTypeName (Type)));
             System.exit (0x1);
@@ -250,7 +250,7 @@ public class JasminArray implements Variable, JasminPassable
     public JasminPassable GetValue ()
     {
         // TODO: Is this really the best way lol?
-        return Elements.length > 0 ? Elements[0] : new JasminValue (0, DataType.Integer);
+        return Elements.length > 0 ? Elements[0] : new JasminValue (0, new IntegerType ());
     }
 
     @Override
@@ -268,7 +268,7 @@ public class JasminArray implements Variable, JasminPassable
     @Override
     public DataType GetType ()
     {
-        return DataType.Array;
+        return DataType.EmptyArray;
     }
 
     public void SetIndexPointer (int Position)

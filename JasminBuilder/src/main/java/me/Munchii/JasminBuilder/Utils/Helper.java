@@ -1,5 +1,8 @@
 package me.Munchii.JasminBuilder.Utils;
 
+import me.Munchii.JasminBuilder.DataTypes.DataType;
+import me.Munchii.JasminBuilder.DataTypes.DoubleType;
+import me.Munchii.JasminBuilder.DataTypes.LongType;
 import me.Munchii.JasminBuilder.JasminValue;
 import me.Munchii.JasminBuilder.Statements.*;
 import me.Munchii.JasminBuilder.Types.*;
@@ -42,8 +45,9 @@ public class Helper
 
     public static String GetDataTypeName (DataType Type)
     {
-        switch (Type)
+        switch (Type.GetType ())
         {
+            case Boolean: return "bool";
             case Byte: return "byte";
             case Char: return "char";
             case Double: return "double";
@@ -52,10 +56,8 @@ public class Helper
             case Long: return "long";
             case Void: return "void";
             case Short: return "short";
-            case Reference:
-            case ReferenceInstance: return GetCustomDataTypeName (Type);
             case Array: return GetDataTypeArrayName (Type);
-            case Boolean: return "bool";
+            case Reference: return GetCustomDataTypeName (Type);
         }
 
         throw new IllegalArgumentException ("Could not match value");
@@ -101,7 +103,7 @@ public class Helper
 
     public static JasminStatement PushValueToStack (JasminValue Value)
     {
-        switch (Value.GetType ())
+        switch (Value.GetType ().GetType ())
         {
             case Byte: {
                 byte NewValue = (byte) Value.GetValue ();
@@ -117,7 +119,7 @@ public class Helper
 
                 if (NewValue == 0.0d) return new NoParameterStatement (NoParameterType.PushDouble0);
                 if (NewValue == 1.0d) return new NoParameterStatement (NoParameterType.PushDouble1);
-                else return new LoadConstantStatement (LoadConstantType.LoadConstantW, new JasminValue (NewValue, DataType.Double));
+                else return new LoadConstantStatement (LoadConstantType.LoadConstantWide, new JasminValue (NewValue, new DoubleType ()));
             }
             case Float: {
                 float NewValue = (float) Value.GetValue ();
@@ -125,7 +127,7 @@ public class Helper
                 if (NewValue == 0.0f) return new NoParameterStatement (NoParameterType.FloatConstant0);
                 if (NewValue == 1.0f) return new NoParameterStatement (NoParameterType.FloatConstant1);
                 if (NewValue == 2.0f) return new NoParameterStatement (NoParameterType.FloatConstant2);
-                else return new LoadConstantStatement (LoadConstantType.LoadConstant, new JasminValue (NewValue, DataType.Float));
+                else return new LoadConstantStatement (LoadConstantType.LoadConstant, new JasminValue (NewValue, new DoubleType ()));
             }
             case Integer: {
                 int NewValue = (int) Value.GetValue ();
@@ -144,7 +146,7 @@ public class Helper
 
                 if (NewValue == 0) return new NoParameterStatement (NoParameterType.LongConstant0);
                 if (NewValue == 1) return new NoParameterStatement (NoParameterType.LongConstant1);
-                else return new LoadConstantStatement (LoadConstantType.LoadConstantW, new JasminValue (NewValue, DataType.Long));
+                else return new LoadConstantStatement (LoadConstantType.LoadConstantWide, new JasminValue (NewValue, new LongType ()));
             }
             // AKA null
             // TODO: Should we introduce a `Null` type? If so, Couldn't it get confused with `Void` in some cases?
@@ -156,12 +158,11 @@ public class Helper
 
                 return new IntegerPushStatement (IntegerPushType.SiPush, NewValue);
             }
-            // TODO: Is this the correct way? I suppose it is
-            case Reference:
-            case ReferenceInstance: {
+            // TODO: Is this the correct way? I suppose it is. Actually Idk
+            case Reference: {
                 String NewValue = String.valueOf (Value.GetValue ());
 
-                return new LoadConstantStatement (LoadConstantType.LoadConstant, new JasminValue (NewValue, DataType.Reference));
+                return new LoadConstantStatement (LoadConstantType.LoadConstant, new JasminValue (NewValue, DataType.EmptyReference));
             }
             case Array: {
                 // TODO: Get the type?

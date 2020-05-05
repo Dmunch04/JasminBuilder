@@ -1,5 +1,5 @@
 .class public Fibonacci
-.super java/lang/Object
+.super java/lang/Math
 
 ; Method: public void <init> ();
 .method public <init>()V
@@ -9,36 +9,37 @@
 	return
 .end method
 
-; Method: public int Fib (int);
-.method public Fib(I)I
+; Method: public long Fib (long);
+.method public Fib(J)J
 	.limit locals 1
-	iload_1
-	iconst_1
-	if_icmpgt FibThing
-	iload_1
-	ireturn
+	lload_1
+	lconst_1
+	lcmp
+	ifgt FibThing
+	lconst_1
+	lreturn
 
 FibThing:
 	aload_0
-	iload_1
-	iconst_1
-	isub
-	invokevirtual Fibonacci/Fib(I)I
-	istore_2
+	lload_1
+	lconst_1
+	lsub
+	invokevirtual Fibonacci/Fib(J)J
+	lstore_2
 	aload_0
-	iload_1
-	iconst_2
-	isub
-	invokevirtual Fibonacci/Fib(I)I
-	istore_3
-	iload_2
-	iload_3
-	iadd
-	ireturn
+	lload_1
+	ldc2_w 2
+	lsub
+	invokevirtual Fibonacci/Fib(J)J
+	lstore_3
+	lload_2
+	lload_3
+	ladd
+	lreturn
 .end method
 
-; Method: static public void main (string[]);
-.method static public main([Ljava/lang/String;)V
+; Method: static public void main (java/io/PrintStream[]);
+.method static public main([Ljava/io/PrintStream;)V
 	.limit stack 2
 	.limit locals 1
 	new Fibonacci

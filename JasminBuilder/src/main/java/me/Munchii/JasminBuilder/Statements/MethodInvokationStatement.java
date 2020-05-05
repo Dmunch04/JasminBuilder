@@ -1,8 +1,7 @@
 package me.Munchii.JasminBuilder.Statements;
 
-import me.Munchii.JasminBuilder.JasminType;
+import me.Munchii.JasminBuilder.DataTypes.DataType;
 import me.Munchii.JasminBuilder.Methods.JasminMethod;
-import me.Munchii.JasminBuilder.Types.DataType;
 import me.Munchii.JasminBuilder.Types.MethodInvokationType;
 import me.Munchii.JasminBuilder.Utils.Helper;
 

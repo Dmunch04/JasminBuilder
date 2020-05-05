@@ -1,9 +1,9 @@
 package me.Munchii.JasminBuilder;
 
+import me.Munchii.JasminBuilder.DataTypes.DataType;
 import me.Munchii.JasminBuilder.Statements.JasminStatement;
 import me.Munchii.JasminBuilder.Statements.LocalVariableStatement;
 import me.Munchii.JasminBuilder.Statements.NoParameterStatement;
-import me.Munchii.JasminBuilder.Types.DataType;
 import me.Munchii.JasminBuilder.Types.LocalVariableType;
 import me.Munchii.JasminBuilder.Types.NoParameterType;
 
@@ -53,7 +53,7 @@ public class JasminVariable implements Variable, JasminPassable
     public JasminStatement Store ()
     {
         // TODO: Implement rest of the types
-        switch (Type)
+        switch (Type.GetType ())
         {
             case Double: {
                 switch (Index)
@@ -100,7 +100,6 @@ public class JasminVariable implements Variable, JasminPassable
             }
 
             case Reference:
-            case ReferenceInstance:
             case Array: {
                 switch (Index)
                 {
@@ -130,7 +129,7 @@ public class JasminVariable implements Variable, JasminPassable
     public List<JasminStatement> PushToStack ()
     {
         // TODO: Implement rest of the types
-        switch (Type)
+        switch (Type.GetType ())
         {
             case Double: {
                 switch (Index)
@@ -177,7 +176,6 @@ public class JasminVariable implements Variable, JasminPassable
             }
 
             case Reference:
-            case ReferenceInstance:
             case Array: {
                 switch (Index)
                 {

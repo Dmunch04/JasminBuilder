@@ -1,5 +1,8 @@
 package me.Munchii.JasminBuilder.Methods;
 
+import me.Munchii.JasminBuilder.DataTypes.ArrayType;
+import me.Munchii.JasminBuilder.DataTypes.DataType;
+import me.Munchii.JasminBuilder.DataTypes.ValueType;
 import me.Munchii.JasminBuilder.JasminValue;
 import me.Munchii.JasminBuilder.Statements.*;
 import me.Munchii.JasminBuilder.Types.*;
@@ -87,10 +90,11 @@ public class MethodHelper
     public JasminMethod CreateNewMultiArray (DataType Type, int Dimensions)
     {
         //Statements.add (new MultiANewArrayStatement(DataType.MakeArray (Dimensions, Type), Dimensions));
-        Method.AddStatement (new MultiANewArrayStatement (DataType.MakeArray (Dimensions, Type), Dimensions));
+        Method.AddStatement (new MultiANewArrayStatement (new ArrayType (Type, Dimensions), Dimensions));
         return Method;
     }
 
+    // TODO: Add support for `ldc2` & `ldc2_w`
     public JasminMethod LoadConstant (Object Value, DataType Type)
     {
         LoadConstant (new JasminValue(Value, Type));
@@ -99,10 +103,9 @@ public class MethodHelper
 
     public JasminMethod LoadConstant (JasminValue Value)
     {
-        if ((Value.GetType () == DataType.Double) || (Value.GetType () == DataType.Long))
+        if ((Value.GetType ().Compare (ValueType.Double)) || (Value.GetType ().Compare (ValueType.Long)))
             return Method;
 
-        //Statements.add (new LoadConstantStatement (LoadConstantType.LoadConstant, Value));
         Method.AddLoadConstantStatement (LoadConstantType.LoadConstant, Value);
         return Method;
     }
@@ -115,11 +118,10 @@ public class MethodHelper
 
     public JasminMethod LoadConstantWide (JasminValue Value)
     {
-        if (!(Value.GetType () == DataType.Double) && !(Value.GetType () == DataType.Long))
+        if (!(Value.GetType ().Compare (ValueType.Double)) || !(Value.GetType ().Compare (ValueType.Long)))
             return Method;
 
-        //Statements.add (new LoadConstantStatement (LoadConstantType.LoadConstantW, Value));
-        Method.AddLoadConstantStatement (LoadConstantType.LoadConstantW, Value);
+        Method.AddLoadConstantStatement (LoadConstantType.LoadConstantWide, Value);
         return Method;
     }
 

@@ -1,10 +1,10 @@
 package me.Munchii.JasminBuilder.Utils;
 
 import me.Munchii.JasminBuilder.Builder;
+import me.Munchii.JasminBuilder.DataTypes.DataType;
 import me.Munchii.JasminBuilder.JasminPassable;
 import me.Munchii.JasminBuilder.Statements.JasminStatement;
 import me.Munchii.JasminBuilder.Statements.NoParameterStatement;
-import me.Munchii.JasminBuilder.Types.DataType;
 import me.Munchii.JasminBuilder.Types.NoParameterType;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ public class ExpressionBuilder implements Builder, JasminPassable
 
     public ExpressionBuilder Negate ()
     {
-        switch (Type)
+        switch (Type.GetType ())
         {
             // TODO: Implement more types?
             case Double: Statements.add (new NoParameterStatement (NoParameterType.NegateDouble)); break;
@@ -54,7 +54,7 @@ public class ExpressionBuilder implements Builder, JasminPassable
 
         Statements.addAll (Other.PushToStack ());
 
-        switch (Type)
+        switch (Type.GetType ())
         {
             // TODO: Implement more types?
             case Double: Statements.add (new NoParameterStatement (NoParameterType.AddDouble)); break;
@@ -73,7 +73,7 @@ public class ExpressionBuilder implements Builder, JasminPassable
 
         Statements.addAll (Other.PushToStack ());
 
-        switch (Type)
+        switch (Type.GetType ())
         {
             // TODO: Implement more types
             case Double: Statements.add (new NoParameterStatement (NoParameterType.SubtractDouble)); break;
@@ -92,7 +92,7 @@ public class ExpressionBuilder implements Builder, JasminPassable
 
         Statements.addAll (Other.PushToStack ());
 
-        switch (Type)
+        switch (Type.GetType ())
         {
             case Double: Statements.add (new NoParameterStatement (NoParameterType.MultiplyDouble)); break;
             case Float: Statements.add (new NoParameterStatement (NoParameterType.MultiplyFloat)); break;
@@ -110,7 +110,7 @@ public class ExpressionBuilder implements Builder, JasminPassable
 
         Statements.addAll (Other.PushToStack ());
 
-        switch (Type)
+        switch (Type.GetType ())
         {
             case Double: Statements.add (new NoParameterStatement (NoParameterType.DivideDouble)); break;
             case Float: Statements.add (new NoParameterStatement (NoParameterType.DivideFloat)); break;

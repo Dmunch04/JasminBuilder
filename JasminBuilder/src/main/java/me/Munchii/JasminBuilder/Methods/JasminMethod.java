@@ -2,6 +2,8 @@ package me.Munchii.JasminBuilder.Methods;
 
 import me.Munchii.JasminBuilder.*;
 import me.Munchii.JasminBuilder.Blocks.JasminBlock;
+import me.Munchii.JasminBuilder.DataTypes.DataType;
+import me.Munchii.JasminBuilder.DataTypes.IntegerType;
 import me.Munchii.JasminBuilder.Instructions.JasminInstruction;
 import me.Munchii.JasminBuilder.References.VariableReference;
 import me.Munchii.JasminBuilder.Statements.*;
@@ -34,15 +36,14 @@ public class JasminMethod implements Builder
 
     private JasminScope Scope;
 
-    public JasminMethod (MethodAccessSpec AccessSpec, String MethodName, DataType MethodReturnType)
+    public JasminMethod (String MethodName, DataType MethodReturnType, MethodAccessSpec... AccessSpec)
     {
-        this (AccessSpec, MethodName, MethodReturnType, null);
+        this (MethodName, MethodReturnType, asList (AccessSpec), null);
     }
 
-    public JasminMethod (MethodAccessSpec AccessSpec, String MethodName, DataType MethodReturnType, DataType... Args)
+    public JasminMethod (String MethodName, DataType MethodReturnType, List<MethodAccessSpec> AccessSpec, DataType... Args)
     {
-        this.AccessSpec = new ArrayList<MethodAccessSpec> ();
-        this.AccessSpec.add (AccessSpec);
+        this.AccessSpec = AccessSpec;
         this.MethodName = MethodName;
         this.MethodReturnType = MethodReturnType;
 
@@ -63,9 +64,9 @@ public class JasminMethod implements Builder
 
         this.Scope = new JasminScope ();
 
-        if (AccessSpec != MethodAccessSpec.Static)
+        if (!AccessSpec.contains (MethodAccessSpec.Static))
         {
-            Variables.put ("this", new JasminVariable ("this", VariableIndex, new JasminValue (null, DataType.ReferenceInstance)));
+            Variables.put ("this", new JasminVariable ("this", VariableIndex, new JasminValue (null, DataType.EmptyReference)));
             VariableIndex++;
         }
 
@@ -258,7 +259,7 @@ public class JasminMethod implements Builder
         if (Variable instanceof JasminArray)
         {
             AddStatements (Variable.PushToStack ());
-            AddStatement (Helper.PushValueToStack (new JasminValue (((JasminArray) Variable).GetIndexPointer (), DataType.Integer)));
+            AddStatement (Helper.PushValueToStack (new JasminValue (((JasminArray) Variable).GetIndexPointer (), new IntegerType ())));
 
             ((JasminArray) Variable).AddElement (Value);
         }

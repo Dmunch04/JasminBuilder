@@ -77,6 +77,7 @@ public class JasminVariable implements Variable, JasminPassable
                 }
             }
 
+            case Boolean:
             case Integer: {
                 switch (Index)
                 {

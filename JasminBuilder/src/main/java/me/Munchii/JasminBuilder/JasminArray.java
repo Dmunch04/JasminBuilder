@@ -2,7 +2,7 @@ package me.Munchii.JasminBuilder;
 
 import me.Munchii.JasminBuilder.DataTypes.ArrayType;
 import me.Munchii.JasminBuilder.DataTypes.DataType;
-import me.Munchii.JasminBuilder.DataTypes.IntegerType;
+import me.Munchii.JasminBuilder.Logging.Exceptions.AbortException;
 import me.Munchii.JasminBuilder.Logging.Logger;
 import me.Munchii.JasminBuilder.Logging.Message;
 import me.Munchii.JasminBuilder.Statements.*;
@@ -27,6 +27,9 @@ public class JasminArray implements Variable, JasminPassable
     private int Size;
     private int Dimensions;
     private int IndexPointer;
+    private ArrayType Array;
+
+    private final JasminPassable LengthValue;
 
     public JasminArray (String Name, DataType Type, int Size)
     {
@@ -53,6 +56,22 @@ public class JasminArray implements Variable, JasminPassable
         this.Size = Size;
         this.Dimensions = Dimensions;
         this.IndexPointer = 0;
+        this.Array = new ArrayType (Type, Dimensions);
+
+        this.LengthValue = new JasminPassable () {
+            @Override
+            public List<JasminStatement> PushToStack ()
+            {
+                // TODO: Should it be maybe long or double instead?
+                return asList (Helper.PushValueToStack (new JasminValue (Size, DataType.Integer)));
+            }
+
+            @Override
+            public DataType GetType ()
+            {
+                return Type;
+            }
+        };
     }
 
     @Override
@@ -150,8 +169,7 @@ public class JasminArray implements Variable, JasminPassable
         }
 
         Logger.Error (String.format (Message.CouldNotMatchType, Helper.GetDataTypeName (Type)));
-        System.exit (0x1);
-        return null; // Safely return null
+        throw new AbortException();
     }
 
     public JasminStatement LoadElement ()
@@ -178,8 +196,7 @@ public class JasminArray implements Variable, JasminPassable
         }
 
         Logger.Error (String.format (Message.CouldNotMatchType, Helper.GetDataTypeName (Type)));
-        System.exit (0x1);
-        return null; // Safely return null
+        throw new AbortException ();
     }
 
     public JasminArray AddElement (JasminPassable Element)
@@ -202,6 +219,8 @@ public class JasminArray implements Variable, JasminPassable
     {
         CheckIndex (ElementIndex);
 
+        // TODO: We can maybe make this more efficient by having the `JasminPassable` values in a list?
+        // ^^ This can maybe be done when reworking the array to allow for multi dimensions
         return new JasminPassable () {
             @Override
             public List<JasminStatement> PushToStack ()
@@ -268,7 +287,7 @@ public class JasminArray implements Variable, JasminPassable
     @Override
     public DataType GetType ()
     {
-        return DataType.EmptyArray;
+        return Array;
     }
 
     public void SetIndexPointer (int Position)
@@ -289,6 +308,11 @@ public class JasminArray implements Variable, JasminPassable
     public void DecrementIndexPointer (int Amount)
     {
         this.IndexPointer -= Amount;
+    }
+
+    public JasminPassable GetLengthValue ()
+    {
+        return LengthValue;
     }
 
 }

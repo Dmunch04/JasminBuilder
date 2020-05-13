@@ -26,7 +26,7 @@ public class IfInstruction implements JasminInstruction
     @Override
     public void Write (JasminMethod Method)
     {
-        Method.AddStatements (Builder.PushToStack ());
+        //Method.AddStatements (Builder.PushToStack ());
         Method.AddBlock (IfBlock);
 
         if (ElseBlock != null)
@@ -39,7 +39,7 @@ public class IfInstruction implements JasminInstruction
         // TODO: Make a better logging system
         // TODO: Explain this better lol
         System.out.println ("WARNING: Blocks can't contain blocks! Make sure to write blocks to method");
-        Block.AddStatements (Builder.PushToStack ());
+        //Block.AddStatements (Builder.PushToStack ());
     }
 
 }

@@ -6,7 +6,7 @@ public abstract class DataType
     private String Representation;
     private ValueType Type;
 
-    public DataType(String Representation, ValueType Type)
+    public DataType (String Representation, ValueType Type)
     {
         this.Representation = Representation;
         this.Type = Type;
@@ -32,6 +32,12 @@ public abstract class DataType
         return Type;
     }
 
+    @Override
+    public String toString ()
+    {
+        return Type.name () + "(" + Representation + ")";
+    }
+
     // Common java std classes
     public static final DataType String = new ReferenceType ("java/lang/String");
     public static final DataType StringInstance = new ReferenceType (String.Representation, true);
@@ -52,8 +58,7 @@ public abstract class DataType
     public static final DataType Long = new LongType ();
     public static final DataType Short = new ShortType ();
     public static final DataType Void = new VoidType ();
-    // Use these with caution!!:
-    public static final DataType EmptyArray = new ArrayType ();
+    //! Use this with caution!!:
     public static final DataType EmptyReference = new ReferenceType ("");
 
 }

@@ -13,9 +13,4 @@ public class ArrayType extends DataType
         super ("[".repeat (Dimensions) + Type.GetRepresentation (), ValueType.Array);
     }
 
-    protected ArrayType ()
-    {
-        super ("", ValueType.Array);
-    }
-
 }

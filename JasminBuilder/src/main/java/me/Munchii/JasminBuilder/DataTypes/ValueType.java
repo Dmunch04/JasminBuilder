@@ -3,7 +3,7 @@ package me.Munchii.JasminBuilder.DataTypes;
 public enum ValueType
 {
 
-    //? Should `Null` type be added?
+    //? TODO: Should `Null` type be added?
 
     Boolean,
     Byte,

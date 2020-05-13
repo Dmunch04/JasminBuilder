@@ -1,6 +1,10 @@
 package me.Munchii.JasminBuilder.Utils;
 
+import me.Munchii.JasminBuilder.DataTypes.ArrayType;
 import me.Munchii.JasminBuilder.DataTypes.DataType;
+import me.Munchii.JasminBuilder.DataTypes.IntegerType;
+import me.Munchii.JasminBuilder.DataTypes.ReferenceType;
+import me.Munchii.JasminBuilder.JasminArray;
 import me.Munchii.JasminBuilder.JasminValue;
 import me.Munchii.JasminBuilder.Statements.*;
 import me.Munchii.JasminBuilder.Types.*;
@@ -108,25 +112,28 @@ public class Helper
 
                 return new IntegerPushStatement (IntegerPushType.BiPush, NewValue);
             }
-            // TODO: Is this the correct way? Probably not, but maybe?
+
             case Char: {
-                return new NoParameterStatement (NoParameterType.LoadCharFromArray);
+                return new IntegerPushStatement (IntegerPushType.BiPush, CharToInt ((char) Value.GetValue ()));
             }
+
             case Double: {
                 double NewValue = (double) Value.GetValue ();
 
                 if (NewValue == 0.0d) return new NoParameterStatement (NoParameterType.PushDouble0);
                 if (NewValue == 1.0d) return new NoParameterStatement (NoParameterType.PushDouble1);
-                else return new LoadConstantStatement (LoadConstantType.LoadConstantWide, new JasminValue (NewValue, DataType.Double));
+                else return new LoadConstantStatement (LoadConstantType.LoadConstant2Wide, new JasminValue (NewValue, DataType.Double));
             }
+
             case Float: {
                 float NewValue = (float) Value.GetValue ();
 
                 if (NewValue == 0.0f) return new NoParameterStatement (NoParameterType.FloatConstant0);
                 if (NewValue == 1.0f) return new NoParameterStatement (NoParameterType.FloatConstant1);
                 if (NewValue == 2.0f) return new NoParameterStatement (NoParameterType.FloatConstant2);
-                else return new LoadConstantStatement (LoadConstantType.LoadConstant, new JasminValue (NewValue, DataType.Double));
+                else return new LoadConstantStatement (LoadConstantType.LoadConstant, new JasminValue (NewValue, DataType.Float));
             }
+
             case Integer: {
                 int NewValue = (int) Value.GetValue ();
 
@@ -139,50 +146,66 @@ public class Helper
                 if (NewValue == 5) return new NoParameterStatement (NoParameterType.IntegerConstant5);
                 else return new IntegerPushStatement (IntegerPushType.BiPush, NewValue);
             }
+
             case Long: {
                 long NewValue = (long) Value.GetValue ();
 
                 if (NewValue == 0) return new NoParameterStatement (NoParameterType.LongConstant0);
                 if (NewValue == 1) return new NoParameterStatement (NoParameterType.LongConstant1);
-                else return new LoadConstantStatement (LoadConstantType.LoadConstantWide, new JasminValue (NewValue, DataType.Long));
+                else return new LoadConstantStatement (LoadConstantType.LoadConstant2Wide, new JasminValue (NewValue, DataType.Long));
             }
+
             // AKA null
             // TODO: Should we introduce a `Null` type? If so, Couldn't it get confused with `Void` in some cases?
             case Void: {
                 return new NoParameterStatement (NoParameterType.PushNull);
             }
+
             case Short: {
                 short NewValue = (short) Value.GetValue ();
 
                 return new IntegerPushStatement (IntegerPushType.SiPush, NewValue);
             }
-            // TODO: Is this the correct way? I suppose it is. Actually Idk
-            case Reference: {
-                String NewValue = String.valueOf (Value.GetValue ());
 
-                return new LoadConstantStatement (LoadConstantType.LoadConstant, new JasminValue (NewValue, DataType.EmptyReference));
+            // TODO: Is this the correct way?
+            case Reference: {
+                return new LoadConstantStatement (LoadConstantType.LoadConstant, new JasminValue (String.valueOf (Value.GetValue ()), Value.GetType ()));
             }
+
             case Array: {
-                // TODO: Get the type?
-                return new ObjectStatement (ObjectType.ANewArray, DataType.StringInstance.GetRepresentation ());
+                //? TODO: Should this be allowed?
+                return new ObjectStatement (ObjectType.ANewArray, Value.GetType ().GetRepresentation ());
             }
-            // TODO: Is this the correct way?? I suppose it is
+
             case Boolean: {
                 boolean NewValue = (boolean) Value.GetValue ();
 
-                if (NewValue)
-                {
-                    return new NoParameterStatement (NoParameterType.IntegerConstant1);
-                }
-
-                else
-                {
-                    return new NoParameterStatement (NoParameterType.IntegerConstant0);
-                }
+                // true = 1
+                // false = 0
+                return NewValue ? new NoParameterStatement (NoParameterType.IntegerConstant1) : new NoParameterStatement (NoParameterType.IntegerConstant0);
             }
         }
 
         throw new IllegalArgumentException ("Could not match value");
+    }
+
+    public static String ConditionTypeToRepresentation (ConditionType Type)
+    {
+        switch (Type)
+        {
+            case Equals: return "==";
+            case NotEquals: return "!=";
+            case LessThan: return "<";
+            case LessThanEquals: return "<=";
+            case GreaterThan: return ">";
+            case GreaterThanEquals: return ">=";
+            default: return "?";
+        }
+    }
+
+    public static int CharToInt (char Char)
+    {
+        return Char;
     }
 
 }

@@ -27,5 +27,5 @@ with open ('../TODO.md', 'r+') as File:
 	File.write ('| Message | Status | File |\n')
 	File.write ('| --- | --- | --- |\n')
 	File.write ('\n'.join (Elements))
-	File.write (f'\n\n> Total items: `{str (len (Elements))}`')
-	File.write (f'\n> Last generated at: `{datetime.datetime.now ().strftime ("%d/%m/%y - %H:%M:%S")}`')
+	File.write (f'\n\n> Total items: `{str (len (Elements))}`\n')
+	File.write (f'> Last generated at: `{datetime.datetime.now ().strftime ("%d/%m/%y - %H:%M:%S")}`')

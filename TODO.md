@@ -47,4 +47,4 @@
 | Fix this when local variables have been implemented and print instruction can take in one as argument | `N/A` | `src/test/java/me/Munchii/JasminBuilder/Testing/Tests/FibonacciTest.java:85` |
 
 > Total items: `43`
-> Last generated at: `13/05/20 - 21:44:17`
+> Last generated at: `13/05/20 - 21:46:47`

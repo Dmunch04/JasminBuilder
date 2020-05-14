@@ -6,6 +6,7 @@ Core features finished and everything is stable. Variables, class, methods, fiel
 - `1.1.1`: Added basic arrays
 - `1.1.2`: Reworked the data type system. An example could be instead of doing `DataType.Integer`, you now do `new IntegerType()`
 - `1.1.3`: Added condition system
+- `1.1.4`: Added if/else statements
 
 <br>
 

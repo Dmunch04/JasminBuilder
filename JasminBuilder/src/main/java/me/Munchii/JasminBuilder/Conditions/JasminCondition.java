@@ -1,4 +1,4 @@
-package me.Munchii.JasminBuilder.Utils;
+package me.Munchii.JasminBuilder.Conditions;
 
 import me.Munchii.JasminBuilder.DataTypes.ArrayType;
 import me.Munchii.JasminBuilder.DataTypes.DataType;
@@ -37,17 +37,9 @@ public class JasminCondition
         this.Value2 = Value2;
         this.Type = Type;
 
-        System.out.println(Value1.GetType());
-        System.out.println(Value2.GetType());
-        System.out.println(Value1.GetType().Compare (DataType.Void));
-        System.out.println(Value2.GetType().Compare (DataType.Void));
-
         if (Value1.GetType ().Compare (DataType.Void)) this.ValueType = Value2.GetType ();
         else if (Value2.GetType ().Compare (DataType.Void)) this.ValueType = Value2.GetType (); //? TODO: Hmm. Same as above but well works
         else this.ValueType = Value1.GetType ();
-
-        System.out.println (this.ValueType);
-        System.out.println("\n");
     }
 
     public static JasminCondition Equals (JasminPassable Value1, JasminPassable Value2)

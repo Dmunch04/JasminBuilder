@@ -6,7 +6,7 @@
 
     <groupId>me.Munchii</groupId>
     <artifactId>JasminBuilder</artifactId>
-    <version>1.1.3</version>
+    <version>1.1.4</version>
 
     <build>
         <plugins>

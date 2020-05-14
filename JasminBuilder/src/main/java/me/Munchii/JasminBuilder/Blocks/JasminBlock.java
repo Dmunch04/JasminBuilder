@@ -213,4 +213,9 @@ public class JasminBlock
         return Name;
     }
 
+    public List<JasminStatement> GetStatements ()
+    {
+        return Statements;
+    }
+
 }

@@ -1,12 +1,12 @@
 .class public HelloWorld
-.super java/lang/Math
+.super java/lang/Object
 
-; Method: static public void main (java/lang/Math[]);
-.method static public main([Ljava/lang/Math;)V
+; Method: public static void main (string[]);
+.method public static main([Ljava/lang/String;)V
 	.limit stack 2
 	.limit locals 1
 	getstatic java/lang/System/out Ljava/io/PrintStream;
 	ldc "Hello, World!"
-	invokevirtual java/io/PrintStream/println(java/lang/Math)V
+	invokevirtual java/io/PrintStream/println(Ljava/lang/String;)V
 	return
 .end method

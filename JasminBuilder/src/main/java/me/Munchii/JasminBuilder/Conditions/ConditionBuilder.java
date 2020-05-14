@@ -1,4 +1,4 @@
-package me.Munchii.JasminBuilder.Utils;
+package me.Munchii.JasminBuilder.Conditions;
 
 import me.Munchii.JasminBuilder.Logging.Exceptions.AbortException;
 import me.Munchii.JasminBuilder.Logging.Logger;
@@ -8,9 +8,12 @@ import me.Munchii.JasminBuilder.Statements.NoParameterStatement;
 import me.Munchii.JasminBuilder.Types.BranchType;
 import me.Munchii.JasminBuilder.Types.ConditionType;
 import me.Munchii.JasminBuilder.Types.NoParameterType;
+import me.Munchii.JasminBuilder.Utils.Helper;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.Arrays.asList;
 
 public class ConditionBuilder
 {
@@ -20,6 +23,11 @@ public class ConditionBuilder
     public ConditionBuilder ()
     {
         this.Conditions = new ArrayList<JasminCondition> ();
+    }
+
+    public ConditionBuilder (JasminCondition... Conditions)
+    {
+        this.Conditions = asList (Conditions);
     }
 
     public List<JasminStatement> Write (String BlockLabel)

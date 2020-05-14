@@ -16,9 +16,6 @@ public class PrintInstruction implements JasminInstruction
     public PrintInstruction (JasminPassable Value)
     {
         this.Value = Value;
-
-        if (Value.GetType () == null)
-            throw new IllegalArgumentException ("Value has no type specified. TIP: If it's a variable reference, specify it's type!");
     }
 
     @Override
@@ -27,7 +24,7 @@ public class PrintInstruction implements JasminInstruction
         // Printing requires stack +2
         Method.AddFieldManipulationStatement (FieldManipulationType.GetStatic, "java/lang/System/out", new ReferenceType ("java/io/PrintStream", true))
                 .AddValue (Value)
-                .AddMethodInvokationStatement (MethodInvokationType.InvokeVirtual, "java/io/PrintStream/println", DataType.Void, Value.GetType ())
+                .AddMethodInvokationStatement (MethodInvokationType.InvokeVirtual, "java/io/PrintStream/println", DataType.Void, ReferenceType.MakeReferenceInstance (Value.GetType ()))
                 .AddStackLimit (2);
     }
 
@@ -37,7 +34,7 @@ public class PrintInstruction implements JasminInstruction
         // Printing require stack +2
         Block.AddFieldManipulationStatement (FieldManipulationType.GetStatic, "java/lang/System/out", new ReferenceType ("java/io/PrintStream", true))
                 .AddValue (Value)
-                .AddMethodInvokationStatement (MethodInvokationType.InvokeVirtual, "java/io/PrintStream/println", DataType.Void, Value.GetType ())
+                .AddMethodInvokationStatement (MethodInvokationType.InvokeVirtual, "java/io/PrintStream/println", DataType.Void, ReferenceType.MakeReferenceInstance (Value.GetType ()))
                 .AddStackLimit (2);
     }
 

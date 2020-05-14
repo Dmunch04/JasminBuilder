@@ -215,6 +215,19 @@ public class JasminMethod implements Builder
         return this;
     }
 
+    public JasminMethod AddReturnStatement ()
+    {
+        AddReturnStatement (null);
+        return this;
+    }
+
+    public JasminMethod AddReturnStatement (JasminPassable Value)
+    {
+        AddStatement (new ReturnStatement (Value));
+        DidReturn = true;
+        return this;
+    }
+
     public JasminMethod AddStatement (JasminStatement Statement)
     {
         if (CheckStatement (Statement))

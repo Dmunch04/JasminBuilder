@@ -1,5 +1,5 @@
 .class public Fibonacci
-.super java/lang/Math
+.super java/lang/Object
 
 ; Method: public void <init> ();
 .method public <init>()V
@@ -38,8 +38,8 @@ FibThing:
 	lreturn
 .end method
 
-; Method: static public void main (java/io/PrintStream[]);
-.method static public main([Ljava/io/PrintStream;)V
+; Method: public static void main (string[]);
+.method public static main([Ljava/lang/String;)V
 	.limit stack 2
 	.limit locals 1
 	new Fibonacci

@@ -86,13 +86,13 @@ public class JasminBlock
 
     public JasminBlock AddComment (String Comment)
     {
-        AddStatement (new CommentStatement(Comment));
+        AddStatement (new CommentStatement (Comment));
         return this;
     }
 
-    public JasminBlock AddMethodInvokationStatement (MethodInvocationType Type, String MethodName, DataType MethodReturnType, DataType... Args)
+    public JasminBlock AddMethodInvocationStatement(MethodInvocationType Type, String MethodName, DataType MethodReturnType, DataType... Args)
     {
-        AddStatement (new MethodInvocationStatement(Type, MethodName, MethodReturnType, Helper.DataTypeArrayToList (Args)));
+        AddStatement (new MethodInvocationStatement (Type, MethodName, MethodReturnType, Helper.DataTypeArrayToList (Args)));
         return this;
     }
 

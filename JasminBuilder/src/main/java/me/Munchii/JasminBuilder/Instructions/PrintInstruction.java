@@ -38,7 +38,7 @@ public class PrintInstruction implements JasminInstruction
         // Printing require stack +2
         Block.AddFieldManipulationStatement (FieldManipulationType.GetStatic, "java/lang/System/out", new ReferenceType ("java/io/PrintStream", true))
                 .AddValue (Value)
-                .AddMethodInvokationStatement (MethodInvocationType.InvokeVirtual, "java/io/PrintStream/println", DataType.Void, ValueType)
+                .AddMethodInvocationStatement(MethodInvocationType.InvokeVirtual, "java/io/PrintStream/println", DataType.Void, ValueType)
                 .AddStackLimit (2);
     }
 

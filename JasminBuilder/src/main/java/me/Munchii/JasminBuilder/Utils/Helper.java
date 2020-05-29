@@ -148,7 +148,7 @@ public class Helper
             }
 
             case Long: {
-                long NewValue = (long) Value.GetValue ();
+                long NewValue = Long.parseLong (String.valueOf (Value.GetValue ()));
 
                 if (NewValue == 0) return new NoParameterStatement (NoParameterType.LongConstant0);
                 if (NewValue == 1) return new NoParameterStatement (NoParameterType.LongConstant1);

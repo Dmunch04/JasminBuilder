@@ -26,7 +26,8 @@ public class ReturnStatement implements JasminStatement
         StringBuilder Builder = new StringBuilder ();
         for (JasminStatement Statement : Value.PushToStack ())
         {
-            Builder.append (Statement.ToOutputString ());
+            //System.out.println(Statement.ToOutputString());
+            Builder.append (Statement.ToOutputString ()).append ("\n\t");
         }
         Builder.append ("\n").append ("\t");
 

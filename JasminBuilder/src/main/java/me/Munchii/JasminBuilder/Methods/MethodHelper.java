@@ -27,28 +27,28 @@ public class MethodHelper
     public JasminMethod InvokeNonVirtualMethod (String MethodName, DataType MethodReturnType, DataType... Args)
     {
         //Statements.add (new MethodInvokationStatement(MethodInvokationType.InvokeNonVirtual, MethodName, MethodReturnType, Helper.DataTypeArrayToList (Args)));
-        Method.AddMethodInvokationStatement (MethodInvokationType.InvokeNonVirtual, MethodName, MethodReturnType, Args);
+        Method.AddMethodInvokationStatement (MethodInvocationType.InvokeNonVirtual, MethodName, MethodReturnType, Args);
         return Method;
     }
 
     public JasminMethod InvokeStaticMethod (String MethodName, DataType MethodReturnType, DataType... Args)
     {
         //Statements.add (new MethodInvokationStatement (MethodInvokationType.InvokeStatic, MethodName, MethodReturnType, Helper.DataTypeArrayToList (Args)));
-        Method.AddMethodInvokationStatement (MethodInvokationType.InvokeStatic, MethodName, MethodReturnType, Args);
+        Method.AddMethodInvokationStatement (MethodInvocationType.InvokeStatic, MethodName, MethodReturnType, Args);
         return Method;
     }
 
     public JasminMethod InvokeVirtual (String MethodName, DataType MethodReturnType, DataType... Args)
     {
         //Statements.add (new MethodInvokationStatement (MethodInvokationType.InvokeVirtual, MethodName, MethodReturnType, Helper.DataTypeArrayToList (Args)));
-        Method.AddMethodInvokationStatement (MethodInvokationType.InvokeVirtual, MethodName, MethodReturnType, Args);
+        Method.AddMethodInvokationStatement (MethodInvocationType.InvokeVirtual, MethodName, MethodReturnType, Args);
         return Method;
     }
 
     public JasminMethod InvokeSpecial (String MethodName, DataType MethodReturnType, DataType... Args)
     {
         //Statements.add (new MethodInvokationStatement (MethodInvokationType.InvokeSpecial, MethodName, MethodReturnType, Helper.DataTypeArrayToList (Args)));
-        Method.AddMethodInvokationStatement (MethodInvokationType.InvokeSpecial, MethodName, MethodReturnType, Args);
+        Method.AddMethodInvokationStatement (MethodInvocationType.InvokeSpecial, MethodName, MethodReturnType, Args);
         return Method;
     }
 

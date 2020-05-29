@@ -8,6 +8,7 @@ import me.Munchii.JasminBuilder.DataTypes.DataType;
 import me.Munchii.JasminBuilder.Fields.FieldAccessSpec;
 import me.Munchii.JasminBuilder.Fields.JasminField;
 import me.Munchii.JasminBuilder.Instructions.IfInstruction;
+import me.Munchii.JasminBuilder.Instructions.PrintInstruction;
 import me.Munchii.JasminBuilder.Methods.JasminMethod;
 import me.Munchii.JasminBuilder.Methods.MethodAccessSpec;
 import me.Munchii.JasminBuilder.Conditions.ConditionBuilder;
@@ -46,7 +47,10 @@ public class Main
                 new JasminValue (1, DataType.Integer)
         ));
         Method.AddInstruction (new IfInstruction (
-                new JasminBlock ("bbb").AddNoParameterStatement(NoParameterType.Return),
+                new JasminBlock ("bbb")
+                        .AddInstruction (new PrintInstruction (new JasminValue ("Hello, World!", DataType.String)))
+                        .AddInstruction (new PrintInstruction (new JasminValue (5, DataType.Integer)))
+                        .AddNoParameterStatement (NoParameterType.Return),
 
                 new JasminConditionBlock (
                     Condition,

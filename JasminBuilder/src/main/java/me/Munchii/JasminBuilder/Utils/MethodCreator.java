@@ -4,7 +4,7 @@ import me.Munchii.JasminBuilder.DataTypes.ArrayType;
 import me.Munchii.JasminBuilder.DataTypes.DataType;
 import me.Munchii.JasminBuilder.Methods.JasminMethod;
 import me.Munchii.JasminBuilder.Methods.MethodAccessSpec;
-import me.Munchii.JasminBuilder.Types.MethodInvokationType;
+import me.Munchii.JasminBuilder.Types.MethodInvocationType;
 import me.Munchii.JasminBuilder.Types.NoParameterType;
 
 import static java.util.Arrays.asList;
@@ -24,7 +24,7 @@ public class MethodCreator
         JasminMethod Method = new JasminMethod ("<init>", DataType.Void, MethodAccessSpec.Public);
         Method.AddComment ("Call super method")
                 .AddNoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable0)
-                .AddMethodInvokationStatement (MethodInvokationType.InvokeSpecial, "java/lang/Object/<init>", DataType.Void);
+                .AddMethodInvokationStatement (MethodInvocationType.InvokeSpecial, "java/lang/Object/<init>", DataType.Void);
 
         return Method;
     }

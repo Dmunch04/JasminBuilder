@@ -1,6 +1,6 @@
 package me.Munchii.JasminBuilder.Types;
 
-public enum MethodInvokationType
+public enum MethodInvocationType
 {
 
     // ??
@@ -17,7 +17,7 @@ public enum MethodInvokationType
 
     private String Representation;
 
-    private MethodInvokationType (String Representation)
+    private MethodInvocationType(String Representation)
     {
         this.Representation = Representation;
     }

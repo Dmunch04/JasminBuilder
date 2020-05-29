@@ -32,6 +32,11 @@ public abstract class DataType
         return Type;
     }
 
+    public boolean IsReference ()
+    {
+        return Type == ValueType.Reference;
+    }
+
     @Override
     public String toString ()
     {

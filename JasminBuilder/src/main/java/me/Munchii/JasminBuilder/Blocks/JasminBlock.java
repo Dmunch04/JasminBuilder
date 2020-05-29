@@ -90,9 +90,9 @@ public class JasminBlock
         return this;
     }
 
-    public JasminBlock AddMethodInvokationStatement (MethodInvokationType Type, String MethodName, DataType MethodReturnType, DataType... Args)
+    public JasminBlock AddMethodInvokationStatement (MethodInvocationType Type, String MethodName, DataType MethodReturnType, DataType... Args)
     {
-        AddStatement (new MethodInvokationStatement(Type, MethodName, MethodReturnType, Helper.DataTypeArrayToList (Args)));
+        AddStatement (new MethodInvocationStatement(Type, MethodName, MethodReturnType, Helper.DataTypeArrayToList (Args)));
         return this;
     }
 
@@ -199,6 +199,33 @@ public class JasminBlock
     {
         AddStatements (Value.PushToStack ());
         return this;
+    }
+
+    public void Return (JasminPassable Value)
+    {
+        Statements.addAll (Value.PushToStack ());
+
+        NoParameterType ReturnType = NoParameterType.Return;
+        switch (Value.GetType ().GetType ())
+        {
+            case Boolean:
+            case Byte:
+            case Char:
+            case Short:
+            case Integer: ReturnType = NoParameterType.ReturnInteger; break;
+
+            case Float: ReturnType = NoParameterType.ReturnFloat; break;
+
+            case Double: ReturnType = NoParameterType.ReturnDouble; break;
+
+            case Long: ReturnType = NoParameterType.ReturnLong; break;
+
+            case Array:
+            case Reference: ReturnType = NoParameterType.ReturnReference; break;
+
+            default: ReturnType = NoParameterType.Return; break;
+        }
+        Statements.add (new NoParameterStatement (ReturnType));
     }
 
     // ========================

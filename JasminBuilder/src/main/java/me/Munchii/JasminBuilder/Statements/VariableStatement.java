@@ -1,7 +1,7 @@
 package me.Munchii.JasminBuilder.Statements;
 
+import me.Munchii.JasminBuilder.Blocks.JasminBlock;
 import me.Munchii.JasminBuilder.JasminPassable;
-import me.Munchii.JasminBuilder.JasminVariable;
 import me.Munchii.JasminBuilder.References.VariableReference;
 import me.Munchii.JasminBuilder.Types.VariableType;
 import me.Munchii.JasminBuilder.Variable;
@@ -51,10 +51,9 @@ public class VariableStatement implements JasminStatement
             return Builder.toString ();
         }
 
-        // Don't worry about this, as it won't be written to the code
+        //* Don't worry about this, as it won't be written to the code
         return "";
     }
-
     public VariableType GetType ()
     {
         return Type;

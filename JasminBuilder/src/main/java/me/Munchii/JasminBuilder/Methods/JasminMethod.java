@@ -150,9 +150,9 @@ public class JasminMethod implements Builder
         return this;
     }
 
-    public JasminMethod AddMethodInvokationStatement (MethodInvokationType Type, String MethodName, DataType MethodReturnType, DataType... Args)
+    public JasminMethod AddMethodInvokationStatement (MethodInvocationType Type, String MethodName, DataType MethodReturnType, DataType... Args)
     {
-        AddStatement (new MethodInvokationStatement (Type, MethodName, MethodReturnType, Helper.DataTypeArrayToList (Args)));
+        AddStatement (new MethodInvocationStatement(Type, MethodName, MethodReturnType, Helper.DataTypeArrayToList (Args)));
         return this;
     }
 
@@ -230,6 +230,8 @@ public class JasminMethod implements Builder
 
     public JasminMethod AddStatement (JasminStatement Statement)
     {
+        if (Statement instanceof ReturnStatement) this.DidReturn = true;
+
         if (CheckStatement (Statement))
             Scope.AddStatement (Statement);
 
@@ -238,6 +240,8 @@ public class JasminMethod implements Builder
 
     public JasminMethod AddStatements (List<JasminStatement> Statements)
     {
+        if (Statements.stream ().anyMatch (Statement -> Statement instanceof ReturnStatement)) this.DidReturn = true;
+
         if (CheckStatements (Statements))
             Scope.AddStatements (Statements);
 

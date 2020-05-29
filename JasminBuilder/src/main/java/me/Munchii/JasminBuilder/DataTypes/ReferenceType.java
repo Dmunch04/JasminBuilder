@@ -23,7 +23,7 @@ public class ReferenceType extends DataType
     // TODO: Hmm
     public static DataType MakeReferenceInstance (DataType Type)
     {
-        if (!(Type instanceof ReferenceType))
+        if (!(Type.GetType () == ValueType.Reference))
         {
             //Logger.Warning ("Cannot make non-reference an instance");
             return Type;

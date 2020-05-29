@@ -11,13 +11,16 @@
 
 ; Method: public long Fib (long);
 .method public Fib(J)J
-	.limit locals 1
+	.limit stack 50
+	.limit locals 51
 	lload_1
 	lconst_1
 	lcmp
 	ifgt FibThing
+	; Else block (ELSE)
 	lconst_1
 	lreturn
+	; ---
 
 FibThing:
 	aload_0
@@ -25,17 +28,14 @@ FibThing:
 	lconst_1
 	lsub
 	invokevirtual Fibonacci/Fib(J)J
-	lstore_2
 	aload_0
 	lload_1
 	ldc2_w 2
 	lsub
 	invokevirtual Fibonacci/Fib(J)J
-	lstore_3
-	lload_2
-	lload_3
 	ladd
 	lreturn
+	return
 .end method
 
 ; Method: public static void main (string[]);
@@ -47,10 +47,10 @@ FibThing:
 	invokespecial Fibonacci/<init>()V
 	astore_1
 	aload_1
-	invokevirtual Fibonacci/Fib(I)I
-	istore_0
+	invokevirtual Fibonacci/Fib(J)J
+	lstore_2
 	getstatic java/lang/System/out Ljava/io/PrintStream;
-	iconst_0
-	invokevirtual java/io/PrintStream/println(I)V
+	lconst_0
+	invokevirtual java/io/PrintStream/println(J)V
 	return
 .end method

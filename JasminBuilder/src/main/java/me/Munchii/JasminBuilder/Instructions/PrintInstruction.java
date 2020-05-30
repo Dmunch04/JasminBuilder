@@ -18,7 +18,7 @@ public class PrintInstruction implements JasminInstruction
     {
         this.Value = Value;
 
-        if (Value.GetType ().IsReference ()) this.ValueType = ReferenceType.MakeReferenceInstance(Value.GetType ());
+        if (Value.GetType ().IsReference ()) this.ValueType = ReferenceType.MakeReferenceInstance (Value.GetType ());
         else this.ValueType = Value.GetType ();
     }
 

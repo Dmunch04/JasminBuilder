@@ -30,7 +30,7 @@ public class JasminMethod implements Builder
     private int Locals;
     private boolean DidReturn;
 
-    private Map<String, JasminVariable> Variables;
+    private Map<String, Variable> Variables;
     private int VariableIndex;
 
     private JasminScope Scope;
@@ -58,7 +58,7 @@ public class JasminMethod implements Builder
         this.Locals = Args != null ? Args.length : 0;
         this.DidReturn = false;
 
-        this.Variables = new HashMap<String, JasminVariable> ();
+        this.Variables = new HashMap<String, Variable> ();
         this.VariableIndex = 0;
 
         this.Scope = new JasminScope ();
@@ -242,8 +242,8 @@ public class JasminMethod implements Builder
     {
         if (Statements.stream ().anyMatch (Statement -> Statement instanceof ReturnStatement)) this.DidReturn = true;
 
-        if (CheckStatements (Statements))
-            Scope.AddStatements (Statements);
+        for (JasminStatement Statement : Statements)
+            AddStatement (Statement);
 
         return this;
     }
@@ -265,6 +265,7 @@ public class JasminMethod implements Builder
 
         AddStatements (Variable.Declare ());
 
+        Variables.put (Variable.GetName (), Variable);
         VariableIndex++;
 
         return this;
@@ -294,15 +295,48 @@ public class JasminMethod implements Builder
             throw new IllegalArgumentException ("No variable with name exists: " + Reference.Name);
 
         AddStatements (Variables.get (Reference.Name).PushToStack ());
+
         return this;
     }
 
     public JasminMethod AddValue (JasminPassable Value)
     {
         if (Value instanceof VariableReference)
+        {
+            System.out.println ("aaa");
             return LoadVariable ((VariableReference) Value);
+        }
 
         AddStatements (Value.PushToStack ());
+        return this;
+    }
+
+    public JasminMethod Return (JasminPassable Value)
+    {
+        Statements.addAll (Value.PushToStack ());
+
+        NoParameterType ReturnType;
+        switch (Value.GetType ().GetType ())
+        {
+            case Boolean:
+            case Byte:
+            case Char:
+            case Short:
+            case Integer: ReturnType = NoParameterType.ReturnInteger; break;
+
+            case Float: ReturnType = NoParameterType.ReturnFloat; break;
+
+            case Double: ReturnType = NoParameterType.ReturnDouble; break;
+
+            case Long: ReturnType = NoParameterType.ReturnLong; break;
+
+            case Array:
+            case Reference: ReturnType = NoParameterType.ReturnReference; break;
+
+            default: ReturnType = NoParameterType.Return; break;
+        }
+        Statements.add (new NoParameterStatement (ReturnType));
+
         return this;
     }
 
@@ -411,12 +445,12 @@ public class JasminMethod implements Builder
         Args.add (Arg);
     }
 
-    public Map<String, JasminVariable> GetVariables ()
+    public Map<String, Variable> GetVariables ()
     {
         return Variables;
     }
 
-    public JasminVariable GetVariable (String Name)
+    public Variable GetVariable (String Name)
     {
         if (!Variables.containsKey (Name))
             throw new IllegalArgumentException ("No variable with name exists: " + Name);
@@ -424,7 +458,7 @@ public class JasminMethod implements Builder
         return Variables.get (Name);
     }
 
-    public JasminVariable GetVariable (VariableReference Reference)
+    public Variable GetVariable (VariableReference Reference)
     {
         return GetVariable (Reference.Name);
     }

@@ -4,7 +4,7 @@ import me.Munchii.JasminBuilder.Statements.JasminStatement;
 
 import java.util.List;
 
-public interface Variable
+public interface Variable extends JasminPassable
 {
 
     JasminStatement Store ();

@@ -201,7 +201,7 @@ public class JasminBlock
         return this;
     }
 
-    public void Return (JasminPassable Value)
+    public JasminBlock Return (JasminPassable Value)
     {
         Statements.addAll (Value.PushToStack ());
 
@@ -226,6 +226,8 @@ public class JasminBlock
             default: ReturnType = NoParameterType.Return; break;
         }
         Statements.add (new NoParameterStatement (ReturnType));
+
+        return this;
     }
 
     // ========================

@@ -4,9 +4,7 @@ import me.Munchii.JasminBuilder.Classes.JasminClass;
 import me.Munchii.JasminBuilder.DataTypes.DataType;
 import me.Munchii.JasminBuilder.JasminPassable;
 import me.Munchii.JasminBuilder.Methods.JasminMethod;
-import me.Munchii.JasminBuilder.Statements.JasminStatement;
-import me.Munchii.JasminBuilder.Statements.MethodInvocationStatement;
-import me.Munchii.JasminBuilder.Statements.VariableStatement;
+import me.Munchii.JasminBuilder.Statements.*;
 import me.Munchii.JasminBuilder.Types.MethodInvocationType;
 import me.Munchii.JasminBuilder.Types.VariableType;
 
@@ -48,7 +46,7 @@ public class MethodInvocation
                     Statements.addAll (Arg.PushToStack ());
                 }
 
-                Statements.add (new MethodInvocationStatement(MethodInvocationType.InvokeVirtual, Class + "/" + MethodName, ReturnType, ParamTypes));
+                Statements.add (new MethodInvocationStatement (MethodInvocationType.InvokeVirtual, Class + "/" + MethodName, ReturnType, ParamTypes));
 
                 return Statements;
             }
@@ -83,8 +81,6 @@ public class MethodInvocation
             public List<JasminStatement> PushToStack ()
             {
                 List<JasminStatement> Statements = new ArrayList<JasminStatement> ();
-
-                Statements.add (new VariableStatement (VariableType.Load, "this"));
 
                 for (JasminPassable Arg : Arguments)
                 {

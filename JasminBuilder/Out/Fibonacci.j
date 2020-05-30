@@ -40,12 +40,16 @@ FibThing:
 
 ; Method: public static void main (string[]);
 .method public static main([Ljava/lang/String;)V
-	.limit stack 50
+	.limit stack 52
 	.limit locals 51
 	new Fibonacci
 	dup
-	
 	invokespecial Fibonacci/<init>()V
 	astore_1
+	getstatic java/lang/System/out Ljava/io/PrintStream;
+	aload_1
+	ldc2_w 45
+	invokevirtual Fibonacci/Fib(J)J
+	invokevirtual java/io/PrintStream/println(J)V
 	return
 .end method

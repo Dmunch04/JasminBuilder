@@ -172,6 +172,11 @@ public class JasminBlock {
     }
 
     public JasminBlock returnValue(JasminPassable value) {
+        if (value == null || value.getType() == DataType.VOID) {
+            statements.add(new NoParameterStatement(NoParameterType.RETURN));
+            return this;
+        }
+
         statements.addAll(value.pushToStack());
 
         NoParameterType returnType;

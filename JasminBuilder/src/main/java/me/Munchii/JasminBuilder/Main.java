@@ -41,7 +41,7 @@ public class Main {
                 new JasminBlock("bbb")
                         .addInstruction(new PrintInstruction(new JasminValue("Hello, World!", DataType.STRING)))
                         .addInstruction(new PrintInstruction(new JasminValue(5, DataType.INTEGER)))
-                        .returnValue(new JasminValue (null, DataType.VOID)),
+                        .returnValue(null),
 
                 new JasminConditionBlock(
                         conditionBuilder,

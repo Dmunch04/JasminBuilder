@@ -93,7 +93,7 @@ public class JasminMethod implements Builder {
         JasminScope outerScope = scope;
         for (JasminBlock block : blocks) {
             scope = new JasminScope();
-            builder.append("\n").append(block.getLabel()).append(":\n");
+            builder.append(block.getLabel()).append(":\n");
             block.write(this);
 
             for (JasminStatement statement : scope.getStatements()) {

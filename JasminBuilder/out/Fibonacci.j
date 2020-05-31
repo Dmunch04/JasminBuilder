@@ -21,7 +21,6 @@
 	lconst_1
 	lreturn
 	; ---
-
 FibThing:
 	aload_0
 	lload_1

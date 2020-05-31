@@ -8,88 +8,75 @@ import me.Munchii.JasminBuilder.Logging.Exceptions.AbortException;
 import me.Munchii.JasminBuilder.Logging.Logger;
 import me.Munchii.JasminBuilder.Types.ConditionType;
 
-public class JasminCondition
-{
+public class JasminCondition {
 
-    private final JasminPassable Value1;
-    private final JasminPassable Value2;
-    private final ConditionType Type;
-    private final DataType ValueType;
+    private final JasminPassable firstValue;
+    private final JasminPassable lastValue;
+    private final ConditionType type;
+    private final DataType valueType;
 
-    public JasminCondition (JasminPassable Value1, JasminPassable Value2, ConditionType Type)
-    {
-        if (!(Value1.GetType ().Compare (Value2.GetType ())) && !(Value1.GetType ().Compare (DataType.Void) || Value2.GetType ().Compare (DataType.Void)))
-        {
-            Logger.Error ("Values must be of same type!");
-            throw new AbortException ();
+    public JasminCondition(JasminPassable firstValue, JasminPassable lastValue, ConditionType type) {
+        if (!(firstValue.getType().compare(lastValue.getType())) && !(firstValue.getType().compare(DataType.VOID) || lastValue.getType().compare(DataType.VOID))) {
+            Logger.error("Values must be of same type!");
+            throw new AbortException();
         }
 
         if (
-                (Value1.GetType ().Compare (DataType.Void) && !(Value2.GetType () instanceof ReferenceType || Value2.GetType () instanceof ArrayType)) ||
-                (Value2.GetType ().Compare (DataType.Void) && !(Value1.GetType () instanceof ReferenceType || Value1.GetType () instanceof ArrayType))
-        )
-        {
-            Logger.Error ("Cannot compare non-reference to null!");
-            throw new AbortException ();
+                (firstValue.getType().compare(DataType.VOID) && !(lastValue.getType() instanceof ReferenceType || lastValue.getType() instanceof ArrayType)) ||
+                (lastValue.getType().compare(DataType.VOID) && !(firstValue.getType() instanceof ReferenceType || firstValue.getType() instanceof ArrayType))
+        ) {
+            Logger.error("Cannot compare non-reference to null!");
+            throw new AbortException();
         }
 
-        this.Value1 = Value1;
-        this.Value2 = Value2;
-        this.Type = Type;
+        this.firstValue = firstValue;
+        this.lastValue = lastValue;
+        this.type = type;
 
-        if (Value1.GetType ().Compare (DataType.Void)) this.ValueType = Value2.GetType ();
-        else if (Value2.GetType ().Compare (DataType.Void)) this.ValueType = Value2.GetType (); //? TODO: Hmm. Same as above but well works
-        else this.ValueType = Value1.GetType ();
+        if (firstValue.getType().compare(DataType.VOID)) this.valueType = lastValue.getType();
+        else if (lastValue.getType().compare(DataType.VOID))
+            this.valueType = lastValue.getType(); //? TODO: Hmm. Same as above but well works
+        else this.valueType = firstValue.getType();
     }
 
-    public static JasminCondition Equals (JasminPassable Value1, JasminPassable Value2)
-    {
-        return new JasminCondition (Value1, Value2, ConditionType.Equals);
+    public static JasminCondition equals(JasminPassable first, JasminPassable last) {
+        return new JasminCondition(first, last, ConditionType.EQUALS);
     }
 
-    public static JasminCondition NotEquals (JasminPassable Value1, JasminPassable Value2)
-    {
-        return new JasminCondition (Value1, Value2, ConditionType.NotEquals);
+    public static JasminCondition notEquals(JasminPassable first, JasminPassable last) {
+        return new JasminCondition(first, last, ConditionType.NOT_EQUALS);
     }
 
-    public static JasminCondition LessThan (JasminPassable Value1, JasminPassable Value2)
-    {
-        return new JasminCondition (Value1, Value2, ConditionType.LessThan);
+    public static JasminCondition lessThan(JasminPassable first, JasminPassable last) {
+        return new JasminCondition(first, last, ConditionType.LESS_THAN);
     }
 
-    public static JasminCondition LessThanEquals (JasminPassable Value1, JasminPassable Value2)
-    {
-        return new JasminCondition (Value1, Value2, ConditionType.LessThanEquals);
+    public static JasminCondition lessThanEquals(JasminPassable first, JasminPassable last) {
+        return new JasminCondition(first, last, ConditionType.LESS_THAN_EQUALS);
     }
 
-    public static JasminCondition GreaterThan (JasminPassable Value1, JasminPassable Value2)
-    {
-        return new JasminCondition (Value1, Value2, ConditionType.GreaterThan);
+    public static JasminCondition greaterThan(JasminPassable first, JasminPassable last) {
+        return new JasminCondition(first, last, ConditionType.GREATER_THAN);
     }
 
-    public static JasminCondition GreaterThanEquals (JasminPassable Value1, JasminPassable Value2)
-    {
-        return new JasminCondition (Value1, Value2, ConditionType.GreaterThanEquals);
+    public static JasminCondition greaterThanEquals(JasminPassable first, JasminPassable last) {
+        return new JasminCondition(first, last, ConditionType.GREATER_THAN_EQUALS);
     }
 
-    public JasminPassable GetValue1 ()
-    {
-        return Value1;
+    public JasminPassable getFirstValue() {
+        return firstValue;
     }
 
-    public JasminPassable GetValue2 ()
-    {
-        return Value2;
+    public JasminPassable getLastValue() {
+        return lastValue;
     }
 
-    public ConditionType GetType ()
-    {
-        return Type;
+    public ConditionType getType() {
+        return type;
     }
 
-    public DataType GetValueType ()
-    {
-        return ValueType;
+    public DataType getValueType() {
+        return valueType;
     }
 
 }

@@ -13,17 +13,12 @@ import me.Munchii.JasminBuilder.Methods.JasminMethod;
 import me.Munchii.JasminBuilder.Methods.MethodAccessSpec;
 import me.Munchii.JasminBuilder.Conditions.ConditionBuilder;
 import me.Munchii.JasminBuilder.Conditions.JasminCondition;
-import me.Munchii.JasminBuilder.Statements.ReturnStatement;
-import me.Munchii.JasminBuilder.Types.NoParameterType;
-import me.Munchii.JasminBuilder.Utils.ExpressionBuilder;
 
 import static java.util.Arrays.asList;
 
-public class Main
-{
+public class Main {
 
-    public static void main (String... Args)
-    {
+    public static void main(String... args) {
         // TODO: Find a way to push and store all different value types -> done?
         // TODO: How can we stop/prevent the user from chaining on the `JasminMethod` constructor method?
         // TODO: Make instructions for control-flow, loops, field init, etc. -> if/else statements done
@@ -36,32 +31,32 @@ public class Main
         //? Maybe implement a method on the `JasminMethod` class, to automatically add return statement, depending on the `DataType` given
         //? When a value is provided to a field and added to a class, it adds ` = %value%` to the field declaration, but it doesn't seem like Jasmin supports this for some reason? Should it be removed?
 
-        JasminFile File = new JasminFile ("/", "Test");
-        JasminClass Class = new JasminClass ("Foo", ClassAccessSpec.Public);
-        JasminField Field = new JasminField ("Hmm", DataType.Integer, new JasminValue (5, DataType.Integer), FieldAccessSpec.Public);
+        JasminFile file = new JasminFile("/", "Test");
+        JasminClass testClass = new JasminClass("Foo", ClassAccessSpec.PUBLIC);
+        JasminField field = new JasminField("Hmm", DataType.INTEGER, new JasminValue(5, DataType.INTEGER), FieldAccessSpec.PUBLIC);
 
         // TODO: Make it nice to chain them with `and` (&&) and `or` (||)
-        JasminMethod Method = new JasminMethod ("Test", DataType.Void, asList (MethodAccessSpec.Public), DataType.Integer);
-        ConditionBuilder Condition = new ConditionBuilder (JasminCondition.Equals (
-                new JasminValue (1, DataType.Integer),
-                new JasminValue (1, DataType.Integer)
+        JasminMethod method = new JasminMethod("Test", DataType.VOID, asList(MethodAccessSpec.PUBLIC), DataType.INTEGER);
+        ConditionBuilder conditionBuilder = new ConditionBuilder(JasminCondition.equals(
+                new JasminValue(1, DataType.INTEGER),
+                new JasminValue(1, DataType.INTEGER)
         ));
-        Method.AddInstruction (new IfInstruction (
-                new JasminBlock ("bbb")
-                        .AddInstruction (new PrintInstruction (new JasminValue ("Hello, World!", DataType.String)))
-                        .AddInstruction (new PrintInstruction (new JasminValue (5, DataType.Integer)))
-                        .AddNoParameterStatement (NoParameterType.Return),
+        method.addInstruction(new IfInstruction(
+                new JasminBlock("bbb")
+                        .addInstruction(new PrintInstruction(new JasminValue("Hello, World!", DataType.STRING)))
+                        .addInstruction(new PrintInstruction(new JasminValue(5, DataType.INTEGER)))
+                        .returnValue(new JasminValue (null, DataType.VOID)),
 
-                new JasminConditionBlock (
-                    Condition,
-                    new JasminBlock ("aa")
+                new JasminConditionBlock(
+                        conditionBuilder,
+                        new JasminBlock("aa")
                 )
         ));
 
-        Class.AddField (Field);
-        Class.AddMethod (Method);
-        File.AddClass (Class);
-        System.out.println (File.ToOutputString ());
+        testClass.addField(field);
+        testClass.addMethod(method);
+        file.addClass(testClass);
+        System.out.println(file.toOutputString());
     }
 
 }

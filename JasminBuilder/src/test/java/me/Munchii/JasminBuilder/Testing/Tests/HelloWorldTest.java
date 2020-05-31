@@ -10,29 +10,25 @@ import me.Munchii.JasminBuilder.Methods.JasminMethod;
 import me.Munchii.JasminBuilder.Testing.TestCase;
 import me.Munchii.JasminBuilder.Utils.MethodCreator;
 
-public class HelloWorldTest implements TestCase
-{
+public class HelloWorldTest implements TestCase {
 
     @Override
-    public void Run ()
-    {
-        JasminFile File = new JasminFile ("Out/", "HelloWorld");
+    public void run() {
+        JasminFile file = new JasminFile("out/", "HelloWorld");
+        JasminClass helloWorldClass = new JasminClass("HelloWorld", ClassAccessSpec.PUBLIC);
 
-        JasminClass Class = new JasminClass ("HelloWorld", ClassAccessSpec.Public);
+        JasminMethod mainMethod = MethodCreator.createMainMethod()
+                .addInstruction(new PrintInstruction(new JasminValue("Hello, World!", DataType.STRING)));
 
-        JasminMethod MainMethod = MethodCreator.CreateMainMethod ()
-                .AddInstruction (new PrintInstruction (new JasminValue ("Hello, World!", DataType.String)));
+        helloWorldClass.addMethod(mainMethod);
 
-        Class.AddMethod (MainMethod);
-
-        File.AddClass (Class);
-        System.out.println (File.ToOutputString ());
-        File.Write ();
+        file.addClass(helloWorldClass);
+        System.out.println(file.toOutputString());
+        file.write();
     }
 
     @Override
-    public String GetName ()
-    {
+    public String getName() {
         return "HelloWorldTest";
     }
 

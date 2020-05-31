@@ -9,24 +9,19 @@ import me.Munchii.JasminBuilder.Types.NoParameterType;
 
 import static java.util.Arrays.asList;
 
-public class MethodCreator
-{
+public class MethodCreator {
 
-    public static JasminMethod CreateMainMethod ()
-    {
-        JasminMethod Method = new JasminMethod ("main", DataType.Void, asList (MethodAccessSpec.Public, MethodAccessSpec.Static), new ArrayType (DataType.StringInstance, 1));
-
-        return Method;
+    public static JasminMethod createMainMethod() {
+        return new JasminMethod("main", DataType.VOID, asList(MethodAccessSpec.PUBLIC, MethodAccessSpec.STATIC), new ArrayType(DataType.STRING_INSTANCE, 1));
     }
 
-    public static JasminMethod CreateConstructorMethod ()
-    {
-        JasminMethod Method = new JasminMethod ("<init>", DataType.Void, MethodAccessSpec.Public);
-        Method.AddComment ("Call super method")
-                .AddNoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable0)
-                .AddMethodInvokationStatement (MethodInvocationType.InvokeSpecial, "java/lang/Object/<init>", DataType.Void);
+    public static JasminMethod createConstructorMethod() {
+        JasminMethod method = new JasminMethod("<init>", DataType.VOID, MethodAccessSpec.PUBLIC);
+        method.addComment("Call super method")
+                .addNoParameterStatement(NoParameterType.LOAD_REFERENCE_FROM_LOCAL_VARIABLE_0)
+                .addMethodInvocationStatement(MethodInvocationType.INVOKE_SPECIAL, "java/lang/Object/<init>", DataType.VOID);
 
-        return Method;
+        return method;
     }
 
 }

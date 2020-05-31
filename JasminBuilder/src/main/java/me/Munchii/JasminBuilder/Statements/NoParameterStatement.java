@@ -2,20 +2,17 @@ package me.Munchii.JasminBuilder.Statements;
 
 import me.Munchii.JasminBuilder.Types.NoParameterType;
 
-public class NoParameterStatement implements JasminStatement
-{
+public class NoParameterStatement implements JasminStatement {
 
-    private NoParameterType Type;
+    private final NoParameterType type;
 
-    public NoParameterStatement (NoParameterType Type)
-    {
-        this.Type = Type;
+    public NoParameterStatement(NoParameterType type) {
+        this.type = type;
     }
 
     @Override
-    public String ToOutputString ()
-    {
-        return Type.GetRepresentation ();
+    public String toOutputString() {
+        return type.getRepresentation();
     }
 
 }

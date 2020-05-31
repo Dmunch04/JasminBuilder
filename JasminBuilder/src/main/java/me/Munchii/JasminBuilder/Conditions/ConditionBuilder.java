@@ -15,219 +15,229 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-public class ConditionBuilder
-{
+public class ConditionBuilder {
 
-    private final List<JasminCondition> Conditions;
+    private final List<JasminCondition> conditions;
 
-    public ConditionBuilder ()
-    {
-        this.Conditions = new ArrayList<JasminCondition> ();
+    public ConditionBuilder() {
+        this.conditions = new ArrayList<>();
     }
 
-    public ConditionBuilder (JasminCondition... Conditions)
-    {
-        this.Conditions = asList (Conditions);
+    public ConditionBuilder(JasminCondition... conditions) {
+        this.conditions = asList(conditions);
     }
 
-    public List<JasminStatement> Write (String BlockLabel)
-    {
-        List<JasminStatement> Statements = new ArrayList<JasminStatement> ();
+    public List<JasminStatement> write(String label) {
+        List<JasminStatement> statements = new ArrayList<>();
 
-        for (JasminCondition Condition : Conditions)
-        {
-            Statements.addAll (Condition.GetValue1 ().PushToStack ());
-            Statements.addAll (Condition.GetValue2 ().PushToStack ());
+        for (JasminCondition condition : conditions) {
+            statements.addAll(condition.getFirstValue().pushToStack());
+            statements.addAll(condition.getLastValue().pushToStack());
 
-            ConditionType Type = Condition.GetType ();
+            ConditionType type = condition.getType();
 
-            switch (Condition.GetValueType ().GetType ())
-            {
+            switch (condition.getValueType().getType()) {
                 // TODO: If one if the values is `false` it should just use `ifne` (etc) and not push the value
-                case Boolean: {
-                    switch (Type)
-                    {
-                        case Equals: Statements.add (new BranchStatement (BranchType.IfIntegerCompareEquals, BlockLabel)); continue;
-                        case NotEquals: Statements.add (new BranchStatement (BranchType.IfIntegerCompareNotEquals, BlockLabel)); continue;
+                case BOOLEAN: {
+                    switch (type) {
+                        case EQUALS:
+                            statements.add(new BranchStatement(BranchType.IF_INTEGER_COMPARE_EQUALS, label));
+                            continue;
+                        case NOT_EQUALS:
+                            statements.add(new BranchStatement(BranchType.IF_INTEGER_COMPARE_NOT_EQUALS, label));
+                            continue;
                         default: {
-                            Logger.Error ("Cannot perform condition check: '" + Helper.ConditionTypeToRepresentation (Type) + "' on boolean!");
-                            throw new AbortException ();
+                            Logger.error("Cannot perform condition check: '" + Helper.conditionTypeToRepresentation(type) + "' on boolean!");
+                            throw new AbortException();
                         }
                     }
                 }
 
-                case Double: {
-                    switch (Type)
-                    {
-                        case Equals: {
-                            Statements.add (new NoParameterStatement (NoParameterType.CompareDoubleLess));
-                            Statements.add (new BranchStatement (BranchType.IfEquals, BlockLabel));
+                case DOUBLE: {
+                    switch (type) {
+                        case EQUALS: {
+                            statements.add(new NoParameterStatement(NoParameterType.COMPARE_DOUBLE_LESS));
+                            statements.add(new BranchStatement(BranchType.IF_EQUALS, label));
                             continue;
                         }
 
-                        case NotEquals: {
-                            Statements.add (new NoParameterStatement (NoParameterType.CompareDoubleLess));
-                            Statements.add (new BranchStatement (BranchType.IfNotEquals, BlockLabel));
+                        case NOT_EQUALS: {
+                            statements.add(new NoParameterStatement(NoParameterType.COMPARE_DOUBLE_LESS));
+                            statements.add(new BranchStatement(BranchType.IF_NOT_EQUALS, label));
                             continue;
                         }
 
-                        case LessThan: {
-                            Statements.add (new NoParameterStatement (NoParameterType.CompareDoubleLess));
-                            Statements.add (new BranchStatement (BranchType.IfLessThan, BlockLabel));
+                        case LESS_THAN: {
+                            statements.add(new NoParameterStatement(NoParameterType.COMPARE_DOUBLE_LESS));
+                            statements.add(new BranchStatement(BranchType.IF_LESS_THAN, label));
                             continue;
                         }
 
-                        case LessThanEquals: {
-                            Statements.add (new NoParameterStatement (NoParameterType.CompareDoubleLess));
-                            Statements.add (new BranchStatement (BranchType.IfLessEquals, BlockLabel));
+                        case LESS_THAN_EQUALS: {
+                            statements.add(new NoParameterStatement(NoParameterType.COMPARE_DOUBLE_LESS));
+                            statements.add(new BranchStatement(BranchType.IF_LESS_EQUALS, label));
                             continue;
                         }
 
-                        case GreaterThan: {
-                            Statements.add (new NoParameterStatement (NoParameterType.CompareDoubleGreater));
-                            Statements.add (new BranchStatement (BranchType.IfGreaterThan, BlockLabel));
+                        case GREATER_THAN: {
+                            statements.add(new NoParameterStatement(NoParameterType.COMPARE_DOUBLE_GREATER));
+                            statements.add(new BranchStatement(BranchType.IF_GREATER_THAN, label));
                             continue;
                         }
 
-                        case GreaterThanEquals: {
-                            Statements.add (new NoParameterStatement (NoParameterType.CompareDoubleGreater));
-                            Statements.add (new BranchStatement (BranchType.IfGreaterEquals, BlockLabel));
+                        case GREATER_THAN_EQUALS: {
+                            statements.add(new NoParameterStatement(NoParameterType.COMPARE_DOUBLE_GREATER));
+                            statements.add(new BranchStatement(BranchType.IF_GREATER_EQUALS, label));
                             continue;
                         }
                     }
                 }
 
-                case Float: {
-                    switch (Type)
-                    {
-                        case Equals: {
-                            Statements.add (new NoParameterStatement (NoParameterType.CompareFloatLess));
-                            Statements.add (new BranchStatement (BranchType.IfEquals, BlockLabel));
+                case FLOAT: {
+                    switch (type) {
+                        case EQUALS: {
+                            statements.add(new NoParameterStatement(NoParameterType.COMPARE_FLOAT_LESS));
+                            statements.add(new BranchStatement(BranchType.IF_EQUALS, label));
                             continue;
                         }
 
-                        case NotEquals: {
-                            Statements.add (new NoParameterStatement (NoParameterType.CompareFloatLess));
-                            Statements.add (new BranchStatement (BranchType.IfNotEquals, BlockLabel));
+                        case NOT_EQUALS: {
+                            statements.add(new NoParameterStatement(NoParameterType.COMPARE_FLOAT_LESS));
+                            statements.add(new BranchStatement(BranchType.IF_NOT_EQUALS, label));
                             continue;
                         }
 
-                        case LessThan: {
-                            Statements.add (new NoParameterStatement (NoParameterType.CompareFloatLess));
-                            Statements.add (new BranchStatement (BranchType.IfLessThan, BlockLabel));
+                        case LESS_THAN: {
+                            statements.add(new NoParameterStatement(NoParameterType.COMPARE_FLOAT_LESS));
+                            statements.add(new BranchStatement(BranchType.IF_LESS_THAN, label));
                             continue;
                         }
 
-                        case LessThanEquals: {
-                            Statements.add (new NoParameterStatement (NoParameterType.CompareFloatLess));
-                            Statements.add (new BranchStatement (BranchType.IfLessEquals, BlockLabel));
+                        case LESS_THAN_EQUALS: {
+                            statements.add(new NoParameterStatement(NoParameterType.COMPARE_FLOAT_LESS));
+                            statements.add(new BranchStatement(BranchType.IF_LESS_EQUALS, label));
                             continue;
                         }
 
-                        case GreaterThan: {
-                            Statements.add (new NoParameterStatement (NoParameterType.CompareFloatGreater));
-                            Statements.add (new BranchStatement (BranchType.IfGreaterThan, BlockLabel));
+                        case GREATER_THAN: {
+                            statements.add(new NoParameterStatement(NoParameterType.COMPARE_FLOAT_GREATER));
+                            statements.add(new BranchStatement(BranchType.IF_GREATER_THAN, label));
                             continue;
                         }
 
-                        case GreaterThanEquals: {
-                            Statements.add (new NoParameterStatement (NoParameterType.CompareFloatGreater));
-                            Statements.add (new BranchStatement (BranchType.IfGreaterEquals, BlockLabel));
+                        case GREATER_THAN_EQUALS: {
+                            statements.add(new NoParameterStatement(NoParameterType.COMPARE_FLOAT_GREATER));
+                            statements.add(new BranchStatement(BranchType.IF_GREATER_EQUALS, label));
                             continue;
                         }
                     }
                 }
 
                 //? TODO: Should byte be here too? In my testing it acted like ints so I guess
-                case Byte:
-                case Char:
-                case Short:
-                case Integer: {
-                    switch (Type)
-                    {
-                        case Equals: Statements.add (new BranchStatement (BranchType.IfIntegerCompareEquals, BlockLabel)); continue;
-                        case NotEquals: Statements.add (new BranchStatement (BranchType.IfIntegerCompareNotEquals, BlockLabel)); continue;
-                        case LessThan: Statements.add (new BranchStatement (BranchType.IfIntegerCompareLessThan, BlockLabel)); continue;
-                        case LessThanEquals: Statements.add (new BranchStatement (BranchType.IfIntegerCompareLessEquals, BlockLabel)); continue;
-                        case GreaterThan: Statements.add (new BranchStatement (BranchType.IfIntegerCompareGreaterThan, BlockLabel)); continue;
-                        case GreaterThanEquals: Statements.add (new BranchStatement (BranchType.IfIntegerCompareGreaterEquals, BlockLabel)); continue;
+                case BYTE:
+                case CHAR:
+                case SHORT:
+                case INTEGER: {
+                    switch (type) {
+                        case EQUALS:
+                            statements.add(new BranchStatement(BranchType.IF_INTEGER_COMPARE_EQUALS, label));
+                            continue;
+                        case NOT_EQUALS:
+                            statements.add(new BranchStatement(BranchType.IF_INTEGER_COMPARE_NOT_EQUALS, label));
+                            continue;
+                        case LESS_THAN:
+                            statements.add(new BranchStatement(BranchType.IF_INTEGER_COMPARE_LESS_THAN, label));
+                            continue;
+                        case LESS_THAN_EQUALS:
+                            statements.add(new BranchStatement(BranchType.IF_INTEGER_COMPARE_LESS_EQUALS, label));
+                            continue;
+                        case GREATER_THAN:
+                            statements.add(new BranchStatement(BranchType.IF_INTEGER_COMPARE_GREATER_THAN, label));
+                            continue;
+                        case GREATER_THAN_EQUALS:
+                            statements.add(new BranchStatement(BranchType.IF_INTEGER_COMPARE_GREATER_EQUALS, label));
+                            continue;
                     }
                 }
 
-                case Long: {
-                    switch (Type)
-                    {
-                        case Equals: {
-                            Statements.add (new NoParameterStatement (NoParameterType.CompareLong));
-                            Statements.add (new BranchStatement (BranchType.IfEquals, BlockLabel));
+                case LONG: {
+                    switch (type) {
+                        case EQUALS: {
+                            statements.add(new NoParameterStatement(NoParameterType.COMPARE_LONG));
+                            statements.add(new BranchStatement(BranchType.IF_EQUALS, label));
                             continue;
                         }
 
-                        case NotEquals: {
-                            Statements.add (new NoParameterStatement (NoParameterType.CompareLong));
-                            Statements.add (new BranchStatement (BranchType.IfNotEquals, BlockLabel));
+                        case NOT_EQUALS: {
+                            statements.add(new NoParameterStatement(NoParameterType.COMPARE_LONG));
+                            statements.add(new BranchStatement(BranchType.IF_NOT_EQUALS, label));
                             continue;
                         }
 
-                        case LessThan: {
-                            Statements.add (new NoParameterStatement (NoParameterType.CompareLong));
-                            Statements.add (new BranchStatement (BranchType.IfLessThan, BlockLabel));
+                        case LESS_THAN: {
+                            statements.add(new NoParameterStatement(NoParameterType.COMPARE_LONG));
+                            statements.add(new BranchStatement(BranchType.IF_LESS_THAN, label));
                             continue;
                         }
 
-                        case LessThanEquals: {
-                            Statements.add (new NoParameterStatement (NoParameterType.CompareLong));
-                            Statements.add (new BranchStatement (BranchType.IfLessEquals, BlockLabel));
+                        case LESS_THAN_EQUALS: {
+                            statements.add(new NoParameterStatement(NoParameterType.COMPARE_LONG));
+                            statements.add(new BranchStatement(BranchType.IF_LESS_EQUALS, label));
                             continue;
                         }
 
-                        case GreaterThan: {
-                            Statements.add (new NoParameterStatement (NoParameterType.CompareLong));
-                            Statements.add (new BranchStatement (BranchType.IfGreaterThan, BlockLabel));
+                        case GREATER_THAN: {
+                            statements.add(new NoParameterStatement(NoParameterType.COMPARE_LONG));
+                            statements.add(new BranchStatement(BranchType.IF_GREATER_THAN, label));
                             continue;
                         }
 
-                        case GreaterThanEquals: {
-                            Statements.add (new NoParameterStatement (NoParameterType.CompareLong));
-                            Statements.add (new BranchStatement (BranchType.IfGreaterEquals, BlockLabel));
+                        case GREATER_THAN_EQUALS: {
+                            statements.add(new NoParameterStatement(NoParameterType.COMPARE_LONG));
+                            statements.add(new BranchStatement(BranchType.IF_GREATER_EQUALS, label));
                             continue;
                         }
                     }
                 }
 
-                case Void: {
-                    switch (Type)
-                    {
-                        case Equals: Statements.add (new BranchStatement (BranchType.IfNonNull, BlockLabel)); continue;
-                        case NotEquals: Statements.add (new BranchStatement (BranchType.IfNull, BlockLabel)); continue;
+                case VOID: {
+                    switch (type) {
+                        case EQUALS:
+                            statements.add(new BranchStatement(BranchType.IF_NON_NULL, label));
+                            continue;
+                        case NOT_EQUALS:
+                            statements.add(new BranchStatement(BranchType.IF_NULL, label));
+                            continue;
                         default: {
-                            Logger.Error ("Cannot perform condition check: '" + Helper.ConditionTypeToRepresentation (Type) + "' on null!");
-                            throw new AbortException ();
+                            Logger.error("Cannot perform condition check: '" + Helper.conditionTypeToRepresentation(type) + "' on null!");
+                            throw new AbortException();
                         }
                     }
                 }
 
-                case Array:
-                case Reference: {
-                    switch (Type)
-                    {
-                        case Equals: Statements.add (new BranchStatement (BranchType.IfReferenceCompareEquals, BlockLabel)); continue;
-                        case NotEquals: Statements.add (new BranchStatement (BranchType.IfReferenceCompareNotEquals, BlockLabel)); continue;
+                case ARRAY:
+                case REFERENCE: {
+                    switch (type) {
+                        case EQUALS:
+                            statements.add(new BranchStatement(BranchType.IF_REFERENCE_COMPARE_EQUALS, label));
+                            continue;
+                        case NOT_EQUALS:
+                            statements.add(new BranchStatement(BranchType.IF_REFERENCE_COMPARE_NOT_EQUALS, label));
+                            continue;
                         default: {
-                            Logger.Error ("Cannot perform condition check: '" + Helper.ConditionTypeToRepresentation (Type) + "' on reference!");
-                            throw new AbortException ();
+                            Logger.error("Cannot perform condition check: '" + Helper.conditionTypeToRepresentation(type) + "' on reference!");
+                            throw new AbortException();
                         }
                     }
                 }
             }
         }
 
-        return Statements;
+        return statements;
     }
 
-    public ConditionBuilder AddCondition (JasminCondition Condition)
-    {
-        this.Conditions.add (Condition);
+    public ConditionBuilder addCondition(JasminCondition condition) {
+        this.conditions.add(condition);
         return this;
     }
 

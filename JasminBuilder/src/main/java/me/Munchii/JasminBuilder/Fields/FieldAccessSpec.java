@@ -1,26 +1,23 @@
 package me.Munchii.JasminBuilder.Fields;
 
-public enum FieldAccessSpec
-{
+public enum FieldAccessSpec {
 
-    Public ("public"),
-    Private ("private"),
-    Protected ("protected"),
-    Static ("static"),
-    Final ("final"),
-    Volatile ("volatile"),
-    Transient ("transient");
+    PUBLIC("public"),
+    PRIVATE("private"),
+    PROTECTED("protected"),
+    STATIC("static"),
+    FINAL("final"),
+    VOLATILE("volatile"),
+    TRANSIENT("transient");
 
-    private String Representation;
+    private final String representation;
 
-    private FieldAccessSpec (String Representation)
-    {
-        this.Representation = Representation;
+    FieldAccessSpec(String representation) {
+        this.representation = representation;
     }
 
-    public String GetRepresentation ()
-    {
-        return Representation;
+    public String getRepresentation() {
+        return representation;
     }
 
 }

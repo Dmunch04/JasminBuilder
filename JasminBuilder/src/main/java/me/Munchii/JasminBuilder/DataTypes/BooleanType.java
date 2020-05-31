@@ -1,11 +1,9 @@
 package me.Munchii.JasminBuilder.DataTypes;
 
-public class BooleanType extends DataType
-{
+public class BooleanType extends DataType {
 
-    public BooleanType ()
-    {
-        super ("Z", ValueType.Boolean);
+    public BooleanType() {
+        super("Z", ValueType.BOOLEAN);
     }
 
 }

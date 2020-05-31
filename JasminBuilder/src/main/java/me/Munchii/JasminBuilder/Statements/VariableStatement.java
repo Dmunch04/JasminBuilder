@@ -1,81 +1,70 @@
 package me.Munchii.JasminBuilder.Statements;
 
-import me.Munchii.JasminBuilder.Blocks.JasminBlock;
 import me.Munchii.JasminBuilder.JasminPassable;
 import me.Munchii.JasminBuilder.References.VariableReference;
 import me.Munchii.JasminBuilder.Types.VariableType;
 import me.Munchii.JasminBuilder.Variable;
 
-public class VariableStatement implements JasminStatement
-{
+public class VariableStatement implements JasminStatement {
 
-    private VariableType Type;
-    private Variable Variable;
-    private JasminPassable Value;
-    private String Name;
+    private final VariableType type;
+    private final Variable variable;
+    private final JasminPassable value;
+    private final String name;
 
-    public VariableStatement (VariableType Type, Variable Variable)
-    {
-        this (Type, Variable, Variable.GetValue ());
+    public VariableStatement(VariableType type, Variable variable) {
+        this(type, variable, variable.getValue());
     }
 
-    public VariableStatement (VariableType Type, Variable Variable, JasminPassable Value)
-    {
-        this.Type = Type;
-        this.Variable = Variable;
-        this.Value = Value;
-        this.Name = Variable.GetName ();
+    public VariableStatement(VariableType type, Variable variable, JasminPassable value) {
+        this.type = type;
+        this.variable = variable;
+        this.value = value;
+        this.name = variable.getName();
     }
 
     //* Only for loading variables
-    public VariableStatement (VariableType Type, String Name)
-    {
-        this.Type = Type;
-        this.Variable = null;
-        this.Value = null;
-        this.Name = Name;
+    public VariableStatement(VariableType type, String name) {
+        this.type = type;
+        this.variable = null;
+        this.value = null;
+        this.name = name;
     }
 
     @Override
-    public String ToOutputString ()
-    {
-        if (Type != VariableType.Load)
-        {
-            StringBuilder Builder = new StringBuilder ();
+    public String toOutputString() {
+        if (type != VariableType.LOAD) {
+            StringBuilder builder = new StringBuilder();
 
-            for (JasminStatement Statement : Value.PushToStack ())
-                Builder.append (Statement.ToOutputString ()).append ("\n");
+            for (JasminStatement statement : value.pushToStack())
+                builder.append(statement.toOutputString()).append("\n");
 
-            Builder.append (Variable.Store ().ToOutputString ());
+            builder.append(variable.store().toOutputString());
 
-            return Builder.toString ();
+            return builder.toString();
         }
 
         //* Don't worry about this, as it won't be written to the code
         return "";
     }
-    public VariableType GetType ()
-    {
-        return Type;
+
+    public VariableType getType() {
+        return type;
     }
 
-    public Variable GetVariable ()
-    {
-        return Variable;
+    public Variable getVariable() {
+        return variable;
     }
 
-    public JasminPassable GetValue ()
-    {
-        return Value;
+    public JasminPassable getValue() {
+        return value;
     }
 
-    public String GetName ()
-    {
-        return Name;
+    public String getName() {
+        return name;
     }
 
-    public VariableReference GetReference ()
-    {
-        return new VariableReference (Name);
+    public VariableReference getReference() {
+        return new VariableReference(name);
     }
 }

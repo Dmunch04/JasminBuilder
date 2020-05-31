@@ -12,7 +12,6 @@ import me.Munchii.JasminBuilder.Instructions.PrintInstruction;
 import me.Munchii.JasminBuilder.Methods.JasminMethod;
 import me.Munchii.JasminBuilder.Methods.MethodAccessSpec;
 import me.Munchii.JasminBuilder.References.ClassInstance;
-import me.Munchii.JasminBuilder.Statements.JasminStatement;
 import me.Munchii.JasminBuilder.Testing.TestCase;
 import me.Munchii.JasminBuilder.Types.*;
 import me.Munchii.JasminBuilder.Utils.ExpressionBuilder;
@@ -23,78 +22,72 @@ import java.util.ArrayList;
 
 import static java.util.Arrays.asList;
 
-public class FibonacciTest implements TestCase
-{
+public class FibonacciTest implements TestCase {
 
     @Override
-    public void Run ()
-    {
-        JasminFile File = new JasminFile ("Out/", "Fibonacci");
+    public void run() {
+        JasminFile file = new JasminFile("out/", "Fibonacci");
+        JasminClass fibonacciClass = new JasminClass("Fibonacci", ClassAccessSpec.PUBLIC);
 
-        JasminClass Class = new JasminClass ("Fibonacci", ClassAccessSpec.Public);
+        JasminMethod initMethod = MethodCreator.createConstructorMethod();
 
-        JasminMethod InitMethod = MethodCreator.CreateConstructorMethod ();
-
-        JasminMethod FibMethod = new JasminMethod ("Fib", DataType.Long, asList (MethodAccessSpec.Public), DataType.Long);
-        Variable Arg1 = FibMethod.GetVariable ("arg1");
-        FibMethod.AddStackLimit (50)
-                .AddLocalsLimit (50)
-                .AddInstruction (new IfInstruction (
+        JasminMethod fibMethod = new JasminMethod("Fib", DataType.LONG, asList(MethodAccessSpec.PUBLIC), DataType.LONG);
+        Variable arg1 = fibMethod.getVariable("arg1");
+        fibMethod.addStackLimit(50)
+                .addLocalsLimit(50)
+                .addInstruction(new IfInstruction(
                         // else return 1
-                        new JasminBlock ("ELSE")
-                                .Return (new JasminValue (1, DataType.Long)),
+                        new JasminBlock("ELSE")
+                                .returnValue(new JasminValue(1, DataType.LONG)),
 
                         // if (n > 1)
-                        new JasminConditionBlock (
-                                new JasminCondition (Arg1, new JasminValue (1, DataType.Long), ConditionType.GreaterThan),
-                                MakeFibBlock (FibMethod)
+                        new JasminConditionBlock(
+                                new JasminCondition(arg1, new JasminValue(1, DataType.LONG), ConditionType.GREATER_THAN),
+                                makeFibBlock(fibMethod)
                         )
                 ));
 
-        JasminMethod MainMethod = MethodCreator.CreateMainMethod ();
-        MainMethod.AddStackLimit (50);
-        MainMethod.AddLocalsLimit (50);
+        JasminMethod mainMethod = MethodCreator.createMainMethod();
+        mainMethod.addStackLimit(50);
+        mainMethod.addLocalsLimit(50);
         // Create a new instance of this class so we can access non-static fields and functions
-        MainMethod.DeclareVariable (new ClassInstance ("this", "Fibonacci", new ArrayList<> ()));
+        mainMethod.declareVariable(new ClassInstance("this", "Fibonacci", new ArrayList<>()));
 
         // Call the `Fib` function and store the result
-        JasminPassable Result = MethodInvocation.CallMethod (Class, FibMethod, new JasminValue (45, DataType.Long));
+        JasminPassable result = MethodInvocation.callMethod(fibonacciClass, fibMethod, new JasminValue(45, DataType.LONG));
 
         // Print the result
-        MainMethod.AddInstruction (new PrintInstruction (Result));
+        mainMethod.addInstruction(new PrintInstruction(result));
 
-        Class.AddMethod (InitMethod);
-        Class.AddMethod (FibMethod);
-        Class.AddMethod (MainMethod);
+        fibonacciClass.addMethod(initMethod);
+        fibonacciClass.addMethod(fibMethod);
+        fibonacciClass.addMethod(mainMethod);
 
-        File.AddClass (Class);
-        System.out.println (File.ToOutputString ());
-        File.Write ();
+        file.addClass(fibonacciClass);
+        System.out.println(file.toOutputString());
+        file.write();
     }
 
-    private JasminBlock MakeFibBlock (JasminMethod Method)
-    {
-        Variable Arg1 = Method.GetVariable ("arg1");
-
-        JasminBlock Block =  new JasminBlock ("FibThing");
+    private JasminBlock makeFibBlock(JasminMethod method) {
+        Variable arg1 = method.getVariable("arg1");
+        JasminBlock block = new JasminBlock("FibThing");
 
         // a = n - 1
-        JasminPassable ValueArg1 = ExpressionBuilder.Subtract (Arg1, new JasminValue (1, DataType.Long));
+        JasminPassable value1 = ExpressionBuilder.subtract(arg1, new JasminValue(1, DataType.LONG));
         // b = n - 2
-        JasminPassable ValueArg2 = ExpressionBuilder.Subtract (Arg1, new JasminValue (2, DataType.Long));
+        JasminPassable value2 = ExpressionBuilder.subtract(arg1, new JasminValue(2, DataType.LONG));
         // val1 = fib(a)
-        JasminPassable Value1 = MethodInvocation.CallMethod("Fibonacci", "Fib", asList (ValueArg1), DataType.Long, DataType.Long);
+        JasminPassable result1 = MethodInvocation.callMethod("Fibonacci", "Fib", asList(value1), DataType.LONG, DataType.LONG);
         // val2 = fib(b)
-        JasminPassable Value2 = MethodInvocation.CallMethod("Fibonacci", "Fib", asList (ValueArg2), DataType.Long, DataType.Long);
+        JasminPassable result2 = MethodInvocation.callMethod("Fibonacci", "Fib", asList(value2), DataType.LONG, DataType.LONG);
         // return val1 + val2
-        Block.Return (ExpressionBuilder.Add (Value1, Value2));
+        block.returnValue(ExpressionBuilder.add(result1, result2));
 
-        return Block;
+        return block;
     }
 
     @Override
-    public String GetName ()
-    {
+    public String getName() {
         return "FibonacciTest";
     }
 

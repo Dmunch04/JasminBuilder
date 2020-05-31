@@ -8,38 +8,34 @@ import me.Munchii.JasminBuilder.Methods.JasminMethod;
 import me.Munchii.JasminBuilder.Types.FieldManipulationType;
 import me.Munchii.JasminBuilder.Types.MethodInvocationType;
 
-public class PrintInstruction implements JasminInstruction
-{
+public class PrintInstruction implements JasminInstruction {
 
-    private final JasminPassable Value;
-    private final DataType ValueType;
+    private final JasminPassable value;
+    private final DataType valueType;
 
-    public PrintInstruction (JasminPassable Value)
-    {
-        this.Value = Value;
+    public PrintInstruction(JasminPassable value) {
+        this.value = value;
 
-        if (Value.GetType ().IsReference ()) this.ValueType = ReferenceType.MakeReferenceInstance (Value.GetType ());
-        else this.ValueType = Value.GetType ();
+        if (value.getType().isReference()) this.valueType = ReferenceType.makeReferenceInstance(value.getType());
+        else this.valueType = value.getType();
     }
 
     @Override
-    public void Write (JasminMethod Method)
-    {
+    public void write(JasminMethod method) {
         // Printing requires stack +2
-        Method.AddFieldManipulationStatement (FieldManipulationType.GetStatic, "java/lang/System/out", new ReferenceType ("java/io/PrintStream", true))
-                .AddValue (Value)
-                .AddMethodInvokationStatement (MethodInvocationType.InvokeVirtual, "java/io/PrintStream/println", DataType.Void, ValueType)
-                .AddStackLimit (2);
+        method.addFieldManipulationStatement(FieldManipulationType.GET_STATIC, "java/lang/System/out", new ReferenceType("java/io/PrintStream", true))
+                .addValue(value)
+                .addMethodInvocationStatement(MethodInvocationType.INVOKE_VIRTUAL, "java/io/PrintStream/println", DataType.VOID, valueType)
+                .addStackLimit(2);
     }
 
     @Override
-    public void Write (JasminBlock Block)
-    {
+    public void write(JasminBlock block) {
         // Printing require stack +2
-        Block.AddFieldManipulationStatement (FieldManipulationType.GetStatic, "java/lang/System/out", new ReferenceType ("java/io/PrintStream", true))
-                .AddValue (Value)
-                .AddMethodInvocationStatement(MethodInvocationType.InvokeVirtual, "java/io/PrintStream/println", DataType.Void, ValueType)
-                .AddStackLimit (2);
+        block.addFieldManipulationStatement(FieldManipulationType.GET_STATIC, "java/lang/System/out", new ReferenceType("java/io/PrintStream", true))
+                .addValue(value)
+                .addMethodInvocationStatement(MethodInvocationType.INVOKE_VIRTUAL, "java/io/PrintStream/println", DataType.VOID, valueType)
+                .addStackLimit(2);
     }
 
 }

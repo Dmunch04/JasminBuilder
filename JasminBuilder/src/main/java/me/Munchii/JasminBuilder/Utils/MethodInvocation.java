@@ -13,89 +13,74 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-public class MethodInvocation
-{
+public class MethodInvocation {
 
-    public static JasminPassable CallMethod (JasminClass Class, JasminMethod Method, JasminPassable... Arguments)
-    {
-        return CallMethod (Class, Method, asList (Arguments));
+    public static JasminPassable callMethod(JasminClass jasminClass, JasminMethod method, JasminPassable... arguments) {
+        return callMethod(jasminClass, method, asList(arguments));
     }
 
-    public static JasminPassable CallMethod (JasminClass Class, JasminMethod Method, List<JasminPassable> Arguments)
-    {
-        return CallMethod (Class.GetClassName (), Method.GetMethodName (), Arguments, Method.GetMethodReturnType (), Method.GetArgs ());
+    public static JasminPassable callMethod(JasminClass jasminClass, JasminMethod method, List<JasminPassable> arguments) {
+        return callMethod(jasminClass.getClassName(), method.getMethodName(), arguments, method.getMethodReturnType(), method.getParamTypes());
     }
 
-    public static JasminPassable CallMethod (String Class, String MethodName, List<JasminPassable> Arguments, DataType ReturnType, DataType... ParamTypes)
-    {
-        return CallMethod (Class, MethodName, Arguments, ReturnType, asList (ParamTypes));
+    public static JasminPassable callMethod(String className, String methodName, List<JasminPassable> arguments, DataType returnType, DataType... paramTypes) {
+        return callMethod(className, methodName, arguments, returnType, asList(paramTypes));
     }
 
-    public static JasminPassable CallMethod (String Class, String MethodName, List<JasminPassable> Arguments, DataType ReturnType, List<DataType> ParamTypes)
-    {
-        return new JasminPassable () {
+    public static JasminPassable callMethod(String className, String methodName, List<JasminPassable> arguments, DataType returnType, List<DataType> paramTypes) {
+        return new JasminPassable() {
             @Override
-            public List<JasminStatement> PushToStack ()
-            {
-                List<JasminStatement> Statements = new ArrayList<JasminStatement> ();
+            public List<JasminStatement> pushToStack() {
+                List<JasminStatement> statements = new ArrayList<>();
 
-                Statements.add (new VariableStatement (VariableType.Load, "this"));
+                statements.add(new VariableStatement(VariableType.LOAD, "this"));
 
-                for (JasminPassable Arg : Arguments)
-                {
-                    Statements.addAll (Arg.PushToStack ());
+                for (JasminPassable arg : arguments) {
+                    statements.addAll(arg.pushToStack());
                 }
 
-                Statements.add (new MethodInvocationStatement (MethodInvocationType.InvokeVirtual, Class + "/" + MethodName, ReturnType, ParamTypes));
+                statements.add(new MethodInvocationStatement(MethodInvocationType.INVOKE_VIRTUAL, className + "/" + methodName, returnType, paramTypes));
 
-                return Statements;
+                return statements;
             }
 
             @Override
-            public DataType GetType ()
-            {
-                return ReturnType;
+            public DataType getType() {
+                return returnType;
             }
         };
     }
 
-    public static JasminPassable CallSpecialMethod (JasminClass Class, JasminMethod Method, JasminPassable... Arguments)
-    {
-        return CallSpecialMethod (Class, Method, asList (Arguments));
+    public static JasminPassable callSpecialMethod(JasminClass jasminClass, JasminMethod method, JasminPassable... arguments) {
+        return callSpecialMethod(jasminClass, method, asList(arguments));
     }
 
-    public static JasminPassable CallSpecialMethod (JasminClass Class, JasminMethod Method, List<JasminPassable> Arguments)
-    {
-        return CallSpecialMethod (Class.GetClassName (), Method.GetMethodName (), Arguments, Method.GetMethodReturnType (), Method.GetArgs ());
+    public static JasminPassable callSpecialMethod(JasminClass jasminClass, JasminMethod method, List<JasminPassable> arguments) {
+        return callSpecialMethod(jasminClass.getClassName(), method.getMethodName(), arguments, method.getMethodReturnType(), method.getParamTypes());
     }
 
-    public static JasminPassable CallSpecialMethod (String Class, String MethodName, List<JasminPassable> Arguments, DataType ReturnType, DataType... ParamTypes)
-    {
-        return CallSpecialMethod (Class, MethodName, Arguments, ReturnType, asList (ParamTypes));
+    public static JasminPassable callSpecialMethod(String className, String methodName, List<JasminPassable> arguments, DataType returnType, DataType... paramTypes) {
+        return callSpecialMethod(className, methodName, arguments, returnType, asList(paramTypes));
     }
 
-    public static JasminPassable CallSpecialMethod (String Class, String MethodName, List<JasminPassable> Arguments, DataType ReturnType, List<DataType> ParamTypes)
-    {
-        return new JasminPassable () {
+    public static JasminPassable callSpecialMethod(String className, String methodName, List<JasminPassable> arguments, DataType returnType, List<DataType> paramTypes) {
+        return new JasminPassable() {
             @Override
-            public List<JasminStatement> PushToStack ()
-            {
-                List<JasminStatement> Statements = new ArrayList<JasminStatement> ();
+            public List<JasminStatement> pushToStack() {
+                List<JasminStatement> statements = new ArrayList<>();
 
-                for (JasminPassable Arg : Arguments)
-                {
-                    Statements.addAll (Arg.PushToStack ());
+                for (JasminPassable arg : arguments) {
+                    statements.addAll(arg.pushToStack());
                 }
 
-                Statements.add (new MethodInvocationStatement(MethodInvocationType.InvokeSpecial, Class + "/" + MethodName, ReturnType, ParamTypes));
+                statements.add(new MethodInvocationStatement(MethodInvocationType.INVOKE_SPECIAL, className + "/" + methodName, returnType, paramTypes));
 
-                return Statements;
+                return statements;
             }
 
             @Override
-            public DataType GetType ()
-            {
-                return ReturnType;
+            public DataType getType() {
+                return returnType;
             }
         };
     }

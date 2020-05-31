@@ -1,8 +1,7 @@
 package me.Munchii.JasminBuilder.Statements;
 
-public interface JasminStatement
-{
+public interface JasminStatement {
 
-    String ToOutputString ();
+    String toOutputString();
 
 }

@@ -16,303 +16,286 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-public class JasminArray implements Variable, JasminPassable
-{
+public class JasminArray implements Variable, JasminPassable {
 
-    private String Name;
-    private int Index;
+    private final String name;
+    private int index;
 
-    private JasminPassable[] Elements;
-    private DataType Type;
-    private int Size;
-    private int Dimensions;
-    private int IndexPointer;
-    private ArrayType Array;
+    private final JasminPassable[] elements;
+    private final DataType type;
+    private final int size;
+    private final int dimensions;
+    private int indexPointer;
+    private final ArrayType arrayType;
 
-    private final JasminPassable LengthValue;
+    private final JasminPassable lengthValue;
 
-    public JasminArray (String Name, DataType Type, int Size)
-    {
-        this (Name, Type, Size, 1);
+    public JasminArray(String name, DataType type, int size) {
+        this(name, type, size, 1);
     }
 
-    public JasminArray (String Name, DataType Type, int Size, int Dimensions)
-    {
-        this (Name, Type, Size, Dimensions, new JasminPassable[Size]);
+    public JasminArray(String name, DataType type, int size, int dimensions) {
+        this(name, type, size, dimensions, new JasminPassable[size]);
     }
 
-    public JasminArray (String Name, DataType Type, int Size, JasminPassable[] Elements)
-    {
-        this (Name, Type, Size, 1, Elements);
+    public JasminArray(String name, DataType type, int size, JasminPassable[] elements) {
+        this(name, type, size, 1, elements);
     }
 
-    public JasminArray (String Name, DataType Type, int Size, int Dimensions, JasminPassable[] Elements)
-    {
-        this.Name = Name;
-        this.Index = -1;
+    public JasminArray(String name, DataType type, int size, int dimensions, JasminPassable[] elements) {
+        this.name = name;
+        this.index = -1;
 
-        this.Elements = Elements;
-        this.Type = Type;
-        this.Size = Size;
-        this.Dimensions = Dimensions;
-        this.IndexPointer = 0;
-        this.Array = new ArrayType (Type, Dimensions);
+        this.elements = elements;
+        this.type = type;
+        this.size = size;
+        this.dimensions = dimensions;
+        this.indexPointer = 0;
+        this.arrayType = new ArrayType(type, dimensions);
 
-        this.LengthValue = new JasminPassable () {
+        this.lengthValue = new JasminPassable() {
             @Override
-            public List<JasminStatement> PushToStack ()
-            {
+            public List<JasminStatement> pushToStack() {
                 // TODO: Should it be maybe long or double instead?
-                return asList (Helper.PushValueToStack (new JasminValue (Size, DataType.Integer)));
+                return asList(Helper.pushValueToStack(new JasminValue(size, DataType.INTEGER)));
             }
 
             @Override
-            public DataType GetType ()
-            {
-                return Type;
+            public DataType getType() {
+                return type;
             }
         };
     }
 
     @Override
-    public JasminStatement Store ()
-    {
-        switch (Index)
-        {
-            case 0: return new NoParameterStatement (NoParameterType.StoreReferenceIntoLocalVariable0);
-            case 1: return new NoParameterStatement (NoParameterType.StoreReferenceIntoLocalVariable1);
-            case 2: return new NoParameterStatement (NoParameterType.StoreReferenceIntoLocalVariable2);
-            case 3: return new NoParameterStatement (NoParameterType.StoreReferenceIntoLocalVariable3);
-            default: return new LocalVariableStatement (LocalVariableType.StoreReference, Index);
+    public JasminStatement store() {
+        switch (index) {
+            case 0:
+                return new NoParameterStatement(NoParameterType.STORE_REFERENCE_INTO_LOCAL_VARIABLE_0);
+            case 1:
+                return new NoParameterStatement(NoParameterType.STORE_REFERENCE_INTO_LOCAL_VARIABLE_1);
+            case 2:
+                return new NoParameterStatement(NoParameterType.STORE_REFERENCE_INTO_LOCAL_VARIABLE_2);
+            case 3:
+                return new NoParameterStatement(NoParameterType.STORE_REFERENCE_INTO_LOCAL_VARIABLE_3);
+            default:
+                return new LocalVariableStatement(LocalVariableType.STORE_REFERENCE, index);
         }
     }
 
     @Override
-    public List<JasminStatement> Declare ()
-    {
-        List<JasminStatement> Statements = new ArrayList<JasminStatement> ();
+    public List<JasminStatement> declare() {
+        List<JasminStatement> statements = new ArrayList<>();
 
-        if (Dimensions == 1)
-        {
-            Statements.add (Helper.PushValueToStack (new JasminValue (Size, DataType.Integer)));
-            Statements.add (new ObjectStatement (ObjectType.ANewArray, Type.GetRepresentation ()));
-        }
-
-        else
-        {
-            for (int Dimension = 0; Dimension < Dimensions; Dimension++)
-            {
+        if (dimensions == 1) {
+            statements.add(Helper.pushValueToStack(new JasminValue(size, DataType.INTEGER)));
+            statements.add(new ObjectStatement(ObjectType.A_NEW_ARRAY, type.getRepresentation()));
+        } else {
+            for (int dimension = 0; dimension < dimensions; dimension++) {
                 // TODO: Allow for multiple sizes, ex. `String[x][y]` instead of `String[x][x]`
-                Statements.add (Helper.PushValueToStack (new JasminValue (Size, DataType.Integer)));
+                statements.add(Helper.pushValueToStack(new JasminValue(size, DataType.INTEGER)));
             }
 
-            Statements.add (new MultiANewArrayStatement (Type, Dimensions));
+            statements.add(new MultiANewArrayStatement(type, dimensions));
         }
 
-        Statements.add (Store ());
+        statements.add(store());
 
-        for (int ElementIndex = 0; ElementIndex < Size; ElementIndex++)
-        {
-            JasminPassable Element = Elements[ElementIndex];
-            if (Element != null)
-            {
-                Statements.addAll (PushToStack ());
-                Statements.add (Helper.PushValueToStack (new JasminValue (ElementIndex, DataType.Integer)));
-                Statements.addAll (Element.PushToStack ());
-                Statements.add (StoreElement ());
+        for (int index = 0; index < size; index++) {
+            JasminPassable element = elements[index];
+            if (element != null) {
+                statements.addAll(pushToStack());
+                statements.add(Helper.pushValueToStack(new JasminValue(index, DataType.INTEGER)));
+                statements.addAll(element.pushToStack());
+                statements.add(storeElement());
             }
         }
 
-        return Statements;
+        return statements;
     }
 
     @Override
-    public List<JasminStatement> PushToStack ()
-    {
-        switch (Index)
-        {
-            case 0: return asList (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable0));
-            case 1: return asList (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable1));
-            case 2: return asList (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable2));
-            case 3: return asList (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable3));
-            default: return asList (new LocalVariableStatement (LocalVariableType.LoadReference, Index));
+    public List<JasminStatement> pushToStack() {
+        switch (index) {
+            case 0:
+                return asList(new NoParameterStatement(NoParameterType.LOAD_REFERENCE_FROM_LOCAL_VARIABLE_0));
+            case 1:
+                return asList(new NoParameterStatement(NoParameterType.LOAD_REFERENCE_FROM_LOCAL_VARIABLE_1));
+            case 2:
+                return asList(new NoParameterStatement(NoParameterType.LOAD_REFERENCE_FROM_LOCAL_VARIABLE_2));
+            case 3:
+                return asList(new NoParameterStatement(NoParameterType.LOAD_REFERENCE_FROM_LOCAL_VARIABLE_3));
+            default:
+                return asList(new LocalVariableStatement(LocalVariableType.LOAD_REFERENCE, index));
         }
     }
 
     //* Simple wrapper for `GetElement` method to avoid stack overflow error, since it can't access this classes `PushToStack()`
-    private List<JasminStatement> Load ()
-    {
-        return PushToStack ();
+    private List<JasminStatement> load() {
+        return pushToStack();
     }
 
-    public JasminStatement StoreElement ()
-    {
-        switch (Type.GetType ())
-        {
-            case Boolean:
-            case Byte: return new NoParameterStatement (NoParameterType.StoreIntoByteBooleanArray);
+    public JasminStatement storeElement() {
+        switch (type.getType()) {
+            case BOOLEAN:
+            case BYTE:
+                return new NoParameterStatement(NoParameterType.STORE_INTO_BYTE_BOOLEAN_ARRAY);
 
-            case Char: return new NoParameterStatement (NoParameterType.StoreIntoCharArray);
+            case CHAR:
+                return new NoParameterStatement(NoParameterType.STORE_INTO_CHAR_ARRAY);
 
-            case Double: return new NoParameterStatement (NoParameterType.StoreIntoDoubleArray);
+            case DOUBLE:
+                return new NoParameterStatement(NoParameterType.STORE_INTO_DOUBLE_ARRAY);
 
-            case Float: return new NoParameterStatement (NoParameterType.StoreIntoFloatArray);
+            case FLOAT:
+                return new NoParameterStatement(NoParameterType.STORE_INTO_FLOAT_ARRAY);
 
-            case Integer: return new NoParameterStatement (NoParameterType.StoreIntoIntegerArray);
+            case INTEGER:
+                return new NoParameterStatement(NoParameterType.STORE_INTO_INTEGER_ARRAY);
 
-            case Long: return new NoParameterStatement (NoParameterType.StoreIntoLongArray);
+            case LONG:
+                return new NoParameterStatement(NoParameterType.STORE_INTO_LONG_ARRAY);
 
-            case Short: return new NoParameterStatement (NoParameterType.StoreIntoShortArray);
+            case SHORT:
+                return new NoParameterStatement(NoParameterType.STORE_INTO_SHORT_ARRAY);
 
-            case Array:
-            case Reference: return new NoParameterStatement (NoParameterType.StoreIntoReferenceArray);
+            case ARRAY:
+            case REFERENCE:
+                return new NoParameterStatement(NoParameterType.STORE_INTO_REFERENCE_ARRAY);
         }
 
-        Logger.Error (String.format (Message.CouldNotMatchType, Helper.GetDataTypeName (Type)));
+        Logger.error(String.format(Message.COULD_NOT_MATCH_TYPE, Helper.getDataTypeName(type)));
         throw new AbortException();
     }
 
-    public JasminStatement LoadElement ()
-    {
-        switch (Type.GetType ())
-        {
-            case Boolean:
-            case Byte: return new NoParameterStatement (NoParameterType.LoadByteBooleanFromArray);
+    public JasminStatement loadElement() {
+        switch (type.getType()) {
+            case BOOLEAN:
+            case BYTE:
+                return new NoParameterStatement(NoParameterType.LOAD_BYTE_BOOLEAN_FROM_ARRAY);
 
-            case Char: return new NoParameterStatement (NoParameterType.LoadCharFromArray);
+            case CHAR:
+                return new NoParameterStatement(NoParameterType.LOAD_CHAR_FROM_ARRAY);
 
-            case Double: return new NoParameterStatement (NoParameterType.LoadDoubleFromArray);
+            case DOUBLE:
+                return new NoParameterStatement(NoParameterType.LOAD_DOUBLE_FROM_ARRAY);
 
-            case Float: return new NoParameterStatement (NoParameterType.LoadFloatFromArray);
+            case FLOAT:
+                return new NoParameterStatement(NoParameterType.LOAD_FLOAT_FROM_ARRAY);
 
-            case Integer: return new NoParameterStatement (NoParameterType.LoadIntegerFromArray);
+            case INTEGER:
+                return new NoParameterStatement(NoParameterType.LOAD_INTEGER_FROM_ARRAY);
 
-            case Long: return new NoParameterStatement (NoParameterType.LoadLongFromArray);
+            case LONG:
+                return new NoParameterStatement(NoParameterType.LOAD_LONG_FROM_ARRAY);
 
-            case Short: return new NoParameterStatement (NoParameterType.LoadShortFromArray);
+            case SHORT:
+                return new NoParameterStatement(NoParameterType.LOAD_SHORT_FROM_ARRAY);
 
-            case Array:
-            case Reference: return new NoParameterStatement (NoParameterType.LoadReferenceFromArray);
+            case ARRAY:
+            case REFERENCE:
+                return new NoParameterStatement(NoParameterType.LOAD_REFERENCE_FROM_ARRAY);
         }
 
-        Logger.Error (String.format (Message.CouldNotMatchType, Helper.GetDataTypeName (Type)));
-        throw new AbortException ();
+        Logger.error(String.format(Message.COULD_NOT_MATCH_TYPE, Helper.getDataTypeName(type)));
+        throw new AbortException();
     }
 
-    public JasminArray AddElement (JasminPassable Element)
-    {
-        return AddElement (IndexPointer, Element);
+    public JasminArray addElement(JasminPassable element) {
+        return addElement(indexPointer, element);
     }
 
-    public JasminArray AddElement (int ElementIndex, JasminPassable Element)
-    {
-        CheckType (Element.GetType ());
-        CheckIndex (ElementIndex);
+    public JasminArray addElement(int index, JasminPassable element) {
+        checkType(element.getType());
+        checkIndex(index);
 
-        Elements[ElementIndex] = Element;
-        IndexPointer = ElementIndex + 1;
+        elements[index] = element;
+        indexPointer = index + 1;
 
         return this;
     }
 
-    public JasminPassable GetElement (int ElementIndex)
-    {
-        CheckIndex (ElementIndex);
+    public JasminPassable getElement(int index) {
+        checkIndex(index);
 
         // TODO: We can maybe make this more efficient by having the `JasminPassable` values in a list?
         // ^^ This can maybe be done when reworking the array to allow for multi dimensions
-        return new JasminPassable () {
+        return new JasminPassable() {
             @Override
-            public List<JasminStatement> PushToStack ()
-            {
-                List<JasminStatement> Statements = new ArrayList<JasminStatement> ();
-                Statements.addAll (Load ());
-                Statements.add (Helper.PushValueToStack (new JasminValue (ElementIndex, DataType.Integer)));
-                Statements.add (LoadElement ());
+            public List<JasminStatement> pushToStack() {
+                List<JasminStatement> statements = new ArrayList<>();
+                statements.addAll(load());
+                statements.add(Helper.pushValueToStack(new JasminValue(index, DataType.INTEGER)));
+                statements.add(loadElement());
 
-                return Statements;
+                return statements;
             }
 
             @Override
-            public DataType GetType ()
-            {
-                return Type;
+            public DataType getType() {
+                return type;
             }
         };
     }
 
-    private void CheckType (DataType TargetType)
-    {
-        if (!TargetType.Compare (Type))
-        {
-            Logger.Error (String.format (Message.ValueMustBeSameType, Helper.GetDataTypeName (Type)));
-            System.exit (0x1);
+    private void checkType(DataType targetType) {
+        if (!targetType.compare(type)) {
+            Logger.error(String.format(Message.VALUE_MUST_BE_SAME_TYPE, Helper.getDataTypeName(type)));
+            System.exit(0x1);
         }
     }
 
-    private void CheckIndex (int ElementIndex)
-    {
-        if (ElementIndex >= Size)
-        {
-            Logger.Error (String.format (Message.IndexOutOfRange, ElementIndex));
-            System.exit (0x1);
+    private void checkIndex(int index) {
+        if (index >= size) {
+            Logger.error(String.format(Message.INDEX_OUT_OF_RANGE, index));
+            System.exit(0x1);
         }
     }
 
     @Override
-    public String GetName ()
-    {
-        return Name;
+    public String getName() {
+        return name;
     }
 
     @Override
-    public JasminPassable GetValue ()
-    {
+    public JasminPassable getValue() {
         // TODO: Is this really the best way lol?
-        return Elements.length > 0 ? Elements[0] : new JasminValue (0, DataType.Integer);
+        return elements.length > 0 ? elements[0] : new JasminValue(0, DataType.INTEGER);
     }
 
     @Override
-    public int GetIndex ()
-    {
-        return Index;
+    public int getIndex() {
+        return index;
     }
 
     @Override
-    public void SetIndex (int Index)
-    {
-        this.Index = Index;
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     @Override
-    public DataType GetType ()
-    {
-        return Array;
+    public DataType getType() {
+        return arrayType;
     }
 
-    public void SetIndexPointer (int Position)
-    {
-        this.IndexPointer = Position;
+    public void setIndexPointer(int position) {
+        this.indexPointer = position;
     }
 
-    public int GetIndexPointer ()
-    {
-        return IndexPointer;
+    public int getIndexPointer() {
+        return indexPointer;
     }
 
-    public void IncrementIndexPointer (int Amount)
-    {
-        this.IndexPointer += Amount;
+    public void incrementIndexPointer(int amount) {
+        this.indexPointer += amount;
     }
 
-    public void DecrementIndexPointer (int Amount)
-    {
-        this.IndexPointer -= Amount;
+    public void decrementIndexPointer(int amount) {
+        this.indexPointer -= amount;
     }
 
-    public JasminPassable GetLengthValue ()
-    {
-        return LengthValue;
+    public JasminPassable getLengthValue() {
+        return lengthValue;
     }
 
 }

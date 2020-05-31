@@ -1,27 +1,24 @@
 package me.Munchii.JasminBuilder.Methods;
 
-public enum MethodAccessSpec
-{
+public enum MethodAccessSpec {
 
-    Public ("public"),
-    Private ("private"),
-    Protected ("protected"),
-    Static ("static"),
-    Final ("final"),
-    Synchronized ("synchronized"),
-    Native ("native"),
-    Abstract ("abstract");
+    PUBLIC("public"),
+    PRIVATE("private"),
+    PROTECTED("protected"),
+    STATIC("static"),
+    FINAL("final"),
+    SYNCHRONIZED("synchronized"),
+    NATIVE("native"),
+    ABSTRACT("abstract");
 
-    private String Representation;
+    private final String representation;
 
-    private MethodAccessSpec (String Representation)
-    {
-        this.Representation = Representation;
+    MethodAccessSpec(String representation) {
+        this.representation = representation;
     }
 
-    public String GetRepresentation ()
-    {
-        return Representation;
+    public String getRepresentation() {
+        return representation;
     }
 
 }

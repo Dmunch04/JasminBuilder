@@ -9,79 +9,62 @@ import me.Munchii.JasminBuilder.Methods.JasminMethod;
 import me.Munchii.JasminBuilder.Types.FieldManipulationType;
 import me.Munchii.JasminBuilder.Utils.Helper;
 
-import java.util.stream.Collectors;
+public class InitFieldInstruction implements JasminInstruction {
 
-public class InitFieldInstruction implements JasminInstruction
-{
+    private final String className;
+    private final JasminField field;
+    private final JasminPassable value;
+    private final String comment;
 
-    private final String Class;
-    private final JasminField Field;
-    private final JasminPassable Value;
-    private final String Comment;
-
-    public InitFieldInstruction (String Class, JasminField Field)
-    {
-        this (Class, Field, Field.GetValue ());
+    public InitFieldInstruction(String className, JasminField field) {
+        this(className, field, field.getValue());
     }
 
-    public InitFieldInstruction (JasminClass Class, JasminField Field)
-    {
-        this (Class, Field, Field.GetValue ());
+    public InitFieldInstruction(JasminClass jasminClass, JasminField field) {
+        this(jasminClass, field, field.getValue());
     }
 
-    public InitFieldInstruction (JasminClass Class, JasminField Field, JasminPassable Value)
-    {
-        this (Class.GetClassName (), Field, Value);
+    public InitFieldInstruction(JasminClass jasminClass, JasminField field, JasminPassable value) {
+        this(jasminClass.getClassName(), field, value);
     }
 
-    public InitFieldInstruction (String Class, JasminField Field, JasminPassable Value)
-    {
-        this.Field = Field;
-        this.Value = Value;
-        this.Class = Class;
+    public InitFieldInstruction(String className, JasminField field, JasminPassable value) {
+        this.field = field;
+        this.value = value;
+        this.className = className;
 
-        StringBuilder FieldComment = new StringBuilder ();
-        FieldComment.append ("Field: ");
-        Field.GetAccessSpec ().forEach (Spec -> FieldComment.append (Spec.GetRepresentation ()).append (" "));
-        FieldComment.append (Helper.GetDataTypeName (Field.GetType ())).append (" ");
+        StringBuilder fieldComment = new StringBuilder();
+        fieldComment.append("Field: ");
+        field.getAccessSpec().forEach(Spec -> fieldComment.append(Spec.getRepresentation()).append(" "));
+        fieldComment.append(Helper.getDataTypeName(field.getType())).append(" ");
         // TODO: Find a way to represent value (`JasminPassable`)
-        FieldComment.append (Field.GetFieldName ()).append (" = ").append (Value).append (";");
-        this.Comment = FieldComment.toString ();
+        fieldComment.append(field.getFieldName()).append(" = ").append(value).append(";");
+        this.comment = fieldComment.toString();
     }
 
     @Override
-    public void Write (JasminMethod Method)
-    {
-        Method.AddComment (Comment);
+    public void write(JasminMethod method) {
+        method.addComment(comment);
 
-        Method.AddStatements (Value.PushToStack ());
+        method.addStatements(value.pushToStack());
 
-        if (Field.GetAccessSpec ().contains (FieldAccessSpec.Static))
-        {
-            Method.AddFieldManipulationStatement (FieldManipulationType.PutStatic, Helper.MakeFieldSpec (Class, Field.GetFieldName ()), Field.GetType ());
-        }
-
-        else
-        {
-            Method.AddFieldManipulationStatement (FieldManipulationType.PutField, Helper.MakeFieldSpec (Class, Field.GetFieldName ()), Field.GetType ());
+        if (field.getAccessSpec().contains(FieldAccessSpec.STATIC)) {
+            method.addFieldManipulationStatement(FieldManipulationType.PUT_STATIC, Helper.makeFieldSpec(className, field.getFieldName()), field.getType());
+        } else {
+            method.addFieldManipulationStatement(FieldManipulationType.PUT_FIELD, Helper.makeFieldSpec(className, field.getFieldName()), field.getType());
         }
     }
 
     @Override
-    public void Write (JasminBlock Block)
-    {
-        Block.AddComment (Comment);
+    public void write(JasminBlock block) {
+        block.addComment(comment);
 
-        Block.AddStatements (Value.PushToStack ());
+        block.addStatements(value.pushToStack());
 
-        if (Field.GetAccessSpec ().contains (FieldAccessSpec.Static))
-        {
-            Block.AddFieldManipulationStatement (FieldManipulationType.PutStatic, Helper.MakeFieldSpec (Class, Field.GetFieldName ()), Field.GetType ());
-        }
-
-        else
-        {
-            Block.AddFieldManipulationStatement (FieldManipulationType.PutField, Helper.MakeFieldSpec (Class, Field.GetFieldName ()), Field.GetType ());
+        if (field.getAccessSpec().contains(FieldAccessSpec.STATIC)) {
+            block.addFieldManipulationStatement(FieldManipulationType.PUT_STATIC, Helper.makeFieldSpec(className, field.getFieldName()), field.getType());
+        } else {
+            block.addFieldManipulationStatement(FieldManipulationType.PUT_FIELD, Helper.makeFieldSpec(className, field.getFieldName()), field.getType());
         }
     }
 }

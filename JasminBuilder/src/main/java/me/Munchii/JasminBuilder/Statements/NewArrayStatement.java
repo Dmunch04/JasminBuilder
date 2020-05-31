@@ -2,20 +2,17 @@ package me.Munchii.JasminBuilder.Statements;
 
 import me.Munchii.JasminBuilder.DataTypes.DataType;
 
-public class NewArrayStatement implements JasminStatement
-{
+public class NewArrayStatement implements JasminStatement {
 
-    private DataType Type;
+    private final DataType type;
 
-    public NewArrayStatement (DataType Type)
-    {
-        this.Type = Type;
+    public NewArrayStatement(DataType type) {
+        this.type = type;
     }
 
     @Override
-    public String ToOutputString ()
-    {
-        return "newarray " + Type.GetRepresentation ();
+    public String toOutputString() {
+        return "newarray " + type.getRepresentation();
     }
 
 }

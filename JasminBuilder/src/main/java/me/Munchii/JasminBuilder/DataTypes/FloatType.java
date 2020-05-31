@@ -1,11 +1,9 @@
 package me.Munchii.JasminBuilder.DataTypes;
 
-public class FloatType extends DataType
-{
+public class FloatType extends DataType {
 
-    public FloatType ()
-    {
-        super ("F", ValueType.Float);
+    public FloatType() {
+        super("F", ValueType.FLOAT);
     }
 
 }

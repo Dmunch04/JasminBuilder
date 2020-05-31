@@ -2,39 +2,34 @@ package me.Munchii.JasminBuilder;
 
 import me.Munchii.JasminBuilder.DataTypes.DataType;
 
-public class JasminType
-{
+public class JasminType {
 
-    private final String Descriptor;
+    private final String descriptor;
 
     /**
-     * @param Type The data type
+     * @param type The data type
      */
-    public JasminType (DataType Type)
-    {
-        this (Type.GetRepresentation ());
+    public JasminType(DataType type) {
+        this(type.getRepresentation());
     }
 
-    private JasminType (String Descriptor)
-    {
-        this.Descriptor = Descriptor;
+    private JasminType(String descriptor) {
+        this.descriptor = descriptor;
     }
 
     /**
-     * @param Class The class spec
+     * @param s The class spec
      * @return A new jasmin type
      */
-    public static JasminType CustomClass (String Class)
-    {
-        return new JasminType ("L" + Class);
+    public static JasminType customClass(String s) {
+        return new JasminType("L" + s);
     }
 
     /**
      * @return The type descriptor
      */
-    public String GetDescriptor ()
-    {
-        return Descriptor;
+    public String getDescriptor() {
+        return descriptor;
     }
 
 }

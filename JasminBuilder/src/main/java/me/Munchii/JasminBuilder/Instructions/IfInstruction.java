@@ -8,59 +8,50 @@ import me.Munchii.JasminBuilder.Methods.JasminMethod;
 import java.util.Arrays;
 import java.util.List;
 
-public class IfInstruction implements JasminInstruction
-{
+public class IfInstruction implements JasminInstruction {
 
-    private List<JasminConditionBlock> IfBlocks;
-    private JasminBlock ElseBlock;
+    private final List<JasminConditionBlock> ifBlocks;
+    private final JasminBlock elseBlock;
 
-    public IfInstruction (JasminConditionBlock... IfBlocks)
-    {
-        this (null, IfBlocks);
+    public IfInstruction(JasminConditionBlock... ifBlocks) {
+        this(null, ifBlocks);
     }
 
-    public IfInstruction (JasminBlock ElseBlock, JasminConditionBlock... IfBlocks)
-    {
-        this.IfBlocks = Arrays.asList (IfBlocks);
-        this.ElseBlock = ElseBlock;
+    public IfInstruction(JasminBlock elseBlock, JasminConditionBlock... ifBlocks) {
+        this.ifBlocks = Arrays.asList(ifBlocks);
+        this.elseBlock = elseBlock;
     }
 
     @Override
-    public void Write (JasminMethod Method)
-    {
-        for (JasminConditionBlock IfBlock : IfBlocks)
-        {
-            Method.AddStatements (IfBlock.GetBuilder ().Write (IfBlock.GetBlock ().GetLabel ()));
-            Method.AddBlock (IfBlock.GetBlock ());
+    public void write(JasminMethod method) {
+        for (JasminConditionBlock ifBlock : ifBlocks) {
+            method.addStatements(ifBlock.getBuilder().write(ifBlock.getBlock().getLabel()));
+            method.addBlock(ifBlock.getBlock());
         }
 
-        if (ElseBlock != null)
-        {
-            Method.AddComment ("Else block (" + ElseBlock.GetLabel () + ")");
-            Method.AddStatements (ElseBlock.GetStatements ());
-            Method.AddComment ("---");
+        if (elseBlock != null) {
+            method.addComment("Else block (" + elseBlock.getLabel() + ")");
+            method.addStatements(elseBlock.getStatements());
+            method.addComment("---");
         }
     }
 
     @Override
-    public void Write (JasminBlock Block)
-    {
-        for (JasminConditionBlock IfBlock : IfBlocks)
-        {
-            Block.AddStatements (IfBlock.GetBuilder ().Write (IfBlock.GetBlock ().GetLabel ()));
+    public void write(JasminBlock block) {
+        for (JasminConditionBlock ifBlock : ifBlocks) {
+            block.addStatements(ifBlock.getBuilder().write(ifBlock.getBlock().getLabel()));
 
             //* Ok so basically we cannot write a block inside a block. Which means the user already needs to have written the block
             //* If not then errors will ofc. happen when running it
             // TODO: Can we somehow prevent that the user does this?
-            //Block.AddBlock (IfBlock.GetBlock ());
-            Logger.Warning ("If block (" + IfBlock.GetBlock ().GetLabel () + ") will not be written! You need to write it yourself");
+            //Block.AddBlock (ifBlock.GetBlock ());
+            Logger.warning("If block (" + ifBlock.getBlock().getLabel() + ") will not be written! You need to write it yourself");
         }
 
-        if (ElseBlock != null)
-        {
-            Block.AddComment ("Else block (" + ElseBlock.GetLabel () + ")");
-            Block.AddStatements (ElseBlock.GetStatements ());
-            Block.AddComment ("---");
+        if (elseBlock != null) {
+            block.addComment("Else block (" + elseBlock.getLabel() + ")");
+            block.addStatements(elseBlock.getStatements());
+            block.addComment("---");
         }
     }
 

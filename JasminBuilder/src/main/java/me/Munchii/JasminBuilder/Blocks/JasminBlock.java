@@ -15,217 +15,197 @@ import java.util.List;
 /**
  * JasminBlock represents a block in Jasmin. It has a label and a list of statements
  */
-public class JasminBlock
-{
+public class JasminBlock {
 
-    private final String Name;
-    private final List<JasminStatement> Statements;
+    private final String name;
+    private final List<JasminStatement> statements;
 
     /**
-     * @param Name The label of the block
+     * @param name The label of the block
      */
-    public JasminBlock (String Name)
-    {
-        this.Name = Name;
-        this.Statements = new ArrayList<JasminStatement> ();
+    public JasminBlock(String name) {
+        this.name = name;
+        this.statements = new ArrayList<>();
     }
 
     /**
-     * @param Method The target method it should write the statements to
+     * @param method The target method it should write the statements to
      */
-    public void Write (JasminMethod Method)
-    {
-        for (JasminStatement Statement : Statements)
-        {
-            if (Statement instanceof VariableStatement)
-            {
-                VariableStatement Variable = (VariableStatement) Statement;
-                switch (Variable.GetType ())
-                {
-                    case Declare: Method.DeclareVariable (Variable.GetVariable ()); break;
-                    case Store: Method.StoreVariable (Variable.GetVariable (), Variable.GetValue ()); break;
-                    case Load: Method.LoadVariable (Variable.GetReference ()); break;
+    public void write(JasminMethod method) {
+        for (JasminStatement statement : statements) {
+            if (statement instanceof VariableStatement) {
+                VariableStatement variable = (VariableStatement) statement;
+                switch (variable.getType()) {
+                    case DECLARE:
+                        method.declareVariable(variable.getVariable());
+                        break;
+                    case STORE:
+                        method.storeVariable(variable.getVariable(), variable.getValue());
+                        break;
+                    case LOAD:
+                        method.loadVariable(variable.getReference());
+                        break;
                 }
-
+                continue;
+            } else if (statement instanceof LimitStatement) {
+                LimitStatement Limit = (LimitStatement) statement;
+                switch (Limit.getType()) {
+                    case STACK:
+                        method.addStackLimit(Limit.getAmount());
+                        break;
+                    case LOCALS:
+                        method.addLocalsLimit(Limit.getAmount());
+                        break;
+                }
                 continue;
             }
 
-            else if (Statement instanceof LimitStatement)
-            {
-                LimitStatement Limit = (LimitStatement) Statement;
-                switch (Limit.GetType ())
-                {
-                    case Stack: Method.AddStackLimit (Limit.GetAmount ()); break;
-                    case Locals: Method.AddLocalsLimit (Limit.GetAmount ()); break;
-                }
-
-                continue;
-            }
-
-            Method.AddStatement (Statement);
+            method.addStatement(statement);
         }
     }
 
-    public JasminBlock AddInstruction (JasminInstruction Instruction)
-    {
-        Instruction.Write (this);
+    public JasminBlock addInstruction(JasminInstruction instruction) {
+        instruction.write(this);
         return this;
     }
 
-    public JasminBlock AddStackLimit (int Amount)
-    {
-        Statements.add (new LimitStatement (LimitType.Stack, Amount));
+    public JasminBlock addStackLimit(int amount) {
+        statements.add(new LimitStatement(LimitType.STACK, amount));
         return this;
     }
 
-    public JasminBlock AddLocalsLimit (int Amount)
-    {
-        Statements.add (new LimitStatement (LimitType.Locals, Amount));
+    public JasminBlock addLocalsLimit(int amount) {
+        statements.add(new LimitStatement(LimitType.LOCALS, amount));
         return this;
     }
 
-    public JasminBlock AddComment (String Comment)
-    {
-        AddStatement (new CommentStatement (Comment));
-        return this;
+    public JasminBlock addComment(String s) {
+        return addStatement(new CommentStatement(s));
     }
 
-    public JasminBlock AddMethodInvocationStatement(MethodInvocationType Type, String MethodName, DataType MethodReturnType, DataType... Args)
-    {
-        AddStatement (new MethodInvocationStatement (Type, MethodName, MethodReturnType, Helper.DataTypeArrayToList (Args)));
-        return this;
+    public JasminBlock addMethodInvocationStatement(MethodInvocationType type, String methodName, DataType methodReturnType, DataType... paramTypes) {
+        return addStatement(new MethodInvocationStatement(type, methodName, methodReturnType, Helper.dataTypeArrayToList(paramTypes)));
     }
 
-    public JasminBlock AddFieldManipulationStatement (FieldManipulationType Type, String FieldSpec, DataType FieldType)
-    {
-        AddStatement (new FieldManipulationStatement (Type, FieldSpec, FieldType.GetRepresentation ()));
-        return this;
+    public JasminBlock addFieldManipulationStatement(FieldManipulationType type, String fieldSpec, DataType fieldType) {
+        return addStatement(new FieldManipulationStatement(type, fieldSpec, fieldType.getRepresentation()));
     }
 
-    public JasminBlock AddLoadConstantStatement (LoadConstantType Type, JasminValue Value)
-    {
-        AddStatement (new LoadConstantStatement (Type, Value));
-        return this;
+    public JasminBlock addLoadConstantStatement(LoadConstantType type, JasminValue value) {
+        return addStatement(new LoadConstantStatement(type, value));
+
     }
 
-    public JasminBlock AddLocalVariableStatement (LocalVariableType Type, int Index)
-    {
-        AddStatement (new LocalVariableStatement (Type, Index));
-        return this;
+    public JasminBlock addLocalVariableStatement(LocalVariableType type, int i) {
+        return addStatement(new LocalVariableStatement(type, i));
     }
 
-    public JasminBlock AddBranchStatement (BranchType Type, String Label)
-    {
-        AddStatement (new BranchStatement (Type, Label));
-        return this;
+    public JasminBlock addBranchStatement(BranchType type, String s) {
+        return addStatement(new BranchStatement(type, s));
     }
 
-    public JasminBlock AddObjectStatement (ObjectType Type, String Class)
-    {
-        AddStatement (new ObjectStatement (Type, Class));
-        return this;
+    public JasminBlock addObjectStatement(ObjectType type, String s) {
+        return addStatement(new ObjectStatement(type, s));
     }
 
-    public JasminBlock AddNoParameterStatement (NoParameterType Type)
-    {
-        AddStatement (new NoParameterStatement (Type));
-        return this;
+    public JasminBlock addNoParameterStatement(NoParameterType type) {
+        return addStatement(new NoParameterStatement(type));
     }
 
-    public JasminBlock AddSwitchStatement (SwitchType Type)
-    {
-        AddStatement (new SwitchStatement (Type));
-        return this;
+    public JasminBlock addSwitchStatement(SwitchType type) {
+        return addStatement(new SwitchStatement(type));
     }
 
-    public JasminBlock AddIntegerPushStatement (IntegerPushType Type, int Value)
-    {
-        AddStatement (new IntegerPushStatement (Type, Value));
+    public JasminBlock addIntegerPushStatement(IntegerPushType type, int value) {
+        return addStatement(new IntegerPushStatement(type, value));
+    }
+
+    /**
+     * @param statement The statement which will be added to the blocks statements
+     * @return The updated block
+     */
+    public JasminBlock addStatement(JasminStatement statement) {
+        statements.add(statement);
         return this;
     }
 
     /**
-     * @param Statement The statement which will be added to the blocks statements
+     * @param statements A list of statements which will be added to the blocks statements
      * @return The updated block
      */
-    public JasminBlock AddStatement (JasminStatement Statement)
-    {
-        Statements.add (Statement);
+    public JasminBlock addStatements(List<JasminStatement> statements) {
+        this.statements.addAll(statements);
         return this;
     }
 
     /**
-     * @param StatementList A list of statements which will be added to the blocks statements
+     * @param variable The variable to be declared
      * @return The updated block
      */
-    public JasminBlock AddStatements (List<JasminStatement> StatementList)
-    {
-        Statements.addAll (StatementList);
+    public JasminBlock declareVariable(Variable variable) {
+        statements.add(new VariableStatement(VariableType.DECLARE, variable));
         return this;
     }
 
     /**
-     * @param Variable The variable to be declared
+     * @param variable The variable the value should be stored in
+     * @param value    The value the variable should store
      * @return The updated block
      */
-    public JasminBlock DeclareVariable (Variable Variable)
-    {
-        Statements.add (new VariableStatement (VariableType.Declare, Variable));
+    public JasminBlock storeVariable(Variable variable, JasminPassable value) {
+        statements.add(new VariableStatement(VariableType.STORE, variable, value));
         return this;
     }
 
     /**
-     * @param Variable The variable the value should be stored in
-     * @param Value The value the variable should store
+     * @param reference The variable reference
      * @return The updated block
      */
-    public JasminBlock StoreVariable (Variable Variable, JasminPassable Value)
-    {
-        Statements.add (new VariableStatement (VariableType.Store, Variable, Value));
+    public JasminBlock loadVariable(VariableReference reference) {
+        statements.add(new VariableStatement(VariableType.LOAD, reference.name));
         return this;
     }
 
-    /**
-     * @param Reference The variable reference
-     * @return The updated block
-     */
-    public JasminBlock LoadVariable (VariableReference Reference)
-    {
-        Statements.add (new VariableStatement (VariableType.Load, Reference.Name));
+    public JasminBlock addValue(JasminPassable value) {
+        addStatements(value.pushToStack());
         return this;
     }
 
-    public JasminBlock AddValue (JasminPassable Value)
-    {
-        AddStatements (Value.PushToStack ());
-        return this;
-    }
+    public JasminBlock returnValue(JasminPassable value) {
+        statements.addAll(value.pushToStack());
 
-    public JasminBlock Return (JasminPassable Value)
-    {
-        Statements.addAll (Value.PushToStack ());
+        NoParameterType returnType;
+        switch (value.getType().getType()) {
+            case BOOLEAN:
+            case BYTE:
+            case CHAR:
+            case SHORT:
+            case INTEGER:
+                returnType = NoParameterType.RETURN_INTEGER;
+                break;
 
-        NoParameterType ReturnType = NoParameterType.Return;
-        switch (Value.GetType ().GetType ())
-        {
-            case Boolean:
-            case Byte:
-            case Char:
-            case Short:
-            case Integer: ReturnType = NoParameterType.ReturnInteger; break;
+            case FLOAT:
+                returnType = NoParameterType.RETURN_FLOAT;
+                break;
 
-            case Float: ReturnType = NoParameterType.ReturnFloat; break;
+            case DOUBLE:
+                returnType = NoParameterType.RETURN_DOUBLE;
+                break;
 
-            case Double: ReturnType = NoParameterType.ReturnDouble; break;
+            case LONG:
+                returnType = NoParameterType.RETURN_LONG;
+                break;
 
-            case Long: ReturnType = NoParameterType.ReturnLong; break;
+            case ARRAY:
+            case REFERENCE:
+                returnType = NoParameterType.RETURN_REFERENCE;
+                break;
 
-            case Array:
-            case Reference: ReturnType = NoParameterType.ReturnReference; break;
-
-            default: ReturnType = NoParameterType.Return; break;
+            default:
+                returnType = NoParameterType.RETURN;
+                break;
         }
-        Statements.add (new NoParameterStatement (ReturnType));
+        statements.add(new NoParameterStatement(returnType));
 
         return this;
     }
@@ -237,14 +217,12 @@ public class JasminBlock
     /**
      * @return The blocks label
      */
-    public String GetLabel ()
-    {
-        return Name;
+    public String getLabel() {
+        return name;
     }
 
-    public List<JasminStatement> GetStatements ()
-    {
-        return Statements;
+    public List<JasminStatement> getStatements() {
+        return statements;
     }
 
 }

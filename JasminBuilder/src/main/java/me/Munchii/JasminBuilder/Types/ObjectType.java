@@ -1,30 +1,27 @@
 package me.Munchii.JasminBuilder.Types;
 
-public enum ObjectType
-{
+public enum ObjectType {
 
     // Create new array of reference
-    ANewArray ("anewarray"),
+    A_NEW_ARRAY("anewarray"),
 
     // Check whether object is of given type
-    CheckCast ("checkcast"),
+    CHECK_CAST("checkcast"),
 
     // Determine if object is of given type
-    InstanceOf ("instanceof"),
+    INSTANCE_OF("instanceof"),
 
     // Create new object
-    New ("new");
+    NEW("new");
 
-    private String Representation;
+    private final String representation;
 
-    private ObjectType (String Representation)
-    {
-        this.Representation = Representation;
+    ObjectType(String representation) {
+        this.representation = representation;
     }
 
-    public String GetRepresentation ()
-    {
-        return Representation;
+    public String getRepresentation() {
+        return representation;
     }
 
 }

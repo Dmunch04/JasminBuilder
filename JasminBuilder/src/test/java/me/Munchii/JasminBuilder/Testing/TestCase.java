@@ -1,9 +1,9 @@
 package me.Munchii.JasminBuilder.Testing;
 
-public interface TestCase
-{
+public interface TestCase {
 
-    void Run ();
-    String GetName ();
+    void run();
+
+    String getName();
 
 }

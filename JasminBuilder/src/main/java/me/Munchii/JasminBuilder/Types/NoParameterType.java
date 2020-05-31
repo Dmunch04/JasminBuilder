@@ -1,374 +1,371 @@
 package me.Munchii.JasminBuilder.Types;
 
-public enum NoParameterType
-{
+public enum NoParameterType {
 
     // Load reference from array
-    LoadReferenceFromArray ("aaload"),
+    LOAD_REFERENCE_FROM_ARRAY("aaload"),
 
     // Store into reference array
-    StoreIntoReferenceArray ("aastore"),
+    STORE_INTO_REFERENCE_ARRAY("aastore"),
 
     // Push null
-    PushNull ("aconst_null"),
+    PUSH_NULL("aconst_null"),
 
     // Load reference from local variable
-    LoadReferenceFromLocalVariable0 ("aload_0"),
-    LoadReferenceFromLocalVariable1 ("aload_1"),
-    LoadReferenceFromLocalVariable2 ("aload_2"),
-    LoadReferenceFromLocalVariable3 ("aload_3"),
+    LOAD_REFERENCE_FROM_LOCAL_VARIABLE_0("aload_0"),
+    LOAD_REFERENCE_FROM_LOCAL_VARIABLE_1("aload_1"),
+    LOAD_REFERENCE_FROM_LOCAL_VARIABLE_2("aload_2"),
+    LOAD_REFERENCE_FROM_LOCAL_VARIABLE_3("aload_3"),
 
     // Return reference from method
-    ReturnReference ("areturn"),
+    RETURN_REFERENCE("areturn"),
 
     // Get length of array
-    ArrayLength ("arraylength"),
+    ARRAY_LENGTH("arraylength"),
 
     // Store reference into local variable
-    StoreReferenceIntoLocalVariable0 ("astore_0"),
-    StoreReferenceIntoLocalVariable1 ("astore_1"),
-    StoreReferenceIntoLocalVariable2 ("astore_2"),
-    StoreReferenceIntoLocalVariable3 ("astore_3"),
+    STORE_REFERENCE_INTO_LOCAL_VARIABLE_0("astore_0"),
+    STORE_REFERENCE_INTO_LOCAL_VARIABLE_1("astore_1"),
+    STORE_REFERENCE_INTO_LOCAL_VARIABLE_2("astore_2"),
+    STORE_REFERENCE_INTO_LOCAL_VARIABLE_3("astore_3"),
 
     // Throw exception or error
-    ThrowException ("athrow"),
+    THROW_EXCEPTION("athrow"),
 
     // Load byte or boolean from array
-    LoadByteBooleanFromArray ("baload"),
+    LOAD_BYTE_BOOLEAN_FROM_ARRAY("baload"),
 
     // Store into byte or boolean array
-    StoreIntoByteBooleanArray ("bastore"),
+    STORE_INTO_BYTE_BOOLEAN_ARRAY("bastore"),
 
     // For debugging, to implement breakpoints in the code
-    Breakpoint ("breakpoint"),
+    BREAKPOINT("breakpoint"),
 
     // Load char from array
-    LoadCharFromArray ("caload"),
+    LOAD_CHAR_FROM_ARRAY("caload"),
 
     // Store into char array
-    StoreIntoCharArray ("castore"),
+    STORE_INTO_CHAR_ARRAY("castore"),
 
     // Convert double to float
-    DoubleToFloat ("d2f"),
+    DOUBLE_TO_FLOAT("d2f"),
 
     // Convert double to int
-    DoubleToInteger ("d2i"),
+    DOUBLE_TO_INTEGER("d2i"),
 
     // Convert double to long
-    DoubleToLong ("d2l"),
+    DOUBLE_TO_LONG("d2l"),
 
     // Add double
-    AddDouble ("dadd"),
+    ADD_DOUBLE("dadd"),
 
     // Load double from array
-    LoadDoubleFromArray ("daload"),
+    LOAD_DOUBLE_FROM_ARRAY("daload"),
 
     // Store into double array
-    StoreIntoDoubleArray ("dastore"),
+    STORE_INTO_DOUBLE_ARRAY("dastore"),
 
     // Compare double
-    CompareDoubleGreater ("dcmpg"),
-    CompareDoubleLess ("dcmpl"),
+    COMPARE_DOUBLE_GREATER("dcmpg"),
+    COMPARE_DOUBLE_LESS("dcmpl"),
 
     // Push double
-    PushDouble0 ("dconst_0"),
-    PushDouble1 ("dconst_1"),
+    PUSH_DOUBLE_0("dconst_0"),
+    PUSH_DOUBLE_1("dconst_1"),
 
     // Divide double
-    DivideDouble ("ddiv"),
+    DIVIDE_DOUBLE("ddiv"),
 
     // Load double from local variable
-    LoadDoubleFromLocalVariable0 ("dload_0"),
-    LoadDoubleFromLocalVariable1 ("dload_1"),
-    LoadDoubleFromLocalVariable2 ("dload_2"),
-    LoadDoubleFromLocalVariable3 ("dload_3"),
+    LOAD_DOUBLE_FROM_LOCAL_VARIABLE_0("dload_0"),
+    LOAD_DOUBLE_FROM_LOCAL_VARIABLE_1("dload_1"),
+    LOAD_DOUBLE_FROM_LOCAL_VARIABLE_2("dload_2"),
+    LOAD_DOUBLE_FROM_LOCAL_VARIABLE_3("dload_3"),
 
     // Multiply double
-    MultiplyDouble ("dmul"),
+    MULTIPLY_DOUBLE("dmul"),
 
     // Negate double
-    NegateDouble ("dneg"),
+    NEGATE_DOUBLE("dneg"),
 
     // Remainder double
-    RemainderDouble ("drem"),
+    REMAINDER_DOUBLE("drem"),
 
     // Return double from method
-    ReturnDouble ("dreturn"),
+    RETURN_DOUBLE("dreturn"),
 
     // Store double into local variable
-    StoreDoubleIntoLocalVariable0 ("dstore_0"),
-    StoreDoubleIntoLocalVariable1 ("dstore_1"),
-    StoreDoubleIntoLocalVariable2 ("dstore_2"),
-    StoreDoubleIntoLocalVariable3 ("dstore_3"),
+    STORE_DOUBLE_INTO_LOCAL_VARIABLE_0("dstore_0"),
+    STORE_DOUBLE_INTO_LOCAL_VARIABLE_1("dstore_1"),
+    STORE_DOUBLE_INTO_LOCAL_VARIABLE_2("dstore_2"),
+    STORE_DOUBLE_INTO_LOCAL_VARIABLE_3("dstore_3"),
 
     // Subtract double
-    SubtractDouble ("dsub"),
+    SUBTRACT_DOUBLE("dsub"),
 
     // Duplicate the top operand stack value
-    DuplicateTopStackValue ("dup"),
+    DUPLICATE_TOP_STACK_VALUE("dup"),
 
     // Duplicate the top operand stack value and insert two values down
-    DuplicateTopStackValueX1 ("dup_x1"),
+    DUPLICATE_TOP_STACK_VALUE_X1("dup_x1"),
 
     // Duplicate the top operand stack value and insert two or three values down
-    DuplicateTopStackValueX2 ("dup_x2"),
+    DUPLICATE_TOP_STACK_VALUE_X2("dup_x2"),
 
     // Duplicate the top one or two operand stack values
-    DuplicateTopOneTwoStackValues ("dup2"),
+    DUPLICATE_TOP_ONE_TWO_STACK_VALUES("dup2"),
 
     // Duplicate the top one or two operand stack values and insert two or three values down
-    DuplicateTopOneTwoStackValuesX1 ("dup2_x1"),
+    DUPLICATE_TOP_ONE_TWO_STACK_VALUES_X1("dup2_x1"),
 
     // Duplicate the top one or two operand stack values and insert two, three, or four values down
-    DuplicateTopOneTwoStackValuesX2 ("dup2_x2"),
+    DUPLICATE_TOP_ONE_TWO_STACK_VALUES_X2("dup2_x2"),
 
     // Convert float to double
-    FloatToDouble ("f2d"),
+    FLOAT_TO_DOUBLE("f2d"),
 
     // Convert float to int
-    FloatToInteger ("f2i"),
+    FLOAT_TO_INTEGER("f2i"),
 
     // Convert float to long
-    FloatToLong ("f2l"),
+    FLOAT_TO_LONG("f2l"),
 
     // Add float
-    AddFloat ("fadd"),
+    ADD_FLOAT("fadd"),
 
     // Load float from array
-    LoadFloatFromArray ("faload"),
+    LOAD_FLOAT_FROM_ARRAY("faload"),
 
     // Store into float array
-    StoreIntoFloatArray ("fastore"),
+    STORE_INTO_FLOAT_ARRAY("fastore"),
 
     // Compare float
-    CompareFloatGreater ("fcmpg"),
-    CompareFloatLess ("fcmpl"),
+    COMPARE_FLOAT_GREATER("fcmpg"),
+    COMPARE_FLOAT_LESS("fcmpl"),
 
     // Push float constant onto stack (0.0, 1.0, 2.0)
-    FloatConstant0 ("fconst_0"),
-    FloatConstant1 ("fconst_1"),
-    FloatConstant2 ("fconst_2"),
+    FLOAT_CONSTANT_0("fconst_0"),
+    FLOAT_CONSTANT_1("fconst_1"),
+    FLOAT_CONSTANT_2("fconst_2"),
 
     // Divide float
-    DivideFloat ("fdiv"),
+    DIVIDE_FLOAT("fdiv"),
 
     // Load float from local variable
-    LoadFloat0 ("fload_0"),
-    LoadFloat1 ("fload_1"),
-    LoadFloat2 ("fload_2"),
-    LoadFloat3 ("fload_3"),
+    LOAD_FLOAT_0("fload_0"),
+    LOAD_FLOAT_1("fload_1"),
+    LOAD_FLOAT_2("fload_2"),
+    LOAD_FLOAT_3("fload_3"),
 
     // Multiply float
-    MultiplyFloat ("fmul"),
+    MULTIPLY_FLOAT("fmul"),
 
     // Negate float
-    NegateFloat ("fneg"),
+    NEGATE_FLOAT("fneg"),
 
     // Remainder float (modulo - %)
-    RemainderFloat ("frem"),
+    REMAINDER_FLOAT("frem"),
 
     // Return float
-    ReturnFloat ("freturn"),
+    RETURN_FLOAT("freturn"),
 
     // Store float into local variable
-    StoreFloat0 ("fstore_0"),
-    StoreFloat1 ("fstore_1"),
-    StoreFloat2 ("fstore_2"),
-    StoreFloat3 ("fstore_3"),
+    STORE_FLOAT_0("fstore_0"),
+    STORE_FLOAT_1("fstore_1"),
+    STORE_FLOAT_2("fstore_2"),
+    STORE_FLOAT_3("fstore_3"),
 
     // Subtract float
-    SubtractFloat ("fsub"),
+    SUBTRACT_FLOAT("fsub"),
 
     // Convert integer to double
-    IntegerToDouble ("i2d"),
+    INTEGER_TO_DOUBLE("i2d"),
 
     // Convert int to float
-    IntegerToFloat ("i2f"),
+    INTEGER_TO_FLOAT("i2f"),
 
     // Convert int to long
-    IntegerToLong ("i2l"),
+    INTEGER_TO_LONG("i2l"),
 
     // Add int
-    AddInteger ("iadd"),
+    ADD_INTEGER("iadd"),
 
     // Load int from array
-    LoadIntegerFromArray ("iaload"),
+    LOAD_INTEGER_FROM_ARRAY("iaload"),
 
     // Boolean 'and' int
-    AndInteger ("iand"),
+    AND_INTEGER("iand"),
 
     // Store into int array
-    StoreIntoIntegerArray ("iastore"),
+    STORE_INTO_INTEGER_ARRAY("iastore"),
 
     // Push int constant onto stack (-1, 0, 1, 2, 3, 4, 5)
-    IntegerConstantNegative1 ("iconst_m1"),
-    IntegerConstant0 ("iconst_0"),
-    IntegerConstant1 ("iconst_1"),
-    IntegerConstant2 ("iconst_2"),
-    IntegerConstant3 ("iconst_3"),
-    IntegerConstant4 ("iconst_4"),
-    IntegerConstant5 ("iconst_5"),
+    INTEGER_CONSTANT_NEGATIVE_1("iconst_m1"),
+    INTEGER_CONSTANT_0("iconst_0"),
+    INTEGER_CONSTANT_1("iconst_1"),
+    INTEGER_CONSTANT_2("iconst_2"),
+    INTEGER_CONSTANT_3("iconst_3"),
+    INTEGER_CONSTANT_4("iconst_4"),
+    INTEGER_CONSTANT_5("iconst_5"),
 
     // Divide int
-    DivideInteger ("idiv"),
+    DIVIDE_INTEGER("idiv"),
 
     // Load int from local variable
-    LoadInteger0 ("iload_0"),
-    LoadInteger1 ("iload_1"),
-    LoadInteger2 ("iload_2"),
-    LoadInteger3 ("iload_3"),
+    LOAD_INTEGER_0("iload_0"),
+    LOAD_INTEGER_1("iload_1"),
+    LOAD_INTEGER_2("iload_2"),
+    LOAD_INTEGER_3("iload_3"),
 
     // Multiply int
-    MultiplyInteger ("imul"),
+    MULTIPLY_INTEGER("imul"),
 
     // Negate int
-    NegateInteger ("ineg"),
+    NEGATE_INTEGER("ineg"),
 
     // Convert int to byte
-    IntegerToByte ("int2byte"),
+    INTEGER_TO_BYTE("int2byte"),
 
     // Convert int to char
-    IntegerToChar ("int2char"),
+    INTEGER_TO_CHAR("int2char"),
 
     // Convert int to short
-    IntegerToShort ("int2short"),
+    INTEGER_TO_SHORT("int2short"),
 
     // Boolean 'or' int
-    OrInteger ("ior"),
+    OR_INTEGER("ior"),
 
     // Remainder int (modulo - %)
-    RemainderInteger ("irem"),
+    REMAINDER_INTEGER("irem"),
 
     // Return int
-    ReturnInteger ("ireturn"),
+    RETURN_INTEGER("ireturn"),
 
     // Shift int
-    ShiftLeftInteger ("ishl"),
-    ShiftRightInteger ("ishr"),
+    SHIFT_LEFT_INTEGER("ishl"),
+    SHIFT_RIGHT_INTEGER("ishr"),
 
     // Store int into local variable
-    StoreInteger0 ("istore_0"),
-    StoreInteger1 ("istore_1"),
-    StoreInteger2 ("istore_2"),
-    StoreInteger3 ("istore_3"),
+    STORE_INTEGER_0("istore_0"),
+    STORE_INTEGER_1("istore_1"),
+    STORE_INTEGER_2("istore_2"),
+    STORE_INTEGER_3("istore_3"),
 
     // Subtract int
-    SubtractInteger ("isub"),
+    SUBTRACT_INTEGER("isub"),
 
     // Logical shift right int
-    LogicalShiftRightInteger ("iushr"),
+    LOGICAL_SHIFT_RIGHT_INTEGER("iushr"),
 
     // Boolean 'xor' int
-    XORInteger ("ixor"),
+    XOR_INTEGER("ixor"),
 
     // Convert long to double
-    LongToDouble ("l2d"),
+    LONG_TO_DOUBLE("l2d"),
 
     // Convert long to float
-    LongToFloat ("l2f"),
+    LONG_TO_FLOAT("l2f"),
 
     // Convert long to int
-    LongToInteger ("l2i"),
+    LONG_TO_INTEGER("l2i"),
 
     // Add long
-    AddLong ("ladd"),
+    ADD_LONG("ladd"),
 
     // Load long from array
-    LoadLongFromArray ("laload"),
+    LOAD_LONG_FROM_ARRAY("laload"),
 
     // Boolean 'and' long
-    AndLong ("land"),
+    AND_LONG("land"),
 
     // Store into long array
-    StoreIntoLongArray ("lastore"),
+    STORE_INTO_LONG_ARRAY("lastore"),
 
     // Compare long (a > b = 1 | a == b = 0 | a < b = -1)
-    CompareLong ("lcmp"),
+    COMPARE_LONG("lcmp"),
 
     // Push long constant onto stack (9, 10)
-    LongConstant0 ("lconst_0"),
-    LongConstant1 ("lconst_1"),
+    LONG_CONSTANT_0("lconst_0"),
+    LONG_CONSTANT_1("lconst_1"),
 
     // Divide long
-    DivideLong ("ldiv"),
+    DIVIDE_LONG("ldiv"),
 
     // Load float from local variable
-    LoadLong0 ("lload_0"),
-    LoadLong1 ("lload_1"),
-    LoadLong2 ("lload_2"),
-    LoadLong3 ("lload_3"),
+    LOAD_LONG_0("lload_0"),
+    LOAD_LONG_1("lload_1"),
+    LOAD_LONG_2("lload_2"),
+    LOAD_LONG_3("lload_3"),
 
     // Multiply long
-    MultiplyLong ("lmul"),
+    MULTIPLY_LONG("lmul"),
 
     // Negate long
-    NegateLong ("lneg"),
+    NEGATE_LONG("lneg"),
 
     // Boolean 'or' long
-    OrLong ("lor"),
+    OR_LONG("lor"),
 
     // Remainder long (modulo - %)
-    RemainderLong ("lrem"),
+    REMAINDER_LONG("lrem"),
 
     // Return long
-    ReturnLong ("lreturn"),
+    RETURN_LONG("lreturn"),
 
     // Shift long
-    ShiftLeftLong ("lshl"),
-    ShiftRightLong ("lshr"),
+    SHIFT_LEFT_LONG("lshl"),
+    SHIFT_RIGHT_LONG("lshr"),
 
     // Store long into local variable
-    StoreLong0 ("lstore_0"),
-    StoreLong1 ("lstore_1"),
-    StoreLong2 ("lstore_2"),
-    StoreLong3 ("lstore_3"),
+    STORE_LONG_0("lstore_0"),
+    STORE_LONG_1("lstore_1"),
+    STORE_LONG_2("lstore_2"),
+    STORE_LONG_3("lstore_3"),
 
     // Subtract long
-    SubtractLong ("lsub"),
+    SUBTRACT_LONG("lsub"),
 
     // Logical shift right long
-    LogicalShiftRightLong ("lushr"),
+    LOGICAL_SHIFT_RIGHT_LONG("lushr"),
 
     // Boolean 'xor' long
-    XORLong ("lxor"),
+    XOR_LONG("lxor"),
 
     // Enter monitor for object
-    EnterMonitor ("monitorenter"),
+    ENTER_MONITOR("monitorenter"),
 
     // Exit monitor for object
-    ExitMonitor ("monitorexit"),
+    EXIT_MONITOR("monitorexit"),
 
     // Do nothing
-    Nop ("nop"),
+    NOP("nop"),
 
     // Pop the top operand stack value
-    Pop ("pop"),
+    POP("pop"),
 
     // Pop the top one or two operand stack values
-    Pop2 ("pop2"),
+    POP2("pop2"),
 
     // Return void
-    Return ("return"),
+    RETURN("return"),
 
     // Load short from array
-    LoadShortFromArray ("saload"),
+    LOAD_SHORT_FROM_ARRAY("saload"),
 
     // Store into short array
-    StoreIntoShortArray ("sastore"),
+    STORE_INTO_SHORT_ARRAY("sastore"),
 
     // Swap the top two operand stack values
-    Swap ("swap");
+    SWAP("swap");
 
-    private String Representation;
+    private final String representation;
 
-    private NoParameterType (String Representation)
-    {
-        this.Representation = Representation;
+    NoParameterType(String representation) {
+        this.representation = representation;
     }
 
-    public String GetRepresentation ()
-    {
-        return Representation;
+    public String getRepresentation() {
+        return representation;
     }
 
 }

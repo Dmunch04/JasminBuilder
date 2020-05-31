@@ -1,52 +1,48 @@
 package me.Munchii.JasminBuilder.Types;
 
-public enum LocalVariableType
-{
+public enum LocalVariableType {
 
     // Return from subroutine
-    Return ("ret"),
+    RETURN("ret"),
 
     // Load reference from local variable
-    LoadReference ("aload"),
+    LOAD_REFERENCE("aload"),
 
     // Store reference into local variable
-    StoreReference ("astore"),
+    STORE_REFERENCE("astore"),
 
     // Load double from local variable
-    LoadDouble ("dload"),
+    LOAD_DOUBLE("dload"),
 
     // Store double into local variable
-    StoreDouble ("dstore"),
+    STORE_DOUBLE("dstore"),
 
     // Load float from local variable
-    LoadFloat ("fload"),
+    LOAD_FLOAT("fload"),
 
     // Store float into local variable
-    StoreFloat ("fstore"),
+    STORE_FLOAT("fstore"),
 
     // Load int from local variable
-    LoadInteger ("iload"),
+    LOAD_INTEGER("iload"),
 
     // Store int into local variable
-    StoreInteger ("istore"),
+    STORE_INTEGER("istore"),
 
     // Load long from local variable
-    LoadLong ("lload"),
+    LOAD_LONG("lload"),
 
     // Store long into local variable
-    StoreLong ("lstore");
+    STORE_LONG("lstore");
 
+    private final String representation;
 
-    private String Representation;
-
-    private LocalVariableType (String Representation)
-    {
-        this.Representation = Representation;
+    LocalVariableType(String representation) {
+        this.representation = representation;
     }
 
-    public String GetRepresentation ()
-    {
-        return Representation;
+    public String getRepresentation() {
+        return representation;
     }
 
 }

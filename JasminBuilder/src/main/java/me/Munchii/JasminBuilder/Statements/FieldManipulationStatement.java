@@ -2,29 +2,26 @@ package me.Munchii.JasminBuilder.Statements;
 
 import me.Munchii.JasminBuilder.Types.FieldManipulationType;
 
-public class FieldManipulationStatement implements JasminStatement
-{
+public class FieldManipulationStatement implements JasminStatement {
 
-    private FieldManipulationType Type;
-    private String FieldSpec;
-    private String Descriptor;
+    private final FieldManipulationType type;
+    private final String fieldSpec;
+    private final String descriptor;
 
-    public FieldManipulationStatement (FieldManipulationType Type, String FieldSpec, String Descriptor)
-    {
-        this.Type = Type;
-        this.FieldSpec = FieldSpec;
-        this.Descriptor = Descriptor;
+    public FieldManipulationStatement(FieldManipulationType type, String fieldSpec, String descriptor) {
+        this.type = type;
+        this.fieldSpec = fieldSpec;
+        this.descriptor = descriptor;
     }
 
     @Override
-    public String ToOutputString ()
-    {
-        StringBuilder Builder = new StringBuilder ();
-        Builder.append (Type.GetRepresentation ()).append (" ");
-        Builder.append (FieldSpec).append (" ");
-        Builder.append (Descriptor);
+    public String toOutputString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(type.getRepresentation()).append(" ");
+        builder.append(fieldSpec).append(" ");
+        builder.append(descriptor);
 
-        return Builder.toString ();
+        return builder.toString();
     }
 
 }

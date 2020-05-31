@@ -12,156 +12,129 @@ import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 
-public class JasminClass implements Builder
-{
+public class JasminClass implements Builder {
 
-    private List<ClassAccessSpec> AccessSpec;
-    private String ClassName;
-    private String Super;
-    private List<String> Implements;
+    private final List<ClassAccessSpec> accessSpecs;
+    private final String className;
+    private final String superClass;
+    private final List<String> implementsClasses;
 
-    private List<JasminField> Fields;
-    private List<JasminMethod> Methods;
+    private final List<JasminField> fields;
+    private final List<JasminMethod> methods;
 
-    public JasminClass (String ClassName, ClassAccessSpec... AccessSpec)
-    {
-        this (ClassName, DataType.Object.GetRepresentation (), AccessSpec);
+    public JasminClass(String className, ClassAccessSpec... accessSpecs) {
+        this(className, DataType.OBJECT.getRepresentation(), accessSpecs);
     }
 
-    public JasminClass (String ClassName, String Super, ClassAccessSpec... AccessSpec)
-    {
-        this.AccessSpec = new ArrayList<ClassAccessSpec> ();
-        this.AccessSpec.addAll (asList (AccessSpec));
-        this.ClassName = ClassName;
-        this.Super = Super;
-        this.Implements = new ArrayList<String> ();
-        this.Fields = new ArrayList<JasminField> ();
-        this.Methods = new ArrayList<JasminMethod> ();
+    public JasminClass(String className, String superClass, ClassAccessSpec... accessSpecs) {
+        this.accessSpecs = new ArrayList<>();
+        this.accessSpecs.addAll(asList(accessSpecs));
+        this.className = className;
+        this.superClass = superClass;
+        this.implementsClasses = new ArrayList<>();
+        this.fields = new ArrayList<>();
+        this.methods = new ArrayList<>();
     }
 
     @Override
-    public String ToOutputString ()
-    {
-        StringBuilder Builder = new StringBuilder ();
-        Builder.append (".class").append (" ");
-        AccessSpec.forEach (Spec -> Builder.append (Spec.GetRepresentation ()).append (" "));
-        Builder.append (ClassName).append ("\n");
-        Builder.append (".super").append (" ");
-        Builder.append (Super).append ("\n");
+    public String toOutputString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(".class").append(" ");
+        accessSpecs.forEach(accessSpec -> builder.append(accessSpec.getRepresentation()).append(" "));
+        builder.append(className).append("\n");
+        builder.append(".super").append(" ");
+        builder.append(superClass).append("\n");
 
-        for (String Implement : Implements)
-        {
-            Builder.append (".super").append (" ");
-            Builder.append (Implement).append ("\n");
+        for (String implement : implementsClasses) {
+            builder.append(".super").append(" ");
+            builder.append(implement).append("\n");
         }
 
-        Builder.append ("\n");
+        builder.append("\n");
 
-        for (JasminField Field : Fields)
-        {
-            Builder.append (Field.ToOutputString ()).append ("\n");
+        for (JasminField field : fields) {
+            builder.append(field.toOutputString()).append("\n");
         }
 
-        if (!Fields.isEmpty ())
-            Builder.append ("\n");
+        if (!fields.isEmpty())
+            builder.append("\n");
 
-        for (JasminMethod Method : Methods)
-        {
-            StringBuilder MethodComment = new StringBuilder ();
-            MethodComment.append ("; Method: ");
+        for (JasminMethod method : methods) {
+            StringBuilder methodComment = new StringBuilder();
+            methodComment.append("; Method: ");
             // Access specs
-            Method.GetAccessSpec ().forEach (Spec -> MethodComment.append (Spec.GetRepresentation ()).append (" "));
+            method.getAccessSpecs().forEach(accessSpec -> methodComment.append(accessSpec.getRepresentation()).append(" "));
             // Return type
-            MethodComment.append (Helper.GetDataTypeName (Method.GetMethodReturnType ())).append (" ");
+            methodComment.append(Helper.getDataTypeName(method.getMethodReturnType())).append(" ");
             // Method name
-            MethodComment.append (Method.GetMethodName ()).append (" (");
-            // Args
-            String Args = String.join (", ", Method.GetArgs ().stream ().map (Helper::GetDataTypeName).collect (Collectors.toList ()));
-            MethodComment.append (Args).append (");");
+            methodComment.append(method.getMethodName()).append(" (");
+            // Params
+            String paramTypes = String.join(", ", method.getParamTypes().stream().map(Helper::getDataTypeName).collect(Collectors.toList()));
+            methodComment.append(paramTypes).append(");");
 
-            Builder.append (MethodComment.toString ()).append ("\n");
-
-            Builder.append (Method.ToOutputString ()).append ("\n").append ("\n");
+            builder.append(methodComment.toString()).append("\n");
+            builder.append(method.toOutputString()).append("\n").append("\n");
         }
 
-        Builder.deleteCharAt (Builder.length () - 1);
+        builder.deleteCharAt(builder.length() - 1);
 
-        return Builder.toString ();
+        return builder.toString();
     }
 
     // ========================
     // Getters & Setters
     // ========================
 
-    public List<ClassAccessSpec> GetAccessSpec ()
-    {
-        return AccessSpec;
+    public List<ClassAccessSpec> getAccessSpecs() {
+        return accessSpecs;
     }
 
-    public JasminClass AddAccessSpec (ClassAccessSpec AccessSpec)
-    {
-        if (!this.AccessSpec.contains (AccessSpec))
-            this.AccessSpec.add (AccessSpec);
+    public JasminClass addAccessSpec(ClassAccessSpec accessSpec) {
+        if (!this.accessSpecs.contains(accessSpec))
+            this.accessSpecs.add(accessSpec);
 
         return this;
     }
 
-    public JasminClass RemoveAccessSpec (ClassAccessSpec AccessSpec)
-    {
-        this.AccessSpec.remove (AccessSpec);
+    public JasminClass removeAccessSpec(ClassAccessSpec accessSpec) {
+        this.accessSpecs.remove(accessSpec);
 
         return this;
     }
 
-    public String GetClassName ()
-    {
-        return ClassName;
+    public String getClassName() {
+        return className;
     }
 
-    public String GetSuper ()
-    {
-        return Super;
+    public String getSuperClass() {
+        return superClass;
     }
 
-    public List<String> GetImplements ()
-    {
-        return Implements;
+    public List<String> getImplementsClasses() {
+        return implementsClasses;
     }
 
-    public JasminClass AddImplement (DataType Type)
-    {
-        return AddImplement (Type.GetRepresentation ());
-    }
-
-    public JasminClass AddImplement (String Class)
-    {
-        Implements.add (Class);
-
+    public JasminClass addImplement(String s) {
+        implementsClasses.add(s);
         return this;
     }
 
-    public List<JasminField> GetFields ()
-    {
-        return Fields;
+    public List<JasminField> getFields() {
+        return fields;
     }
 
-    public JasminClass AddField (JasminField Field)
-    {
-        Fields.add (Field);
-        Field.Hook (this);
-
+    public JasminClass addField(JasminField field) {
+        fields.add(field);
+        field.hook(this);
         return this;
     }
 
-    public List<JasminMethod> GetMethods ()
-    {
-        return Methods;
+    public List<JasminMethod> getMethods() {
+        return methods;
     }
 
-    public JasminClass AddMethod (JasminMethod Method)
-    {
-        Methods.add (Method);
-
+    public JasminClass addMethod(JasminMethod method) {
+        methods.add(method);
         return this;
     }
 

@@ -1,24 +1,21 @@
 package me.Munchii.JasminBuilder.Types;
 
-public enum SwitchType
-{
+public enum SwitchType {
 
     // Access jump table by key match and jump
-    LookupSwitch ("lookupswitch"),
+    LOOKUP_SWITCH("lookupswitch"),
 
     // Access jump table by index and jump
-    TableSwitch ("tableswitch");
+    TABLE_SWITCH("tableswitch");
 
-    private String Representation;
+    private final String representation;
 
-    private SwitchType (String Representation)
-    {
-        this.Representation = Representation;
+    SwitchType(String representation) {
+        this.representation = representation;
     }
 
-    public String GetRepresentation ()
-    {
-        return Representation;
+    public String getRepresentation() {
+        return representation;
     }
 
 }

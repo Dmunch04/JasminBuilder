@@ -1,11 +1,9 @@
 package me.Munchii.JasminBuilder.DataTypes;
 
-public class VoidType extends DataType
-{
+public class VoidType extends DataType {
 
-    public VoidType ()
-    {
-        super ("V", ValueType.Void);
+    public VoidType() {
+        super("V", ValueType.VOID);
     }
 
 }

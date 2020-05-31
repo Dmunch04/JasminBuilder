@@ -2,20 +2,17 @@ package me.Munchii.JasminBuilder.Statements;
 
 import me.Munchii.JasminBuilder.Types.SwitchType;
 
-public class SwitchStatement implements JasminStatement
-{
+public class SwitchStatement implements JasminStatement {
 
-    private SwitchType Type;
+    private final SwitchType type;
 
-    public SwitchStatement (SwitchType Type)
-    {
-        this.Type = Type;
+    public SwitchStatement(SwitchType type) {
+        this.type = type;
     }
 
     @Override
-    public String ToOutputString ()
-    {
-        return Type.GetRepresentation ();
+    public String toOutputString() {
+        return type.getRepresentation();
     }
 
 }

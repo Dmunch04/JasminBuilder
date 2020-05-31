@@ -1,21 +1,18 @@
 package me.Munchii.JasminBuilder.Types;
 
-public enum LimitType
-{
+public enum LimitType {
 
-    Stack ("stack"),
-    Locals ("locals");
+    STACK("stack"),
+    LOCALS("locals");
 
-    private String Representation;
+    private final String representation;
 
-    private LimitType (String Representation)
-    {
-        this.Representation = Representation;
+    LimitType(String representation) {
+        this.representation = representation;
     }
 
-    public String GetRepresentation ()
-    {
-        return Representation;
+    public String getRepresentation() {
+        return representation;
     }
 
 }

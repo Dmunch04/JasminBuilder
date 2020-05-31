@@ -8,17 +8,16 @@ import java.util.List;
 /**
  * `JasminPassable` represents any of following: `JasminField`, `JasminValue`, `JasminVariable` or `ExpressionBuilder`
  */
-public interface JasminPassable
-{
+public interface JasminPassable {
 
     /**
      * @return List of statements for pushing the value onto the stack
      */
-    List<JasminStatement> PushToStack ();
+    List<JasminStatement> pushToStack();
 
     /**
      * @return The data type of the passable
      */
-    DataType GetType ();
+    DataType getType();
 
 }

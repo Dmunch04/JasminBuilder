@@ -1,43 +1,34 @@
 package me.Munchii.JasminBuilder.DataTypes;
 
-import me.Munchii.JasminBuilder.Logging.Exceptions.AbortException;
-import me.Munchii.JasminBuilder.Logging.Logger;
+public class ReferenceType extends DataType {
 
-public class ReferenceType extends DataType
-{
+    private final boolean isInstance;
 
-    private final boolean IsInstance;
-
-    public ReferenceType (String Class)
-    {
-        this (Class, false);
+    public ReferenceType(String className) {
+        this(className, false);
     }
 
-    public ReferenceType (String Class, boolean IsInstance)
-    {
-        super (IsInstance ? "L" + Class + ";" : Class, ValueType.Reference);
+    public ReferenceType(String className, boolean isInstance) {
+        super(isInstance ? "L" + className + ";" : className, ValueType.REFERENCE);
 
-        this.IsInstance = IsInstance;
+        this.isInstance = isInstance;
     }
 
     // TODO: Hmm
-    public static DataType MakeReferenceInstance (DataType Type)
-    {
-        if (!(Type.GetType () == ValueType.Reference))
-        {
+    public static DataType makeReferenceInstance(DataType type) {
+        if (!(type.getType() == ValueType.REFERENCE)) {
             //Logger.Warning ("Cannot make non-reference an instance");
-            return Type;
+            return type;
         }
 
-        if (!((ReferenceType) Type).IsInstance ())
-            return new ReferenceType (Type.GetRepresentation (), true);
+        if (!((ReferenceType) type).isInstance())
+            return new ReferenceType(type.getRepresentation(), true);
 
-        return new ReferenceType (Type.GetRepresentation ());
+        return new ReferenceType(type.getRepresentation());
     }
 
-    public boolean IsInstance()
-    {
-        return IsInstance;
+    public boolean isInstance() {
+        return isInstance;
     }
 
 }

@@ -13,64 +13,55 @@ import java.util.List;
 /**
  * The `JasminFile` class represents a Jasmin file. It can hold several classes
  */
-public class JasminFile implements Builder
-{
+public class JasminFile implements Builder {
 
-    private final String OutputPath;
-    private final String FileName;
-    private final List<JasminClass> Classes;
+    private final String outputPath;
+    private final String fileName;
+    private final List<JasminClass> classes;
 
     /**
-     * @param OutputPath The destination directory for the file
-     * @param FileName The output files name
+     * @param outputPath The destination directory for the file
+     * @param fileName   The output files name
      */
-    public JasminFile (String OutputPath, String FileName)
-    {
-        this.OutputPath = OutputPath;
-        this.FileName = FileName + ".j";
-        this.Classes = new ArrayList<JasminClass> ();
+    public JasminFile(String outputPath, String fileName) {
+        this.outputPath = outputPath;
+        this.fileName = fileName + ".j";
+        this.classes = new ArrayList<>();
     }
 
     /**
      * Writes all the classes into a file
      */
-    public void Write ()
-    {
-        Path FilePath = Paths.get (OutputPath, FileName);
+    public void write() {
+        Path filePath = Paths.get(outputPath, fileName);
 
-        try
-        {
-            new File (OutputPath).mkdirs ();
+        try {
+            new File(outputPath).mkdirs();
 
-            File TargetFile = FilePath.toFile ();
-            TargetFile.createNewFile ();
+            File file = filePath.toFile();
+            file.createNewFile();
 
-            FileWriter Writer = new FileWriter (TargetFile);
-            Writer.write (ToOutputString ());
-            Writer.close ();
-        }
-
-        catch (IOException Error)
-        {
-            System.out.println ("Failed to write to file: " + FilePath.toString ());
-            Error.printStackTrace ();
+            FileWriter writer = new FileWriter(file);
+            writer.write(toOutputString());
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Failed to write to file: " + filePath.toString());
+            e.printStackTrace();
         }
 
     }
 
     @Override
-    public String ToOutputString ()
-    {
-        StringBuilder Builder = new StringBuilder ();
-        for (JasminClass Class : Classes)
-        {
-            Builder.append (Class.ToOutputString ()).append ("\n\n");
+    public String toOutputString() {
+        StringBuilder builder = new StringBuilder();
+        for (JasminClass jasminClass : classes) {
+            builder.append(jasminClass.toOutputString()).append("\n\n");
         }
 
         // Remove the last newlines
-        Builder.delete (Builder.length () - 3, Builder.length () - 1);
+        builder.delete(builder.length() - 3, builder.length() - 1);
 
-        return Builder.toString ();
+        return builder.toString();
     }
 
     // ========================
@@ -80,17 +71,15 @@ public class JasminFile implements Builder
     /**
      * @return A list of all the files classes
      */
-    public List<JasminClass> GetClasses ()
-    {
-        return Classes;
+    public List<JasminClass> getClasses() {
+        return classes;
     }
 
     /**
-     * @param Class The class to be added to the file
+     * @param jasminClass The class to be added to the file
      */
-    public void AddClass (JasminClass Class)
-    {
-        Classes.add (Class);
+    public void addClass(JasminClass jasminClass) {
+        classes.add(jasminClass);
     }
 
 }

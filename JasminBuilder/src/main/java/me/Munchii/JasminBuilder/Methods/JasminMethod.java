@@ -16,326 +16,279 @@ import java.util.Map;
 
 import static java.util.Arrays.asList;
 
-public class JasminMethod implements Builder
-{
+public class JasminMethod implements Builder {
 
-    private List<MethodAccessSpec> AccessSpec;
-    private String MethodName;
-    private DataType MethodReturnType;
-    private List<DataType> Args;
-    private List<JasminStatement> Statements;
-    private List<JasminBlock> Blocks;
+    private final List<MethodAccessSpec> accessSpecs;
+    private final String methodName;
+    private final DataType methodReturnType;
+    private List<DataType> paramTypes;
+    private final List<JasminStatement> statements;
+    private final List<JasminBlock> blocks;
 
-    private int Stack;
-    private int Locals;
-    private boolean DidReturn;
+    private int stack;
+    private int locals;
+    private boolean didReturn;
 
-    private Map<String, Variable> Variables;
-    private int VariableIndex;
+    private final Map<String, Variable> variables;
+    private int variableIndex;
 
-    private JasminScope Scope;
+    private JasminScope scope;
 
-    public JasminMethod (String MethodName, DataType MethodReturnType, MethodAccessSpec... AccessSpec)
-    {
-        this (MethodName, MethodReturnType, asList (AccessSpec), null);
+    public JasminMethod(String methodName, DataType methodReturnType, MethodAccessSpec... accessSpecs) {
+        this(methodName, methodReturnType, asList(accessSpecs), null);
     }
 
-    public JasminMethod (String MethodName, DataType MethodReturnType, List<MethodAccessSpec> AccessSpec, DataType... Args)
-    {
-        this.AccessSpec = AccessSpec;
-        this.MethodName = MethodName;
-        this.MethodReturnType = MethodReturnType;
+    public JasminMethod(String methodName, DataType methodReturnType, List<MethodAccessSpec> accessSpecs, DataType... paramTypes) {
+        this.accessSpecs = accessSpecs;
+        this.methodName = methodName;
+        this.methodReturnType = methodReturnType;
 
-        if (Args != null)
-            this.Args = asList (Args);
+        if (paramTypes != null)
+            this.paramTypes = asList(paramTypes);
         else
-            this.Args = new ArrayList<DataType> ();
+            this.paramTypes = new ArrayList<>();
 
-        this.Statements = new ArrayList<JasminStatement> ();
-        this.Blocks = new ArrayList<JasminBlock> ();
+        this.statements = new ArrayList<>();
+        this.blocks = new ArrayList<>();
 
-        this.Stack = 0;
-        this.Locals = Args != null ? Args.length : 0;
-        this.DidReturn = false;
+        this.stack = 0;
+        this.locals = paramTypes != null ? paramTypes.length : 0;
+        this.didReturn = false;
 
-        this.Variables = new HashMap<String, Variable> ();
-        this.VariableIndex = 0;
+        this.variables = new HashMap<>();
+        this.variableIndex = 0;
 
-        this.Scope = new JasminScope ();
+        this.scope = new JasminScope();
 
-        if (!AccessSpec.contains (MethodAccessSpec.Static))
-        {
-            Variables.put ("this", new JasminVariable ("this", VariableIndex, new JasminValue (null, DataType.EmptyReference)));
-            VariableIndex++;
+        if (!accessSpecs.contains(MethodAccessSpec.STATIC)) {
+            variables.put("this", new JasminVariable("this", variableIndex, new JasminValue(null, DataType.EMPTY_REFERENCE)));
+            variableIndex++;
         }
 
-        if (Args != null)
-        {
-            for (int Index = 0; Index < Args.length; Index++)
-            {
-                String ArgName = "arg" + (Index + 1);
-                Variables.put (ArgName, new JasminVariable (ArgName, VariableIndex, new JasminValue (null, Args[Index])));
-                VariableIndex++;
+        if (paramTypes != null) {
+            for (int i = 0; i < paramTypes.length; i++) {
+                String argName = "arg" + (i + 1);
+                variables.put(argName, new JasminVariable(argName, variableIndex, new JasminValue(null, paramTypes[i])));
+                variableIndex++;
             }
         }
     }
 
     @Override
-    public String ToOutputString ()
-    {
-        StringBuilder Builder = new StringBuilder ();
-        Builder.append (".method").append (" ");
-        AccessSpec.forEach (Spec -> Builder.append (Spec.GetRepresentation ()).append (" "));
-        Builder.append (Helper.MakeMethodSpec (MethodName, MethodReturnType, Args)).append ("\n");
+    public String toOutputString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(".method").append(" ");
+        accessSpecs.forEach(Spec -> builder.append(Spec.getRepresentation()).append(" "));
+        builder.append(Helper.makeMethodSpec(methodName, methodReturnType, paramTypes)).append("\n");
 
-        if (Stack != 0)
-            Builder.append ("\t").append (".limit stack").append (" ").append (Stack).append ("\n");
-        if (Locals != 0)
-            Builder.append ("\t").append (".limit locals").append (" ").append (Locals).append ("\n");
+        if (stack != 0)
+            builder.append("\t").append(".limit stack").append(" ").append(stack).append("\n");
+        if (locals != 0)
+            builder.append("\t").append(".limit locals").append(" ").append(locals).append("\n");
 
-        for (JasminStatement Statement : Scope.GetStatements ())
-        {
-            Builder.append ("\t").append (Statement.ToOutputString ()).append ("\n");
+        for (JasminStatement statement : scope.getStatements()) {
+            builder.append("\t").append(statement.toOutputString()).append("\n");
         }
 
-        JasminScope OuterScope = Scope;
-        for (JasminBlock Block : Blocks)
-        {
-            Scope = new JasminScope ();
-            Builder.append ("\n").append (Block.GetLabel ()).append (":\n");
-            Block.Write (this);
+        JasminScope outerScope = scope;
+        for (JasminBlock block : blocks) {
+            scope = new JasminScope();
+            builder.append("\n").append(block.getLabel()).append(":\n");
+            block.write(this);
 
-            for (JasminStatement Statement : Scope.GetStatements ())
-            {
-                Builder.append ("\t").append (Statement.ToOutputString ()).append ("\n");
+            for (JasminStatement statement : scope.getStatements()) {
+                builder.append("\t").append(statement.toOutputString()).append("\n");
             }
         }
-        Scope = OuterScope;
+        scope = outerScope;
 
         // If the user haven't added a return statement, return void
         // TODO: Well doesn't work well with scopes ay
-        if (!DidReturn)
-            Builder.append ("\t").append ("return").append ("\n");
+        if (!didReturn)
+            builder.append("\t").append("return").append("\n");
 
-        Builder.append (".end method");
+        builder.append(".end method");
 
-        return Builder.toString ();
+        return builder.toString();
     }
 
     // ========================
     // User methods
     // ========================
 
-    public JasminMethod AddInstruction (JasminInstruction Instruction)
-    {
-        Instruction.Write (this);
+    public JasminMethod addInstruction(JasminInstruction instruction) {
+        instruction.write(this);
         return this;
     }
 
-    public JasminMethod AddStackLimit (int Amount)
-    {
-        Stack += Amount;
+    public JasminMethod addStackLimit(int amount) {
+        stack += amount;
         return this;
     }
 
-    public JasminMethod AddLocalsLimit (int Amount)
-    {
-        Locals += Amount;
+    public JasminMethod addLocalsLimit(int amount) {
+        locals += amount;
         return this;
     }
 
-    public JasminMethod AddComment (String Comment)
-    {
-        AddStatement (new CommentStatement (Comment));
-        return this;
+    public JasminMethod addComment(String s) {
+        return addStatement(new CommentStatement(s));
     }
 
-    public JasminMethod AddMethodInvokationStatement (MethodInvocationType Type, String MethodName, DataType MethodReturnType, DataType... Args)
-    {
-        AddStatement (new MethodInvocationStatement(Type, MethodName, MethodReturnType, Helper.DataTypeArrayToList (Args)));
-        return this;
+    public JasminMethod addMethodInvocationStatement(MethodInvocationType type, String methodName, DataType methodReturnType, DataType... args) {
+        return addStatement(new MethodInvocationStatement(type, methodName, methodReturnType, Helper.dataTypeArrayToList(args)));
     }
 
-    public JasminMethod AddFieldManipulationStatement (FieldManipulationType Type, String FieldSpec, DataType FieldType)
-    {
-        AddStatement (new FieldManipulationStatement (Type, FieldSpec, FieldType.GetRepresentation ()));
-        return this;
+    public JasminMethod addFieldManipulationStatement(FieldManipulationType type, String fieldSpec, DataType fieldType) {
+        return addStatement(new FieldManipulationStatement(type, fieldSpec, fieldType.getRepresentation()));
     }
 
-    public JasminMethod AddLoadConstantStatement (LoadConstantType Type, JasminValue Value)
-    {
-        AddStatement (new LoadConstantStatement (Type, Value));
-        return this;
+    public JasminMethod addLoadConstantStatement(LoadConstantType type, JasminValue value) {
+        return addStatement(new LoadConstantStatement(type, value));
     }
 
-    public JasminMethod AddLocalVariableStatement (LocalVariableType Type, int Index)
-    {
-        AddStatement (new LocalVariableStatement (Type, Index));
-        return this;
+    public JasminMethod addLocalVariableStatement(LocalVariableType type, int i) {
+        return addStatement(new LocalVariableStatement(type, i));
     }
 
-    public JasminMethod AddBranchStatement (BranchType Type, String Label)
-    {
-        AddStatement (new BranchStatement (Type, Label));
-        return this;
+    public JasminMethod addBranchStatement(BranchType type, String s) {
+        return addStatement(new BranchStatement(type, s));
     }
 
-    public JasminMethod AddObjectStatement (ObjectType Type, String Class)
-    {
-        AddStatement (new ObjectStatement (Type, Class));
-        return this;
+    public JasminMethod addObjectStatement(ObjectType type, String s) {
+        return addStatement(new ObjectStatement(type, s));
     }
 
-    public JasminMethod AddNoParameterStatement (NoParameterType Type)
-    {
+    public JasminMethod addNoParameterStatement(NoParameterType type) {
         // If the user defines their own return statement, we don't need to add our own void return
         if (
-                Type == NoParameterType.Return ||
-                Type == NoParameterType.ReturnInteger ||
-                Type == NoParameterType.ReturnDouble ||
-                Type == NoParameterType.ReturnFloat ||
-                Type == NoParameterType.ReturnLong ||
-                Type == NoParameterType.ReturnReference
+                type == NoParameterType.RETURN ||
+                type == NoParameterType.RETURN_INTEGER ||
+                type == NoParameterType.RETURN_DOUBLE ||
+                type == NoParameterType.RETURN_FLOAT ||
+                type == NoParameterType.RETURN_LONG ||
+                type == NoParameterType.RETURN_REFERENCE
         )
-            DidReturn = true;
+            didReturn = true;
 
-        AddStatement (new NoParameterStatement (Type));
-        return this;
+        return addStatement(new NoParameterStatement(type));
     }
 
-    public JasminMethod AddSwitchStatement (SwitchType Type)
-    {
-        AddStatement (new SwitchStatement (Type));
-        return this;
+    public JasminMethod addSwitchStatement(SwitchType type) {
+        return addStatement(new SwitchStatement(type));
     }
 
-    public JasminMethod AddIntegerPushStatement (IntegerPushType Type, int Value)
-    {
-        AddStatement (new IntegerPushStatement (Type, Value));
-        return this;
+    public JasminMethod addIntegerPushStatement(IntegerPushType type, int value) {
+        return addStatement(new IntegerPushStatement(type, value));
     }
 
-    public JasminMethod AddReturnStatement ()
-    {
-        AddReturnStatement (null);
-        return this;
-    }
+    public JasminMethod addStatement(JasminStatement statement) {
+        if (statement instanceof ReturnStatement) this.didReturn = true;
 
-    public JasminMethod AddReturnStatement (JasminPassable Value)
-    {
-        AddStatement (new ReturnStatement (Value));
-        DidReturn = true;
-        return this;
-    }
-
-    public JasminMethod AddStatement (JasminStatement Statement)
-    {
-        if (Statement instanceof ReturnStatement) this.DidReturn = true;
-
-        if (CheckStatement (Statement))
-            Scope.AddStatement (Statement);
+        if (checkStatement(statement))
+            scope.addStatement(statement);
 
         return this;
     }
 
-    public JasminMethod AddStatements (List<JasminStatement> Statements)
-    {
-        if (Statements.stream ().anyMatch (Statement -> Statement instanceof ReturnStatement)) this.DidReturn = true;
+    public JasminMethod addStatements(List<JasminStatement> statements) {
+        if (statements.stream().anyMatch(Statement -> Statement instanceof ReturnStatement)) this.didReturn = true;
 
-        for (JasminStatement Statement : Statements)
-            AddStatement (Statement);
+        for (JasminStatement statement : statements)
+            addStatement(statement);
 
         return this;
     }
 
-    public JasminMethod AddBlock (JasminBlock Block)
-    {
-        Blocks.add (Block);
+    public JasminMethod addBlock(JasminBlock block) {
+        blocks.add(block);
         return this;
     }
 
     /**
-     * @param Variable The target variable which will be initialized with it's value
+     * @param variable The target variable which will be initialized with it's value
      * @return Returns the updated method
      */
-    public JasminMethod DeclareVariable (Variable Variable)
-    {
-        if (Variable.GetIndex() == -1)
-            Variable.SetIndex (VariableIndex);
+    public JasminMethod declareVariable(Variable variable) {
+        if (variable.getIndex() == -1)
+            variable.setIndex(variableIndex++);
 
-        AddStatements (Variable.Declare ());
+        addStatements(variable.declare());
 
-        Variables.put (Variable.GetName (), Variable);
-        VariableIndex++;
+        variables.put(variable.getName(), variable);
 
         return this;
     }
 
-    public JasminMethod StoreVariable (Variable Variable, JasminPassable Value)
-    {
-        if (Variable instanceof JasminArray)
-        {
-            AddStatements (Variable.PushToStack ());
-            AddStatement (Helper.PushValueToStack (new JasminValue (((JasminArray) Variable).GetIndexPointer (), DataType.Integer)));
+    public JasminMethod storeVariable(Variable variable, JasminPassable value) {
+        if (variable instanceof JasminArray) {
+            addStatements(variable.pushToStack());
+            addStatement(Helper.pushValueToStack(new JasminValue(((JasminArray) variable).getIndexPointer(), DataType.INTEGER)));
 
-            ((JasminArray) Variable).AddElement (Value);
+            ((JasminArray) variable).addElement(value);
         }
 
-        AddStatements (Value.PushToStack ());
+        addStatements(value.pushToStack());
 
-        if (Variable instanceof JasminArray) AddStatement (((JasminArray) Variable).StoreElement ());
-        else AddStatement (Variable.Store ());
-
-        return this;
-    }
-
-    public JasminMethod LoadVariable (VariableReference Reference)
-    {
-        if (!Variables.containsKey (Reference.Name))
-            throw new IllegalArgumentException ("No variable with name exists: " + Reference.Name);
-
-        AddStatements (Variables.get (Reference.Name).PushToStack ());
+        if (variable instanceof JasminArray) addStatement(((JasminArray) variable).storeElement());
+        else addStatement(variable.store());
 
         return this;
     }
 
-    public JasminMethod AddValue (JasminPassable Value)
-    {
-        if (Value instanceof VariableReference)
-        {
-            System.out.println ("aaa");
-            return LoadVariable ((VariableReference) Value);
+    public JasminMethod loadVariable(VariableReference reference) {
+        if (!variables.containsKey(reference.name))
+            throw new IllegalArgumentException("No variable with name exists: " + reference.name);
+
+        addStatements(variables.get(reference.name).pushToStack());
+
+        return this;
+    }
+
+    public JasminMethod addValue(JasminPassable value) {
+        if (value instanceof VariableReference) {
+            return loadVariable((VariableReference) value);
         }
 
-        AddStatements (Value.PushToStack ());
+        addStatements(value.pushToStack());
         return this;
     }
 
-    public JasminMethod Return (JasminPassable Value)
-    {
-        Statements.addAll (Value.PushToStack ());
+    public JasminMethod returnValue(JasminPassable value) {
+        statements.addAll(value.pushToStack());
 
-        NoParameterType ReturnType;
-        switch (Value.GetType ().GetType ())
-        {
-            case Boolean:
-            case Byte:
-            case Char:
-            case Short:
-            case Integer: ReturnType = NoParameterType.ReturnInteger; break;
+        NoParameterType returnType;
+        switch (value.getType().getType()) {
+            case BOOLEAN:
+            case BYTE:
+            case CHAR:
+            case SHORT:
+            case INTEGER:
+                returnType = NoParameterType.RETURN_INTEGER;
+                break;
 
-            case Float: ReturnType = NoParameterType.ReturnFloat; break;
+            case FLOAT:
+                returnType = NoParameterType.RETURN_FLOAT;
+                break;
 
-            case Double: ReturnType = NoParameterType.ReturnDouble; break;
+            case DOUBLE:
+                returnType = NoParameterType.RETURN_DOUBLE;
+                break;
 
-            case Long: ReturnType = NoParameterType.ReturnLong; break;
+            case LONG:
+                returnType = NoParameterType.RETURN_LONG;
+                break;
 
-            case Array:
-            case Reference: ReturnType = NoParameterType.ReturnReference; break;
+            case ARRAY:
+            case REFERENCE:
+                returnType = NoParameterType.RETURN_REFERENCE;
+                break;
 
-            default: ReturnType = NoParameterType.Return; break;
+            default:
+                returnType = NoParameterType.RETURN;
+                break;
         }
-        Statements.add (new NoParameterStatement (ReturnType));
+        statements.add(new NoParameterStatement(returnType));
 
         return this;
     }
@@ -345,122 +298,93 @@ public class JasminMethod implements Builder
     // ========================
 
     // TODO: Is this really the best way? I guess but eh
-    private boolean CheckStatement (JasminStatement Statement)
-    {
-        if (Statement instanceof VariableStatement)
-        {
-            VariableStatement Variable = (VariableStatement) Statement;
-            switch (Variable.GetType ())
-            {
-                case Declare: DeclareVariable (Variable.GetVariable ());
-                case Store: StoreVariable (Variable.GetVariable (), Variable.GetValue ());
-                case Load: LoadVariable (Variable.GetReference ());
+    private boolean checkStatement(JasminStatement statement) {
+        if (statement instanceof VariableStatement) {
+            VariableStatement variable = (VariableStatement) statement;
+            switch (variable.getType()) {
+                case DECLARE:
+                    declareVariable(variable.getVariable());
+                case STORE:
+                    storeVariable(variable.getVariable(), variable.getValue());
+                case LOAD:
+                    loadVariable(variable.getReference());
             }
-
             return false;
-        }
-
-        else if (Statement instanceof LimitStatement)
-        {
-            LimitStatement Limit = (LimitStatement) Statement;
-            switch (Limit.GetType ())
-            {
-                case Stack: AddStackLimit (Limit.GetAmount ());
-                case Locals: AddLocalsLimit (Limit.GetAmount ());
+        } else if (statement instanceof LimitStatement) {
+            LimitStatement limit = (LimitStatement) statement;
+            switch (limit.getType()) {
+                case STACK:
+                    addStackLimit(limit.getAmount());
+                case LOCALS:
+                    addLocalsLimit(limit.getAmount());
             }
-
             return false;
         }
 
         return true;
     }
 
-    private boolean CheckStatements (List<JasminStatement> Statements)
-    {
-        for (JasminStatement Statement : Statements)
-        {
-            if (CheckStatement (Statement))
-                return true;
-        }
-
-        return false;
-    }
-
     // ========================
     // Getters & Setters
     // ========================
 
-    public List<MethodAccessSpec> GetAccessSpec ()
-    {
-        return AccessSpec;
+    public List<MethodAccessSpec> getAccessSpecs() {
+        return accessSpecs;
     }
 
-    public JasminMethod AddAccessSpec (MethodAccessSpec AccessSpec)
-    {
-        if (!this.AccessSpec.contains (AccessSpec))
-            this.AccessSpec.add (AccessSpec);
+    public JasminMethod addAccessSpec(MethodAccessSpec accessSpec) {
+        if (!this.accessSpecs.contains(accessSpec))
+            this.accessSpecs.add(accessSpec);
 
         return this;
     }
 
-    public JasminMethod RemoveAccessSpec (MethodAccessSpec AccessSpec)
-    {
-        this.AccessSpec.remove (AccessSpec);
-
+    public JasminMethod removeAccessSpec(MethodAccessSpec accessSpec) {
+        this.accessSpecs.remove(accessSpec);
         return this;
     }
 
-    public String GetMethodName ()
-    {
-        return MethodName;
+    public String getMethodName() {
+        return methodName;
     }
 
-    public DataType GetMethodReturnType ()
-    {
-        return MethodReturnType;
+    public DataType getMethodReturnType() {
+        return methodReturnType;
     }
 
-    public List<DataType> GetArgs ()
-    {
-        return Args;
+    public List<DataType> getParamTypes() {
+        return paramTypes;
     }
 
-    public List<JasminStatement> GetStatements ()
-    {
-        return Statements;
+    public List<JasminStatement> getStatements() {
+        return statements;
     }
 
-    public List<JasminBlock> GetBlocks ()
-    {
-        return Blocks;
+    public List<JasminBlock> getBlocks() {
+        return blocks;
     }
 
-    public void SetArgs (List<DataType> Args)
-    {
-        this.Args = Args;
+    public void setParamTypes(List<DataType> paramTypes) {
+        this.paramTypes = paramTypes;
     }
 
-    public void AddArg (DataType Arg)
-    {
-        Args.add (Arg);
+    public void addParamType(DataType paramType) {
+        paramTypes.add(paramType);
     }
 
-    public Map<String, Variable> GetVariables ()
-    {
-        return Variables;
+    public Map<String, Variable> getVariables() {
+        return variables;
     }
 
-    public Variable GetVariable (String Name)
-    {
-        if (!Variables.containsKey (Name))
-            throw new IllegalArgumentException ("No variable with name exists: " + Name);
+    public Variable getVariable(String name) {
+        if (!variables.containsKey(name))
+            throw new IllegalArgumentException("No variable with name exists: " + name);
 
-        return Variables.get (Name);
+        return variables.get(name);
     }
 
-    public Variable GetVariable (VariableReference Reference)
-    {
-        return GetVariable (Reference.Name);
+    public Variable getVariable(VariableReference reference) {
+        return getVariable(reference.name);
     }
 
 }

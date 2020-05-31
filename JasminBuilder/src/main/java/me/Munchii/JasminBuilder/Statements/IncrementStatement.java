@@ -1,23 +1,18 @@
 package me.Munchii.JasminBuilder.Statements;
 
-import me.Munchii.JasminBuilder.Statements.JasminStatement;
+public class IncrementStatement implements JasminStatement {
 
-public class IncrementStatement implements JasminStatement
-{
+    private final int variableIndex;
+    private final int amount;
 
-    private int VariableIndex;
-    private int Amount;
-
-    public IncrementStatement (int VariableIndex, int Amount)
-    {
-        this.VariableIndex = VariableIndex;
-        this.Amount = Amount;
+    public IncrementStatement(int variableIndex, int amount) {
+        this.variableIndex = variableIndex;
+        this.amount = amount;
     }
 
     @Override
-    public String ToOutputString ()
-    {
-        return "iinc " + VariableIndex + " " + Amount;
+    public String toOutputString() {
+        return "iinc " + variableIndex + " " + amount;
     }
 
 }

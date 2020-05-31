@@ -2,22 +2,19 @@ package me.Munchii.JasminBuilder.Statements;
 
 import me.Munchii.JasminBuilder.Types.BranchType;
 
-public class BranchStatement implements JasminStatement
-{
+public class BranchStatement implements JasminStatement {
 
-    private BranchType Type;
-    private String Label;
+    private final BranchType type;
+    private final String label;
 
-    public BranchStatement (BranchType Type, String Label)
-    {
-        this.Type = Type;
-        this.Label = Label;
+    public BranchStatement(BranchType type, String s) {
+        this.type = type;
+        this.label = s;
     }
 
     @Override
-    public String ToOutputString ()
-    {
-        return Type.GetRepresentation () + " " + Label;
+    public String toOutputString() {
+        return type.getRepresentation() + " " + label;
     }
 
 }

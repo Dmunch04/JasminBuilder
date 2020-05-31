@@ -2,21 +2,19 @@ package me.Munchii.JasminBuilder.Statements;
 
 import me.Munchii.JasminBuilder.Types.LocalVariableType;
 
-public class LocalVariableStatement implements JasminStatement
-{
+public class LocalVariableStatement implements JasminStatement {
 
-    private LocalVariableType Type;
-    private int VariableNumber;
+    private final LocalVariableType type;
+    private final int variableIndex;
 
-    public LocalVariableStatement (LocalVariableType Type, int VariableNumber)
-    {
-        this.Type = Type;
-        this.VariableNumber = VariableNumber;
+    public LocalVariableStatement(LocalVariableType type, int variableIndex) {
+        this.type = type;
+        this.variableIndex = variableIndex;
     }
 
-    public String ToOutputString ()
-    {
-        return Type.GetRepresentation () + " "  + VariableNumber;
+    @Override
+    public String toOutputString() {
+        return type.getRepresentation() + " " + variableIndex;
     }
 
 }

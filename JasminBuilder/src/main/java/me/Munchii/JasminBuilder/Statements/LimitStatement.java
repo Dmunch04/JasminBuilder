@@ -2,32 +2,27 @@ package me.Munchii.JasminBuilder.Statements;
 
 import me.Munchii.JasminBuilder.Types.LimitType;
 
-public class LimitStatement implements JasminStatement
-{
+public class LimitStatement implements JasminStatement {
 
-    private LimitType Type;
-    private int Amount;
+    private final LimitType type;
+    private final int amount;
 
-    public LimitStatement (LimitType Type, int Amount)
-    {
-        this.Type = Type;
-        this.Amount = Amount;
+    public LimitStatement(LimitType type, int amount) {
+        this.type = type;
+        this.amount = amount;
     }
 
     @Override
-    public String ToOutputString ()
-    {
-        return ".limit " + Type.GetRepresentation () + " " + Amount;
+    public String toOutputString() {
+        return ".limit " + type.getRepresentation() + " " + amount;
     }
 
-    public LimitType GetType ()
-    {
-        return Type;
+    public LimitType getType() {
+        return type;
     }
 
-    public int GetAmount ()
-    {
-        return Amount;
+    public int getAmount() {
+        return amount;
     }
 
 }

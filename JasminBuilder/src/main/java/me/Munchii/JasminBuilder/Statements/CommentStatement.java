@@ -1,19 +1,16 @@
 package me.Munchii.JasminBuilder.Statements;
 
-public class CommentStatement implements JasminStatement
-{
+public class CommentStatement implements JasminStatement {
 
-    private String Comment;
+    private final String comment;
 
-    public CommentStatement (String Comment)
-    {
-        this.Comment = Comment;
+    public CommentStatement(String s) {
+        this.comment = s;
     }
 
     @Override
-    public String ToOutputString ()
-    {
-        return "; " + Comment;
+    public String toOutputString() {
+        return "; " + comment;
     }
 
 }

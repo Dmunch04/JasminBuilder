@@ -2,37 +2,31 @@ package me.Munchii.JasminBuilder.Conditions;
 
 import me.Munchii.JasminBuilder.Blocks.JasminBlock;
 
-public class JasminConditionBlock
-{
+public class JasminConditionBlock {
 
-    private ConditionBuilder Builder;
-    private JasminBlock Block;
+    private final ConditionBuilder conditionBuilder;
+    private final JasminBlock block;
 
-    public JasminConditionBlock (JasminCondition Condition, JasminBlock Block)
-    {
-        this (new ConditionBuilder ().AddCondition (Condition), Block);
+    public JasminConditionBlock(JasminCondition condition, JasminBlock block) {
+        this(new ConditionBuilder().addCondition(condition), block);
     }
 
-    public JasminConditionBlock (ConditionBuilder Builder, JasminBlock Block)
-    {
-        this.Builder = Builder;
-        this.Block = Block;
+    public JasminConditionBlock(ConditionBuilder conditionBuilder, JasminBlock block) {
+        this.conditionBuilder = conditionBuilder;
+        this.block = block;
     }
 
-    public JasminConditionBlock AddCondition (JasminCondition Condition)
-    {
-        Builder.AddCondition (Condition);
+    public JasminConditionBlock addCondition(JasminCondition condition) {
+        conditionBuilder.addCondition(condition);
         return this;
     }
 
-    public ConditionBuilder GetBuilder ()
-    {
-        return Builder;
+    public ConditionBuilder getBuilder() {
+        return conditionBuilder;
     }
 
-    public JasminBlock GetBlock ()
-    {
-        return Block;
+    public JasminBlock getBlock() {
+        return block;
     }
 
 }

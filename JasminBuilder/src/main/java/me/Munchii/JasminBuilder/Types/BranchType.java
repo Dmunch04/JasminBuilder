@@ -1,56 +1,53 @@
 package me.Munchii.JasminBuilder.Types;
 
-public enum BranchType
-{
+public enum BranchType {
 
     // Branch always
-    Goto ("goto"),
+    GOTO("goto"),
 
     // Branch always (wide index)
-    GotoW ("goto_w"),
+    GOTO_W("goto_w"),
 
     // Branch if reference comparison succeeds
-    IfReferenceCompareEquals ("if_acmpeq"),
-    IfReferenceCompareNotEquals ("if_acmne"),
+    IF_REFERENCE_COMPARE_EQUALS("if_acmpeq"),
+    IF_REFERENCE_COMPARE_NOT_EQUALS("if_acmne"),
 
     // Branch if int comparison succeeds
-    IfIntegerCompareEquals ("if_icmpeq"),
-    IfIntegerCompareNotEquals ("if_icmpne"),
-    IfIntegerCompareGreaterEquals ("if_icmpge"),
-    IfIntegerCompareGreaterThan ("if_icmpgt"),
-    IfIntegerCompareLessEquals ("if_icmple"),
-    IfIntegerCompareLessThan ("if_icmplt"),
+    IF_INTEGER_COMPARE_EQUALS("if_icmpeq"),
+    IF_INTEGER_COMPARE_NOT_EQUALS("if_icmpne"),
+    IF_INTEGER_COMPARE_LESS_THAN("if_icmplt"),
+    IF_INTEGER_COMPARE_LESS_EQUALS("if_icmple"),
+    IF_INTEGER_COMPARE_GREATER_THAN("if_icmpgt"),
+    IF_INTEGER_COMPARE_GREATER_EQUALS("if_icmpge"),
 
     // Branch if int comparison with zero succeeds
-    IfEquals ("ifeq"),
-    IfNotEquals ("ifne"),
-    IfGreaterEquals ("ifge"),
-    IfGreaterThan ("ifgt"),
-    IfLessEquals ("ifle"),
-    IfLessThan ("iflt"),
+    IF_EQUALS("ifeq"),
+    IF_NOT_EQUALS("ifne"),
+    IF_LESS_THAN("iflt"),
+    IF_LESS_EQUALS("ifle"),
+    IF_GREATER_THAN("ifgt"),
+    IF_GREATER_EQUALS("ifge"),
 
     // Branch if reference not null
-    IfNonNull ("ifnonnull"),
+    IF_NON_NULL("ifnonnull"),
 
     // Branch if reference is null
-    IfNull ("ifnull"),
+    IF_NULL("ifnull"),
 
     // Jump subroutine
-    JumpSubroutine ("jsr"),
+    JUMP_SUBROUTINE("jsr"),
 
-    // Jump subroutine (wide index
-    JumpSubroutineW ("jsr_w");
+    // Jump subroutine (wide index)
+    JUMP_SUBROUTINE_W("jsr_w");
 
-    private String Representation;
+    private final String representation;
 
-    private BranchType (String Representation)
-    {
-        this.Representation = Representation;
+    BranchType(String representation) {
+        this.representation = representation;
     }
 
-    public String GetRepresentation ()
-    {
-        return Representation;
+    public String getRepresentation() {
+        return representation;
     }
 
 }

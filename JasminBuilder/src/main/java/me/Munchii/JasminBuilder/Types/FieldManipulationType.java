@@ -1,30 +1,27 @@
 package me.Munchii.JasminBuilder.Types;
 
-public enum FieldManipulationType
-{
+public enum FieldManipulationType {
 
     // Fetch field from object
-    GetField ("getfield"),
+    GET_FIELD("getfield"),
 
     // Get static field from class
-    GetStatic ("getstatic"),
+    GET_STATIC("getstatic"),
 
     // Set field in object
-    PutField ("putfield"),
+    PUT_FIELD("putfield"),
 
     // Set static field in class
-    PutStatic ("putstatic");
+    PUT_STATIC("putstatic");
 
-    private String Representation;
+    private final String representation;
 
-    private FieldManipulationType(String Representation)
-    {
-        this.Representation = Representation;
+    FieldManipulationType(String representation) {
+        this.representation = representation;
     }
 
-    public String GetRepresentation ()
-    {
-        return Representation;
+    public String getRepresentation() {
+        return representation;
     }
 
 }

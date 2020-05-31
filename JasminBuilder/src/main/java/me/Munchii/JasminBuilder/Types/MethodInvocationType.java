@@ -1,30 +1,27 @@
 package me.Munchii.JasminBuilder.Types;
 
-public enum MethodInvocationType
-{
+public enum MethodInvocationType {
 
     // ??
-    InvokeNonVirtual ("invokenonvirtual"),
+    INVOKE_NON_VIRTUAL("invokenonvirtual"),
 
     // Invoke a class (static) method
-    InvokeStatic ("invokestatic"),
+    INVOKE_STATIC("invokestatic"),
 
     // Invoke instance method; dispatch based on class
-    InvokeVirtual ("invokevirtual"),
+    INVOKE_VIRTUAL("invokevirtual"),
 
     // ??
-    InvokeSpecial ("invokespecial");
+    INVOKE_SPECIAL("invokespecial");
 
-    private String Representation;
+    private final String representation;
 
-    private MethodInvocationType(String Representation)
-    {
-        this.Representation = Representation;
+    MethodInvocationType(String representation) {
+        this.representation = representation;
     }
 
-    public String GetRepresentation ()
-    {
-        return Representation;
+    public String getRepresentation() {
+        return representation;
     }
 
 }

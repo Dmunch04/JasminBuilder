@@ -3,35 +3,29 @@ package me.Munchii.JasminBuilder;
 import me.Munchii.JasminBuilder.Logging.Exceptions.AbortException;
 import me.Munchii.JasminBuilder.Logging.Logger;
 
-public class JasminSizedIndex
-{
+public class JasminSizedIndex {
 
-    private int[] Indexes;
+    private final int[] indexes;
 
-    public JasminSizedIndex (int... Indexes)
-    {
-        if (Indexes.length <= 0)
-        {
-            Logger.Error ("You must specify at least 1 size!");
-            throw new AbortException ();
+    public JasminSizedIndex(int... indexes) {
+        if (indexes.length <= 0) {
+            Logger.error("You must specify at least 1 size!");
+            throw new AbortException();
         }
 
-        this.Indexes = Indexes;
+        this.indexes = indexes;
     }
 
-    public int GetLength ()
-    {
-        return Indexes.length;
+    public int getLength() {
+        return indexes.length;
     }
 
-    public int[] GetIndexes ()
-    {
-        return Indexes;
+    public int[] getIndexes() {
+        return indexes;
     }
 
-    public int GetIndex (int Index)
-    {
-        return Indexes[Index];
+    public int getIndex(int index) {
+        return indexes[index];
     }
 
 }

@@ -15,86 +15,80 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-public class JasminField implements Builder, JasminPassable
-{
+public class JasminField implements Builder, JasminPassable {
 
     // TODO: Surely there must be a better way, than using the `Hook` method
 
-    private List<FieldAccessSpec> AccessSpec;
-    private String FieldName;
-    private DataType Descriptor;
-    private JasminValue Value;
+    private final List<FieldAccessSpec> accessSpecs;
+    private final String fieldName;
+    private final DataType descriptor;
+    private final JasminValue value;
 
     /**
-     * @param AccessSpec The access modifiers for the field
-     * @param FieldName The fields name. Used together with class name to access it later on
-     * @param Descriptor The fields data type
+     * @param accessSpecs The access modifiers for the field
+     * @param fieldName  The fields name. Used together with class name to access it later on
+     * @param descriptor The fields data type
      */
-    public JasminField (String FieldName, DataType Descriptor, FieldAccessSpec... AccessSpec)
-    {
-        this (FieldName, Descriptor, null, AccessSpec);
+    public JasminField(String fieldName, DataType descriptor, FieldAccessSpec... accessSpecs) {
+        this(fieldName, descriptor, null, accessSpecs);
     }
 
     /**
-     * @param AccessSpec The access modifiers for the field
-     * @param FieldName The fields name. Used together with class name to access it later on
-     * @param Descriptor The fields data type
-     * @param Value The fields type
+     * @param accessSpecs The access modifiers for the field
+     * @param fieldName  The fields name. Used together with class name to access it later on
+     * @param descriptor The fields data type
+     * @param value      The fields type
      */
-    public JasminField (String FieldName, DataType Descriptor, JasminValue Value, FieldAccessSpec... AccessSpec)
-    {
-        this.AccessSpec = new ArrayList<FieldAccessSpec> ();
-        this.AccessSpec.addAll (asList (AccessSpec));
-        this.FieldName = FieldName;
-        this.Descriptor = Descriptor;
-        this.Value = Value;
+    public JasminField(String fieldName, DataType descriptor, JasminValue value, FieldAccessSpec... accessSpecs) {
+        this.accessSpecs = new ArrayList<>();
+        this.accessSpecs.addAll(asList(accessSpecs));
+        this.fieldName = fieldName;
+        this.descriptor = descriptor;
+        this.value = value;
     }
 
     @Override
-    public String ToOutputString ()
-    {
-        StringBuilder Builder = new StringBuilder ();
-        Builder.append (".field").append (" ");
-        AccessSpec.forEach (Spec -> Builder.append (Spec.GetRepresentation ()).append (" "));
-        Builder.append (FieldName).append (" ");
-        Builder.append (Descriptor.GetRepresentation ());
+    public String toOutputString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append(".field").append(" ");
+        accessSpecs.forEach(accessSpec -> builder.append(accessSpec.getRepresentation()).append(" "));
+        builder.append(fieldName).append(" ");
+        builder.append(descriptor.getRepresentation());
 
-        if (Value != null)
-            Builder.append (" = ").append (Value.ToOutputString ());
+        if (value != null)
+            builder.append(" = ").append(value.toOutputString());
 
-        return Builder.toString ();
+        return builder.toString();
     }
 
     @Override
-    public List<JasminStatement> PushToStack ()
-    {
-        if (Class == null)
-            throw new IllegalArgumentException ("Field class is not set!");
+    public List<JasminStatement> pushToStack() {
+        if (targetClass == null)
+            throw new IllegalArgumentException("Field class is not set!");
 
         // TODO: How would we make field spec without knowing the class?
         // Like this?
-        if (AccessSpec.contains (FieldAccessSpec.Static))
-            return asList (new FieldManipulationStatement (FieldManipulationType.GetStatic, Helper.MakeFieldSpec (Class.GetClassName (), FieldName), Descriptor.GetRepresentation ()));
+        if (accessSpecs.contains(FieldAccessSpec.STATIC))
+            return asList(new FieldManipulationStatement(FieldManipulationType.GET_STATIC, Helper.makeFieldSpec(targetClass.getClassName(), fieldName), descriptor.getRepresentation()));
 
-        return asList (new FieldManipulationStatement (FieldManipulationType.GetField, Helper.MakeFieldSpec (Class.GetClassName (), FieldName), Descriptor.GetRepresentation ()));
+        return asList(new FieldManipulationStatement(FieldManipulationType.GET_FIELD, Helper.makeFieldSpec(targetClass.getClassName(), fieldName), descriptor.getRepresentation()));
     }
 
     @Override
-    public DataType GetType ()
-    {
-        return Descriptor;
+    public DataType getType() {
+        return descriptor;
     }
 
     // Like this?
-    private JasminClass Class = null;
-    public JasminField Hook (JasminClass Class)
-    {
-        this.Class = Class;
+    private JasminClass targetClass = null;
+
+    public JasminField hook(JasminClass targetClass) {
+        this.targetClass = targetClass;
         return this;
     }
-    public JasminField Dehook ()
-    {
-        this.Class = null;
+
+    public JasminField dehook() {
+        this.targetClass = null;
         return this;
     }
 
@@ -102,39 +96,33 @@ public class JasminField implements Builder, JasminPassable
     // Getters & Setters
     // ========================
 
-    public List<FieldAccessSpec> GetAccessSpec ()
-    {
-        return AccessSpec;
+    public List<FieldAccessSpec> getAccessSpec() {
+        return accessSpecs;
     }
 
-    public JasminField AddAccessSpec (FieldAccessSpec AccessSpec)
-    {
-        if (!this.AccessSpec.contains (AccessSpec))
-            this.AccessSpec.add (AccessSpec);
+    public JasminField addAccessSpec(FieldAccessSpec accessSpec) {
+        if (!this.accessSpecs.contains(accessSpec))
+            this.accessSpecs.add(accessSpec);
 
         return this;
     }
 
-    public JasminField RemoveAccessSpec (FieldAccessSpec AccessSpec)
-    {
-        this.AccessSpec.remove (AccessSpec);
+    public JasminField removeAccessSpec(FieldAccessSpec accessSpec) {
+        this.accessSpecs.remove(accessSpec);
 
         return this;
     }
 
-    public String GetFieldName ()
-    {
-        return FieldName;
+    public String getFieldName() {
+        return fieldName;
     }
 
-    public DataType GetDescriptor ()
-    {
-        return Descriptor;
+    public DataType getDescriptor() {
+        return descriptor;
     }
 
-    public JasminValue GetValue ()
-    {
-        return Value;
+    public JasminValue getValue() {
+        return value;
     }
 
 }

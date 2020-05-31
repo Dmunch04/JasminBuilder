@@ -1,11 +1,9 @@
 package me.Munchii.JasminBuilder.DataTypes;
 
-public class LongType extends DataType
-{
+public class LongType extends DataType {
 
-    public LongType ()
-    {
-        super ("J", ValueType.Long);
+    public LongType() {
+        super("J", ValueType.LONG);
     }
 
 }

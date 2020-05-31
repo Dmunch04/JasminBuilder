@@ -18,93 +18,91 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-public class ClassInstance implements Variable, JasminPassable
-{
+public class ClassInstance implements Variable, JasminPassable {
 
-    private String Name;
-    private String ClassName;
-    private int Index;
-    private DataType Type;
-    private List<JasminPassable> Arguments;
-    private List<DataType> ParamTypes;
+    private final String name;
+    private final String className;
+    private int index;
+    private final DataType type;
+    private final List<JasminPassable> arguments;
+    private final List<DataType> paramTypes;
 
-    public ClassInstance (String Name, String ClassName, List<JasminPassable> Arguments, DataType... ParamTypes)
-    {
-        this.Name = Name;
-        this.ClassName = ClassName;
-        this.Index = -1;
-        this.Type = new ReferenceType (ClassName);
-        this.Arguments = Arguments;
-        this.ParamTypes = asList (ParamTypes);
+    public ClassInstance(String name, String className, List<JasminPassable> arguments, DataType... paramTypes) {
+        this.name = name;
+        this.className = className;
+        this.index = -1;
+        this.type = new ReferenceType(className);
+        this.arguments = arguments;
+        this.paramTypes = asList(paramTypes);
     }
 
     @Override
-    public DataType GetType ()
-    {
-        return Type;
+    public DataType getType() {
+        return type;
     }
 
     @Override
-    public JasminStatement Store ()
-    {
-        switch (Index)
-        {
-            case 0: return new NoParameterStatement (NoParameterType.StoreReferenceIntoLocalVariable0);
-            case 1: return new NoParameterStatement (NoParameterType.StoreReferenceIntoLocalVariable1);
-            case 2: return new NoParameterStatement (NoParameterType.StoreReferenceIntoLocalVariable2);
-            case 3: return new NoParameterStatement (NoParameterType.StoreReferenceIntoLocalVariable3);
-            default: return new LocalVariableStatement(LocalVariableType.StoreReference, Index);
+    public JasminStatement store() {
+        switch (index) {
+            case 0:
+                return new NoParameterStatement(NoParameterType.STORE_REFERENCE_INTO_LOCAL_VARIABLE_0);
+            case 1:
+                return new NoParameterStatement(NoParameterType.STORE_REFERENCE_INTO_LOCAL_VARIABLE_1);
+            case 2:
+                return new NoParameterStatement(NoParameterType.STORE_REFERENCE_INTO_LOCAL_VARIABLE_2);
+            case 3:
+                return new NoParameterStatement(NoParameterType.STORE_REFERENCE_INTO_LOCAL_VARIABLE_3);
+            default:
+                return new LocalVariableStatement(LocalVariableType.STORE_REFERENCE, index);
         }
     }
 
     @Override
-    public List<JasminStatement> Declare ()
-    {
+    public List<JasminStatement> declare() {
         List<JasminStatement> Statements = new ArrayList<JasminStatement>();
 
-        Statements.add (new ObjectStatement (ObjectType.New, ClassName));
-        Statements.add (new NoParameterStatement (NoParameterType.DuplicateTopStackValue));
-        Statements.addAll (MethodInvocation.CallSpecialMethod (ClassName, "<init>", Arguments, DataType.Void, ParamTypes).PushToStack ());
-        Statements.add (Store ());
+        Statements.add(new ObjectStatement(ObjectType.NEW, className));
+        Statements.add(new NoParameterStatement(NoParameterType.DUPLICATE_TOP_STACK_VALUE));
+        Statements.addAll(MethodInvocation.callSpecialMethod(className, "<init>", arguments, DataType.VOID, paramTypes).pushToStack());
+        Statements.add(store());
 
         return Statements;
     }
 
     @Override
-    public List<JasminStatement> PushToStack ()
-    {
-        switch (Index)
-        {
-            case 0: return asList (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable0));
-            case 1: return asList (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable1));
-            case 2: return asList (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable2));
-            case 3: return asList (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable3));
-            default: return asList (new LocalVariableStatement(LocalVariableType.LoadReference, Index));
+    public List<JasminStatement> pushToStack() {
+        switch (index) {
+            case 0:
+                return asList(new NoParameterStatement(NoParameterType.LOAD_REFERENCE_FROM_LOCAL_VARIABLE_0));
+            case 1:
+                return asList(new NoParameterStatement(NoParameterType.LOAD_REFERENCE_FROM_LOCAL_VARIABLE_1));
+            case 2:
+                return asList(new NoParameterStatement(NoParameterType.LOAD_REFERENCE_FROM_LOCAL_VARIABLE_2));
+            case 3:
+                return asList(new NoParameterStatement(NoParameterType.LOAD_REFERENCE_FROM_LOCAL_VARIABLE_3));
+            default:
+                return asList(new LocalVariableStatement(LocalVariableType.LOAD_REFERENCE, index));
         }
     }
 
     @Override
-    public String GetName ()
-    {
-        return Name;
+    public String getName() {
+        return name;
     }
 
     @Override
     // TODO: Hmm
-    public JasminPassable GetValue ()
-    {
+    public JasminPassable getValue() {
         return null;
     }
 
     @Override
-    public int GetIndex ()
-    {
-        return Index;
+    public int getIndex() {
+        return index;
     }
 
     @Override
-    public void SetIndex (int Index)
-    {
-        this.Index = Index;
+    public void setIndex(int index) {
+        this.index = index;
     }
 }

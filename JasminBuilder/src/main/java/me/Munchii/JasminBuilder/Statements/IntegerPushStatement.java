@@ -2,22 +2,19 @@ package me.Munchii.JasminBuilder.Statements;
 
 import me.Munchii.JasminBuilder.Types.IntegerPushType;
 
-public class IntegerPushStatement implements JasminStatement
-{
+public class IntegerPushStatement implements JasminStatement {
 
-    private IntegerPushType Type;
-    private int Value;
+    private final IntegerPushType type;
+    private final int value;
 
-    public IntegerPushStatement (IntegerPushType Type, int Value)
-    {
-        this.Type = Type;
-        this.Value = Value;
+    public IntegerPushStatement(IntegerPushType type, int value) {
+        this.type = type;
+        this.value = value;
     }
 
     @Override
-    public String ToOutputString ()
-    {
-        return Type.GetRepresentation () + " " + Value;
+    public String toOutputString() {
+        return type.getRepresentation() + " " + value;
     }
 
 }

@@ -2,42 +2,32 @@ package me.Munchii.JasminBuilder.Logging;
 
 import java.util.concurrent.TimeUnit;
 
-public class Logger
-{
+public class Logger {
 
-    public static void Tip (String Message)
-    {
-        Log (ColorCode.BoldGreen + "TIP " + ColorCode.Reset + ColorCode.Green + Message + ColorCode.Reset);
+    public static void tip(String s) {
+        log(ColorCode.BOLD_GREEN + "TIP " + ColorCode.RESET + ColorCode.GREEN + s + ColorCode.RESET);
     }
 
-    public static void Debug (String Message)
-    {
-        Log (ColorCode.BoldBlue + "DEBUG " + ColorCode.Reset + ColorCode.Blue + Message + ColorCode.Reset);
+    public static void debug(String s) {
+        log(ColorCode.BOLD_BLUE + "DEBUG " + ColorCode.RESET + ColorCode.BLUE + s + ColorCode.RESET);
     }
 
-    public static void Warning (String Message)
-    {
-        Log (ColorCode.BoldYellow + "WARNING " + ColorCode.Reset + ColorCode.Yellow + Message + ColorCode.Reset);
+    public static void warning(String s) {
+        log(ColorCode.BOLD_YELLOW + "WARNING " + ColorCode.RESET + ColorCode.YELLOW + s + ColorCode.RESET);
     }
 
-    public static void Error (String Message)
-    {
-        Log (ColorCode.BoldRed + "ERROR " + ColorCode.Reset + ColorCode.Red + Message + ColorCode.Reset);
+    public static void error(String s) {
+        log(ColorCode.BOLD_RED + "ERROR " + ColorCode.RESET + ColorCode.RED + s + ColorCode.RESET);
     }
 
-    public static void Log (String Message)
-    {
-        System.out.println (Message);
+    public static void log(String s) {
+        System.out.println(s);
 
         //* We wait because else when we throw an abort exception, the error will be sent afterwards
-        try
-        {
-            TimeUnit.NANOSECONDS.sleep (1);
-        }
-
-        catch (InterruptedException Error)
-        {
-            Error.printStackTrace ();
+        try {
+            TimeUnit.NANOSECONDS.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 

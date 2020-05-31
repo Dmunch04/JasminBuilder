@@ -1,25 +1,22 @@
 package me.Munchii.JasminBuilder.Types;
 
 // TODO: Maybe rename this + it's statement (`IntegerPushStatement`) + everything related to this
-public enum IntegerPushType
-{
+public enum IntegerPushType {
 
     // Push byte
-    BiPush ("bipush"),
+    BI_PUSH("bipush"),
 
     // Push short
-    SiPush ("sipush");
+    SI_PUSH("sipush");
 
-    private String Representation;
+    private final String representation;
 
-    private IntegerPushType(String Representation)
-    {
-        this.Representation = Representation;
+    IntegerPushType(String representation) {
+        this.representation = representation;
     }
 
-    public String GetRepresentation ()
-    {
-        return Representation;
+    public String getRepresentation() {
+        return representation;
     }
 
 }

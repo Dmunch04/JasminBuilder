@@ -16,220 +16,248 @@ import static java.util.Arrays.asList;
  * `JasminVariable` represents a local variable in Jasmin.
  * It holds extra information which will not be used when writing to Jasmin code, but to make it easier for the user
  */
-public class JasminVariable implements Variable, JasminPassable
-{
+public class JasminVariable implements Variable, JasminPassable {
 
-    private final String Name;
-    private int Index;
-    private final JasminPassable Value;
-    private DataType Type;
+    private final String name;
+    private int index;
+    private final JasminPassable value;
+    private final DataType type;
 
     /**
-     * @param Name The name of the variable
-     * @param Value The value of the variable
+     * @param name  The name of the variable
+     * @param value The value of the variable
      */
-    public JasminVariable (String Name, JasminPassable Value)
-    {
-        this (Name, -1, Value);
+    public JasminVariable(String name, JasminPassable value) {
+        this(name, -1, value);
     }
 
     /**
-     * @param Name The name of the variable
-     * @param Index The variables local index (Use with caution)
-     * @param Value The variables value
+     * @param name  The name of the variable
+     * @param index The variables local index (Use with caution)
+     * @param value The variables value
      */
-    public JasminVariable (String Name, int Index, JasminPassable Value)
-    {
-        this.Name = Name;
-        this.Index = Index;
-        this.Value = Value;
-        this.Type = Value.GetType ();
+    public JasminVariable(String name, int index, JasminPassable value) {
+        this.name = name;
+        this.index = index;
+        this.value = value;
+        this.type = value.getType();
     }
 
     /**
      * @return A statement that stores the top most stack value into the variable
      */
     @Override
-    public JasminStatement Store ()
-    {
+    public JasminStatement store() {
         // TODO: Implement rest of the types
-        switch (Type.GetType ())
-        {
-            case Double: {
-                switch (Index)
-                {
-                    case 0: return new NoParameterStatement (NoParameterType.StoreDoubleIntoLocalVariable0);
-                    case 1: return new NoParameterStatement (NoParameterType.StoreDoubleIntoLocalVariable1);
-                    case 2: return new NoParameterStatement (NoParameterType.StoreDoubleIntoLocalVariable2);
-                    case 3: return new NoParameterStatement (NoParameterType.StoreDoubleIntoLocalVariable3);
-                    default: return new LocalVariableStatement (LocalVariableType.StoreDouble, Index);
+        switch (type.getType()) {
+            case DOUBLE: {
+                switch (index) {
+                    case 0:
+                        return new NoParameterStatement(NoParameterType.STORE_DOUBLE_INTO_LOCAL_VARIABLE_0);
+                    case 1:
+                        return new NoParameterStatement(NoParameterType.STORE_DOUBLE_INTO_LOCAL_VARIABLE_1);
+                    case 2:
+                        return new NoParameterStatement(NoParameterType.STORE_DOUBLE_INTO_LOCAL_VARIABLE_2);
+                    case 3:
+                        return new NoParameterStatement(NoParameterType.STORE_DOUBLE_INTO_LOCAL_VARIABLE_3);
+                    default:
+                        return new LocalVariableStatement(LocalVariableType.STORE_DOUBLE, index);
                 }
             }
 
-            case Float: {
-                switch (Index)
-                {
-                    case 0: return new NoParameterStatement (NoParameterType.StoreFloat0);
-                    case 1: return new NoParameterStatement (NoParameterType.StoreFloat1);
-                    case 2: return new NoParameterStatement (NoParameterType.StoreFloat2);
-                    case 3: return new NoParameterStatement (NoParameterType.StoreFloat3);
-                    default: return new LocalVariableStatement (LocalVariableType.StoreFloat, Index);
+            case FLOAT: {
+                switch (index) {
+                    case 0:
+                        return new NoParameterStatement(NoParameterType.STORE_FLOAT_0);
+                    case 1:
+                        return new NoParameterStatement(NoParameterType.STORE_FLOAT_1);
+                    case 2:
+                        return new NoParameterStatement(NoParameterType.STORE_FLOAT_2);
+                    case 3:
+                        return new NoParameterStatement(NoParameterType.STORE_FLOAT_3);
+                    default:
+                        return new LocalVariableStatement(LocalVariableType.STORE_FLOAT, index);
                 }
             }
 
-            case Boolean:
-            case Integer: {
-                switch (Index)
-                {
-                    case 0: return new NoParameterStatement (NoParameterType.StoreInteger0);
-                    case 1: return new NoParameterStatement (NoParameterType.StoreInteger1);
-                    case 2: return new NoParameterStatement (NoParameterType.StoreInteger2);
-                    case 3: return new NoParameterStatement (NoParameterType.StoreInteger3);
-                    default: return new LocalVariableStatement (LocalVariableType.StoreInteger, Index);
+            case BOOLEAN:
+            case INTEGER: {
+                switch (index) {
+                    case 0:
+                        return new NoParameterStatement(NoParameterType.STORE_INTEGER_0);
+                    case 1:
+                        return new NoParameterStatement(NoParameterType.STORE_INTEGER_1);
+                    case 2:
+                        return new NoParameterStatement(NoParameterType.STORE_INTEGER_2);
+                    case 3:
+                        return new NoParameterStatement(NoParameterType.STORE_INTEGER_3);
+                    default:
+                        return new LocalVariableStatement(LocalVariableType.STORE_INTEGER, index);
                 }
             }
 
-            case Long: {
-                switch (Index)
-                {
-                    case 0: return new NoParameterStatement (NoParameterType.StoreLong0);
-                    case 1: return new NoParameterStatement (NoParameterType.StoreLong1);
-                    case 2: return new NoParameterStatement (NoParameterType.StoreLong2);
-                    case 3: return new NoParameterStatement (NoParameterType.StoreLong3);
-                    default: return new LocalVariableStatement (LocalVariableType.StoreLong, Index);
+            case LONG: {
+                switch (index) {
+                    case 0:
+                        return new NoParameterStatement(NoParameterType.STORE_LONG_0);
+                    case 1:
+                        return new NoParameterStatement(NoParameterType.STORE_LONG_1);
+                    case 2:
+                        return new NoParameterStatement(NoParameterType.STORE_LONG_2);
+                    case 3:
+                        return new NoParameterStatement(NoParameterType.STORE_LONG_3);
+                    default:
+                        return new LocalVariableStatement(LocalVariableType.STORE_LONG, index);
                 }
             }
 
-            case Reference:
-            case Array: {
-                switch (Index)
-                {
-                    case 0: return new NoParameterStatement (NoParameterType.StoreReferenceIntoLocalVariable0);
-                    case 1: return new NoParameterStatement (NoParameterType.StoreReferenceIntoLocalVariable1);
-                    case 2: return new NoParameterStatement (NoParameterType.StoreReferenceIntoLocalVariable2);
-                    case 3: return new NoParameterStatement (NoParameterType.StoreReferenceIntoLocalVariable3);
-                    default: return new LocalVariableStatement (LocalVariableType.StoreReference, Index);
+            case REFERENCE:
+            case ARRAY: {
+                switch (index) {
+                    case 0:
+                        return new NoParameterStatement(NoParameterType.STORE_REFERENCE_INTO_LOCAL_VARIABLE_0);
+                    case 1:
+                        return new NoParameterStatement(NoParameterType.STORE_REFERENCE_INTO_LOCAL_VARIABLE_1);
+                    case 2:
+                        return new NoParameterStatement(NoParameterType.STORE_REFERENCE_INTO_LOCAL_VARIABLE_2);
+                    case 3:
+                        return new NoParameterStatement(NoParameterType.STORE_REFERENCE_INTO_LOCAL_VARIABLE_3);
+                    default:
+                        return new LocalVariableStatement(LocalVariableType.STORE_REFERENCE, index);
                 }
             }
         }
 
-        throw new IllegalArgumentException ("Could not match data type: " + Type.GetRepresentation ());
+        throw new IllegalArgumentException("Could not match data type: " + type.getRepresentation());
     }
 
     @Override
-    public List<JasminStatement> Declare ()
-    {
-        List<JasminStatement> Statements = new ArrayList<JasminStatement> ();
-        Statements.addAll (Value.PushToStack ());
-        Statements.add (Store ());
+    public List<JasminStatement> declare() {
+        List<JasminStatement> statements = new ArrayList<>(value.pushToStack());
+        statements.add(store());
 
-        return Statements;
+        return statements;
     }
 
     @Override
-    public List<JasminStatement> PushToStack ()
-    {
+    public List<JasminStatement> pushToStack() {
         // TODO: Implement rest of the types
-        switch (Type.GetType ())
-        {
-            case Double: {
-                switch (Index)
-                {
-                    case 0: return asList (new NoParameterStatement (NoParameterType.LoadDoubleFromLocalVariable0));
-                    case 1: return asList (new NoParameterStatement (NoParameterType.LoadDoubleFromLocalVariable1));
-                    case 2: return asList (new NoParameterStatement (NoParameterType.LoadDoubleFromLocalVariable2));
-                    case 3: return asList (new NoParameterStatement (NoParameterType.LoadDoubleFromLocalVariable3));
-                    default: return asList (new LocalVariableStatement (LocalVariableType.LoadDouble, Index));
+        switch (type.getType()) {
+            case DOUBLE: {
+                switch (index) {
+                    case 0:
+                        return asList(new NoParameterStatement(NoParameterType.LOAD_DOUBLE_FROM_LOCAL_VARIABLE_0));
+                    case 1:
+                        return asList(new NoParameterStatement(NoParameterType.LOAD_DOUBLE_FROM_LOCAL_VARIABLE_1));
+                    case 2:
+                        return asList(new NoParameterStatement(NoParameterType.LOAD_DOUBLE_FROM_LOCAL_VARIABLE_2));
+                    case 3:
+                        return asList(new NoParameterStatement(NoParameterType.LOAD_DOUBLE_FROM_LOCAL_VARIABLE_3));
+                    default:
+                        return asList(new LocalVariableStatement(LocalVariableType.LOAD_DOUBLE, index));
                 }
             }
 
-            case Float: {
-                switch (Index)
-                {
-                    case 0: return asList (new NoParameterStatement (NoParameterType.LoadFloat0));
-                    case 1: return asList (new NoParameterStatement (NoParameterType.LoadFloat1));
-                    case 2: return asList (new NoParameterStatement (NoParameterType.LoadFloat2));
-                    case 3: return asList (new NoParameterStatement (NoParameterType.LoadFloat3));
-                    default: return asList (new LocalVariableStatement (LocalVariableType.LoadFloat, Index));
+            case FLOAT: {
+                switch (index) {
+                    case 0:
+                        return asList(new NoParameterStatement(NoParameterType.LOAD_FLOAT_0));
+                    case 1:
+                        return asList(new NoParameterStatement(NoParameterType.LOAD_FLOAT_1));
+                    case 2:
+                        return asList(new NoParameterStatement(NoParameterType.LOAD_FLOAT_2));
+                    case 3:
+                        return asList(new NoParameterStatement(NoParameterType.LOAD_FLOAT_3));
+                    default:
+                        return asList(new LocalVariableStatement(LocalVariableType.LOAD_FLOAT, index));
                 }
             }
 
-            case Integer: {
-                switch (Index)
-                {
-                    case 0: return asList (new NoParameterStatement (NoParameterType.LoadInteger0));
-                    case 1: return asList (new NoParameterStatement (NoParameterType.LoadInteger1));
-                    case 2: return asList (new NoParameterStatement (NoParameterType.LoadInteger2));
-                    case 3: return asList (new NoParameterStatement (NoParameterType.LoadInteger3));
-                    default: return asList (new LocalVariableStatement (LocalVariableType.LoadInteger, Index));
+            case INTEGER: {
+                switch (index) {
+                    case 0:
+                        return asList(new NoParameterStatement(NoParameterType.LOAD_INTEGER_0));
+                    case 1:
+                        return asList(new NoParameterStatement(NoParameterType.LOAD_INTEGER_1));
+                    case 2:
+                        return asList(new NoParameterStatement(NoParameterType.LOAD_INTEGER_2));
+                    case 3:
+                        return asList(new NoParameterStatement(NoParameterType.LOAD_INTEGER_3));
+                    default:
+                        return asList(new LocalVariableStatement(LocalVariableType.LOAD_INTEGER, index));
                 }
             }
 
-            case Long: {
-                switch (Index)
-                {
-                    case 0: return asList (new NoParameterStatement (NoParameterType.LoadLong0));
-                    case 1: return asList (new NoParameterStatement (NoParameterType.LoadLong1));
-                    case 2: return asList (new NoParameterStatement (NoParameterType.LoadLong2));
-                    case 3: return asList (new NoParameterStatement (NoParameterType.LoadLong3));
-                    default: return asList (new LocalVariableStatement (LocalVariableType.LoadLong, Index));
+            case LONG: {
+                switch (index) {
+                    case 0:
+                        return asList(new NoParameterStatement(NoParameterType.LOAD_LONG_0));
+                    case 1:
+                        return asList(new NoParameterStatement(NoParameterType.LOAD_LONG_1));
+                    case 2:
+                        return asList(new NoParameterStatement(NoParameterType.LOAD_LONG_2));
+                    case 3:
+                        return asList(new NoParameterStatement(NoParameterType.LOAD_LONG_3));
+                    default:
+                        return asList(new LocalVariableStatement(LocalVariableType.LOAD_LONG, index));
                 }
             }
 
-            case Reference:
-            case Array: {
-                switch (Index)
-                {
-                    case 0: return asList (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable0));
-                    case 1: return asList (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable1));
-                    case 2: return asList (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable2));
-                    case 3: return asList (new NoParameterStatement (NoParameterType.LoadReferenceFromLocalVariable3));
-                    default: return asList (new LocalVariableStatement (LocalVariableType.LoadReference, Index));
+            case REFERENCE:
+            case ARRAY: {
+                switch (index) {
+                    case 0:
+                        return asList(new NoParameterStatement(NoParameterType.LOAD_REFERENCE_FROM_LOCAL_VARIABLE_0));
+                    case 1:
+                        return asList(new NoParameterStatement(NoParameterType.LOAD_REFERENCE_FROM_LOCAL_VARIABLE_1));
+                    case 2:
+                        return asList(new NoParameterStatement(NoParameterType.LOAD_REFERENCE_FROM_LOCAL_VARIABLE_2));
+                    case 3:
+                        return asList(new NoParameterStatement(NoParameterType.LOAD_REFERENCE_FROM_LOCAL_VARIABLE_3));
+                    default:
+                        return asList(new LocalVariableStatement(LocalVariableType.LOAD_REFERENCE, index));
                 }
             }
         }
 
-        throw new IllegalArgumentException ("Could not match data type: " + Type.GetRepresentation ());
+        throw new IllegalArgumentException("Could not match data type: " + type.getRepresentation());
     }
 
     /**
      * @return The name of the variable
      */
-    public String GetName ()
-    {
-        return Name;
+    @Override
+    public String getName() {
+        return name;
     }
 
     /**
      * @return The local index of the variable
      */
     @Override
-    public int GetIndex ()
-    {
-        return Index;
+    public int getIndex() {
+        return index;
     }
 
     /**
-     * @param Index The new local index for the variable
+     * @param index The new local index for the variable
      */
     @Override
-    public void SetIndex (int Index)
-    {
-        this.Index = Index;
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     /**
      * @return The variables value
      */
-    public JasminPassable GetValue ()
-    {
-        return Value;
+    @Override
+    public JasminPassable getValue() {
+        return value;
     }
 
     @Override
-    public DataType GetType ()
-    {
-        return Type;
+    public DataType getType() {
+        return type;
     }
 
 }

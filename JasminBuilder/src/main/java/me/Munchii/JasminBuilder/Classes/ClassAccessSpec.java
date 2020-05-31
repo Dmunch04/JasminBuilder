@@ -1,24 +1,21 @@
 package me.Munchii.JasminBuilder.Classes;
 
-public enum ClassAccessSpec
-{
+public enum ClassAccessSpec {
 
-    Public ("public"),
-    Final ("final"),
-    Super ("super"),
-    Interface ("interface"),
-    Abstract ("abstract");
+    PUBLIC("public"),
+    FINAL("final"),
+    SUPER("super"),
+    INTERFACE("interface"),
+    ABSTRACT("abstract");
 
-    private String Representation;
+    private final String representation;
 
-    private ClassAccessSpec (String Representation)
-    {
-        this.Representation = Representation;
+    ClassAccessSpec(String representation) {
+        this.representation = representation;
     }
 
-    public String GetRepresentation ()
-    {
-        return Representation;
+    public String getRepresentation() {
+        return representation;
     }
 
 }

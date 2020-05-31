@@ -7,31 +7,27 @@ import me.Munchii.JasminBuilder.Utils.Helper;
 
 import java.util.List;
 
-public class MethodInvocationStatement implements JasminStatement
-{
+public class MethodInvocationStatement implements JasminStatement {
 
-    private MethodInvocationType Type;
-    private String MethodName;
-    private DataType MethodReturnType;
-    private List<DataType> Args;
+    private final MethodInvocationType type;
+    private final String methodName;
+    private final DataType methodReturnType;
+    private final List<DataType> paramTypes;
 
-    public MethodInvocationStatement(MethodInvocationType Type, JasminMethod Method)
-    {
-        this (Type, Method.GetMethodName (), Method.GetMethodReturnType (), Method.GetArgs ());
+    public MethodInvocationStatement(MethodInvocationType type, JasminMethod method) {
+        this(type, method.getMethodName(), method.getMethodReturnType(), method.getParamTypes());
     }
 
-    public MethodInvocationStatement(MethodInvocationType Type, String MethodName, DataType MethodReturnType, List<DataType> Args)
-    {
-        this.Type = Type;
-        this.MethodName = MethodName;
-        this.MethodReturnType = MethodReturnType;
-        this.Args = Args;
+    public MethodInvocationStatement(MethodInvocationType type, String methodName, DataType methodReturnType, List<DataType> paramTypes) {
+        this.type = type;
+        this.methodName = methodName;
+        this.methodReturnType = methodReturnType;
+        this.paramTypes = paramTypes;
     }
 
     @Override
-    public String ToOutputString ()
-    {
-        return Type.GetRepresentation () + " " + Helper.MakeMethodSpec (MethodName, MethodReturnType, Args);
+    public String toOutputString() {
+        return type.getRepresentation() + " " + Helper.makeMethodSpec(methodName, methodReturnType, paramTypes);
     }
 
 }

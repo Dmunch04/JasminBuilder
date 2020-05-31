@@ -1,28 +1,25 @@
 package me.Munchii.JasminBuilder.Types;
 
-public enum LoadConstantType
-{
+public enum LoadConstantType {
 
     // Push item from run-time constant pool
-    LoadConstant ("ldc"),
+    LOAD_CONSTANT("ldc"),
 
     // Push item from run-time constant pool (wide index)
-    LoadConstantWide("ldc_w"), // For `long` and `double`
+    LOAD_CONSTANT_WIDE("ldc_w"), // For `long` and `double`
 
-    LoadConstant2 ("ldc2"),
+    LOAD_CONSTANT_2("ldc2"),
 
-    LoadConstant2Wide ("ldc2_w");
+    LOAD_CONSTANT_2_WIDE("ldc2_w");
 
-    private String Representation;
+    private final String representation;
 
-    private LoadConstantType (String Representation)
-    {
-        this.Representation = Representation;
+    LoadConstantType(String representation) {
+        this.representation = representation;
     }
 
-    public String GetRepresentation ()
-    {
-        return Representation;
+    public String getRepresentation() {
+        return representation;
     }
 
 }

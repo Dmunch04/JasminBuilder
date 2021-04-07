@@ -57,7 +57,7 @@ public class JasminArray implements Variable, JasminPassable {
             @Override
             public List<JasminStatement> pushToStack() {
                 // TODO: Should it be maybe long or double instead?
-                return asList(Helper.pushValueToStack(new JasminValue(size, DataType.INTEGER)));
+                return asList(Helper.pushValueToStack(new JasminValue(size, DataType.LONG)));
             }
 
             @Override

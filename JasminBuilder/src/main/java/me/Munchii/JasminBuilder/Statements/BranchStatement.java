@@ -14,7 +14,7 @@ public class BranchStatement implements JasminStatement {
 
     @Override
     public String toOutputString() {
-        return type.getRepresentation() + " " + label;
+        return "; jump(" + this.type.name() + "):" + this.label + "\n\t" + type.getRepresentation() + " " + label;
     }
 
 }

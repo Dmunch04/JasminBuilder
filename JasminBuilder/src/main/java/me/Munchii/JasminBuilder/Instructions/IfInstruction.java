@@ -30,7 +30,7 @@ public class IfInstruction implements JasminInstruction {
         }
 
         if (elseBlock != null) {
-            method.addComment("Else block (" + elseBlock.getLabel() + ")");
+            method.addComment("Else block (" + elseBlock.getLabel() + ":" + elseBlock.hashCode() + ")");
             method.addStatements(elseBlock.getStatements());
             method.addComment("---");
         }
@@ -49,7 +49,7 @@ public class IfInstruction implements JasminInstruction {
         }
 
         if (elseBlock != null) {
-            block.addComment("Else block (" + elseBlock.getLabel() + ")");
+            block.addComment("Else block (" + elseBlock.getLabel() + ":" + elseBlock.hashCode() + ")");
             block.addStatements(elseBlock.getStatements());
             block.addComment("---");
         }

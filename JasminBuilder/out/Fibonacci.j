@@ -16,8 +16,9 @@
 	lload_1
 	lconst_1
 	lcmp
+	; jump(IF_GREATER_THAN):FibThing
 	ifgt FibThing
-	; Else block (ELSE)
+	; Else block (ELSE:443308702)
 	lconst_1
 	lreturn
 	; ---

@@ -35,11 +35,7 @@ public class JasminArray implements Variable, JasminPassable {
     }
 
     public JasminArray(String name, DataType type, int size, int dimensions) {
-        this(name, type, size, dimensions, new JasminPassable[size]);
-    }
-
-    public JasminArray(String name, DataType type, int size, JasminPassable[] elements) {
-        this(name, type, size, 1, elements);
+        this(name, type, size,  dimensions, new JasminPassable[size]);
     }
 
     public JasminArray(String name, DataType type, int size, int dimensions, JasminPassable[] elements) {

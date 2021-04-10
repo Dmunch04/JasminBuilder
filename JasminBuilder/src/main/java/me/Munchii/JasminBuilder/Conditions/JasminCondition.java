@@ -7,6 +7,7 @@ import me.Munchii.JasminBuilder.JasminPassable;
 import me.Munchii.JasminBuilder.Logging.Exceptions.AbortException;
 import me.Munchii.JasminBuilder.Logging.Logger;
 import me.Munchii.JasminBuilder.Types.ConditionType;
+import me.Munchii.JasminBuilder.Utils.Helper;
 
 public class JasminCondition {
 

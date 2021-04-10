@@ -2,6 +2,7 @@ package me.Munchii.JasminBuilder.Testing;
 
 import me.Munchii.JasminBuilder.Testing.Tests.FibonacciTest;
 import me.Munchii.JasminBuilder.Testing.Tests.HelloWorldTest;
+import me.Munchii.JasminBuilder.Testing.Tests.IterationTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ public class Test {
     public static void main(String... args) {
         testCases.add(new HelloWorldTest());
         testCases.add(new FibonacciTest());
+        testCases.add(new IterationTest());
 
         long startTime = System.nanoTime();
 

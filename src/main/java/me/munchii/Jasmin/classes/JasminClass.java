@@ -3,16 +3,17 @@ package me.munchii.Jasmin.classes;
 import me.munchii.Jasmin.IWritable;
 import me.munchii.Jasmin.field.JasminField;
 import me.munchii.Jasmin.method.JasminMethod;
-import me.munchii.Jasmin.type.IDataType;
+import me.munchii.Jasmin.type.JasminType;
 import me.munchii.Jasmin.type.ReferenceType;
 import me.munchii.Jasmin.util.DataTypeConversion;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class JasminClass implements IWritable {
-    public final ClassAccessSpec accessSpec;
+    public final EnumSet<ClassAccessSpec> accessSpec;
     public final String className;
     public final String superClass;
 
@@ -21,11 +22,11 @@ public class JasminClass implements IWritable {
     private final List<JasminField> fields;
     private final List<JasminMethod> methods;
 
-    public JasminClass(String className, ClassAccessSpec accessSpec) {
+    public JasminClass(String className, EnumSet<ClassAccessSpec> accessSpec) {
         this(className, accessSpec, "java/lang/Object");
     }
 
-    public JasminClass(String className, ClassAccessSpec accessSpec, String superClass) {
+    public JasminClass(String className, EnumSet<ClassAccessSpec> accessSpec, String superClass) {
         this.accessSpec = accessSpec;
         this.className = className;
         this.superClass = superClass;
@@ -45,14 +46,14 @@ public class JasminClass implements IWritable {
         return this;
     }
 
-    public JasminClass genConstructor(List<IDataType> paramTypes) {
+    public JasminClass genConstructor(List<JasminType> paramTypes) {
         this.methods.add(null);
 
         return this;
     }
 
     public String getSignature() {
-        return ".class " + accessSpec.getValue() + " " + className;
+        return ".class " + String.join(" ", accessSpec.stream().map(ClassAccessSpec::getValue).collect(Collectors.toSet())) + " " + className;
     }
 
     @Override
@@ -71,7 +72,7 @@ public class JasminClass implements IWritable {
         methods.forEach(method -> {
             StringBuilder methodComment = new StringBuilder();
             methodComment.append("; method: ")
-                    .append(method.accessSpec.getValue()).append(" ")
+                    .append(String.join(" ", accessSpec.stream().map(ClassAccessSpec::getValue).collect(Collectors.toSet()))).append(" ")
                     .append(DataTypeConversion.getJavaTypeName(method.returnType)).append(" ")
                     .append(method.methodName).append("(")
                     .append(method.paramTypes.stream().map(DataTypeConversion::getJavaTypeName).collect(Collectors.joining(", ")))

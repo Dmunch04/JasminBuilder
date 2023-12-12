@@ -1,6 +1,6 @@
 package me.munchii.Jasmin.type;
 
-public enum ValueType implements IDataType {
+public enum ValueType implements JasminType, PrimitiveType, ReturnableType {
     BOOLEAN("Z"),
     BYTE("B"),
     CHAR("C"),

@@ -12,8 +12,7 @@ public enum FieldAccessSpec {
     STATIC("static"),
     FINAL("final"),
     VOLATILE("volatile"),
-    TRANSIENT("transient"),
-    _COMBINED("");
+    TRANSIENT("transient");
 
     private String value;
 
@@ -23,14 +22,5 @@ public enum FieldAccessSpec {
 
     public String getValue() {
         return value;
-    }
-
-    public static FieldAccessSpec COMBINED(FieldAccessSpec... accessSpecs) {
-        FieldAccessSpec combined = FieldAccessSpec._COMBINED;
-        combined.value = Arrays.stream(accessSpecs)
-                .sorted()
-                .map(FieldAccessSpec::getValue)
-                .collect(Collectors.joining(" "));
-        return combined;
     }
 }

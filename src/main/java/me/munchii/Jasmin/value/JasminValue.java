@@ -7,9 +7,9 @@ import me.munchii.Jasmin.type.*;
 
 public class JasminValue {
     private Object value;
-    private IDataType valueType;
+    private JasminType valueType;
 
-    public JasminValue(Object value, IDataType valueType) {
+    public JasminValue(Object value, JasminType valueType) {
         this.value = value;
         this.valueType = valueType;
     }
@@ -18,11 +18,11 @@ public class JasminValue {
         return value;
     }
 
-    public IDataType getValueType() {
+    public JasminType getValueType() {
         return valueType;
     }
 
-    public void setValue(Object value, IDataType valueType) {
+    public void setValue(Object value, JasminType valueType) {
         this.value = value;
         this.valueType = valueType;
     }

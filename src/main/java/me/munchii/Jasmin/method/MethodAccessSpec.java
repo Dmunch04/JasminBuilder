@@ -11,8 +11,7 @@ public enum MethodAccessSpec {
     FINAL("final"),
     SYNCHRONIZED("synchronized"),
     NATIVE("native"),
-    ABSTRACT("abstract"),
-    _COMBINED("");
+    ABSTRACT("abstract");
 
     private String value;
 
@@ -22,14 +21,5 @@ public enum MethodAccessSpec {
 
     public String getValue() {
         return value;
-    }
-
-    public static MethodAccessSpec COMBINED(MethodAccessSpec... accessSpecs) {
-        MethodAccessSpec combined = MethodAccessSpec._COMBINED;
-        combined.value = Arrays.stream(accessSpecs)
-                .sorted()
-                .map(MethodAccessSpec::getValue)
-                .collect(Collectors.joining(" "));
-        return combined;
     }
 }

@@ -3,7 +3,7 @@ package me.munchii.Jasmin.util;
 import me.munchii.Jasmin.type.*;
 
 public class DataTypeConversion {
-    public static String getJavaTypeName(IDataType type) {
+    public static String getJavaTypeName(JasminType type) {
         if (type instanceof ValueType valueType) {
             return switch (valueType) {
                 case BOOLEAN -> "boolean";

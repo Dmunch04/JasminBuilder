@@ -11,9 +11,9 @@ import java.util.List;
 
 public class VariableReference extends LocalVariable {
     // TODO: allow to reassign this somehow (maybe this already works with super.storeNewValue(value);
-    public final IDataType variableType;
+    public final JasminType variableType;
 
-    public VariableReference(String name, int id, IDataType variableType) {
+    public VariableReference(String name, int id, JasminType variableType) {
         super(name, id, new JasminValue(null, variableType));
 
         this.variableType = variableType;

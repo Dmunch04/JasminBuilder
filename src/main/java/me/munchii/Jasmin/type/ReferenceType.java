@@ -1,6 +1,6 @@
 package me.munchii.Jasmin.type;
 
-public class ReferenceType implements IDataType {
+public class ReferenceType implements JasminType {
     private final String className;
 
     public ReferenceType(String className) {

@@ -8,8 +8,7 @@ public enum ClassAccessSpec {
     FINAL("final"),
     SUPER("super"),
     INTERFACE("interface"),
-    ABSTRACT("abstract"),
-    _COMBINED("");
+    ABSTRACT("abstract");
 
     private String value;
 
@@ -19,14 +18,5 @@ public enum ClassAccessSpec {
 
     public String getValue() {
         return value;
-    }
-
-    public static ClassAccessSpec COMBINED(ClassAccessSpec... accessSpecs) {
-        ClassAccessSpec combined = ClassAccessSpec._COMBINED;
-        combined.value = Arrays.stream(accessSpecs)
-                .sorted()
-                .map(ClassAccessSpec::getValue)
-                .collect(Collectors.joining(" "));
-        return combined;
     }
 }

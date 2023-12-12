@@ -1,6 +1,6 @@
 package me.munchii.Jasmin.type;
 
-public class ClassType implements IDataType {
+public class ClassType implements JasminType, ReturnableType {
     private final String className;
 
     public ClassType(String className) {

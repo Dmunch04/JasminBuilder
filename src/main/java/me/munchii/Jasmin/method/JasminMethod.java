@@ -3,17 +3,17 @@ package me.munchii.Jasmin.method;
 import me.munchii.Jasmin.IWritable;
 import me.munchii.Jasmin.instruction.IJasminInstruction;
 import me.munchii.Jasmin.type.ClassType;
-import me.munchii.Jasmin.type.IDataType;
+import me.munchii.Jasmin.type.JasminType;
 import me.munchii.Jasmin.value.JasminValue;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class JasminMethod implements IWritable, InstructionAcceptor<JasminMethod> {
-    public final MethodAccessSpec accessSpec;
+    public final EnumSet<MethodAccessSpec> accessSpec;
     public final String methodName;
-    public final IDataType returnType;
-    public final List<IDataType> paramTypes;
+    public final JasminType returnType;
+    public final List<JasminType> paramTypes;
 
     private List<IJasminInstruction> instructions;
     private Map<String, JasminBlock> blocks;
@@ -25,11 +25,11 @@ public class JasminMethod implements IWritable, InstructionAcceptor<JasminMethod
     private int stackLimit = 100;
     private int localsLimit = 100;
 
-    public JasminMethod(String methodName, MethodAccessSpec accessSpec, IDataType returnType) {
+    public JasminMethod(String methodName, EnumSet<MethodAccessSpec> accessSpec, JasminType returnType) {
         this(methodName, accessSpec, returnType, new ArrayList<>());
     }
 
-    public JasminMethod(String methodName, MethodAccessSpec accessSpec, IDataType returnType, List<IDataType> paramTypes) {
+    public JasminMethod(String methodName, EnumSet<MethodAccessSpec> accessSpec, JasminType returnType, List<JasminType> paramTypes) {
         this.accessSpec = accessSpec;
         this.methodName = methodName;
         this.returnType = returnType;
@@ -39,7 +39,7 @@ public class JasminMethod implements IWritable, InstructionAcceptor<JasminMethod
         this.blocks = new HashMap<>();
         this.localVariableMap = new HashMap<>();
 
-        if (!accessSpec.getValue().contains("static")) {
+        if (!accessSpec.contains(MethodAccessSpec.STATIC)) {
             //localVariableMap.put("this", new LocalVariable("this", 0, new JasminValue("this", new ReferenceType("this"))));
             localVariableMap.put("this", new VariableReference("this", 0, new ClassType("this")));
             variablePointer++;
@@ -76,7 +76,7 @@ public class JasminMethod implements IWritable, InstructionAcceptor<JasminMethod
         StringBuilder builder = new StringBuilder();
 
         builder.append(".method ");
-        builder.append(accessSpec.getValue()).append(" ");
+        accessSpec.forEach(spec -> builder.append(spec.getValue()).append(" "));
         builder.append(getDescriptor(true));
 
         return builder.toString();

@@ -1,14 +1,15 @@
 package me.munchii.Jasmin.type;
 
-public class ArrayType implements IDataType {
-    private final IDataType type;
+public class ArrayType implements JasminType, ReturnableType {
+    // TODO: primitive?
+    private final JasminType type;
     private final int dimensions;
 
-    public ArrayType(IDataType type) {
+    public ArrayType(JasminType type) {
         this(type, 1);
     }
 
-    public ArrayType(IDataType type, int dimensions) {
+    public ArrayType(JasminType type, int dimensions) {
         this.type = type;
         this.dimensions = dimensions;
     }
@@ -23,7 +24,7 @@ public class ArrayType implements IDataType {
         return true;
     }
 
-    public IDataType getType() {
+    public JasminType getType() {
         return type;
     }
 

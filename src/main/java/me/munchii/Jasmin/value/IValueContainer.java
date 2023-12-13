@@ -13,7 +13,7 @@ public interface IValueContainer {
     default IJasminInstruction pushValue() {
         JasminValue value = getValue();
 
-        if (value.getValueType() instanceof ValueType valueType) {
+        if (value.getValueType() instanceof PrimitiveType valueType) {
             switch (valueType) {
                 case BOOLEAN -> {
                     boolean val = (boolean) value.getValue();
@@ -89,10 +89,9 @@ public interface IValueContainer {
                     return new Instruction(JasminInstructions.SI_PUSH, String.valueOf(val));
                 }
             };
-        } else if (value.getValueType() instanceof VoidType) {
-            return new Instruction(JasminInstructions.NOP, " ; dont do this");
-        } else if (value.getValueType() instanceof ReferenceType referenceType) {
+        /*} else if (value.getValueType() instanceof ReferenceType referenceType) {
             return new LoadConstantInstruction(LoadConstantInstructionType.LOAD_CONSTANT, String.valueOf(value.getValue()));
+         */
         } else if (value.getValueType() instanceof ClassType classType) {
             return new LoadConstantInstruction(LoadConstantInstructionType.LOAD_CONSTANT, String.valueOf(value.getValue()));
         } else if (value.getValueType() instanceof ArrayType arrayType) {

@@ -12,9 +12,11 @@ import me.munchii.Jasmin.util.Option;
 
 import java.util.Optional;
 
-public class JasminResult<T> extends Option<T, JasminInfo> {
+public class JasminResult<T> {
+    private final Option<T, JasminInfo> option;
+
     protected JasminResult(T first, JasminInfo second) {
-        super(first, second);
+        this.option = new Option<>(first, second);
     }
 
     public static <T> JasminResult<T> of(T result, JasminInfo info) {
@@ -30,18 +32,18 @@ public class JasminResult<T> extends Option<T, JasminInfo> {
     }
 
     public Optional<T> getResult() {
-        return getFirst();
+        return option.getFirst();
     }
 
     public Optional<JasminInfo> getInfo() {
-        return getSecond();
+        return option.getSecond();
     }
 
     public boolean hasResult() {
-        return hasFirst();
+        return option.hasFirst();
     }
 
     public boolean hasInfo() {
-        return hasSecond();
+        return option.hasSecond();
     }
 }

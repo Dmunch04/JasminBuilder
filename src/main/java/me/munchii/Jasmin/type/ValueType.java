@@ -1,31 +1,22 @@
+/*
+ * Copyright (c) 2023. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+ * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+ * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+ * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+ * Vestibulum commodo. Ut rhoncus gravida arcu.
+ */
+
 package me.munchii.Jasmin.type;
 
-public enum ValueType implements JasminType, PrimitiveType, ReturnableType {
-    BOOLEAN("Z"),
-    BYTE("B"),
-    CHAR("C"),
-    DOUBLE("D"),
-    FLOAT("F"),
-    INTEGER("I"),
-    LONG("J"),
-    SHORT("S");
+public interface ValueType extends JasminType {
+    ValueType BOOLEAN = PrimitiveType.BOOLEAN;
+    ValueType BYTE = PrimitiveType.BYTE;
+    ValueType CHAR = PrimitiveType.CHAR;
+    ValueType DOUBLE = PrimitiveType.DOUBLE;
+    ValueType FLOAT = PrimitiveType.FLOAT;
+    ValueType INTEGER = PrimitiveType.INTEGER;
+    ValueType LONG = PrimitiveType.LONG;
+    ValueType SHORT = PrimitiveType.SHORT;
 
-    public static final VoidType VOID_TYPE = new VoidType();
-    public static final StringType STRING_TYPE = new StringType();
-
-    private final String representation;
-
-    ValueType(String representation) {
-        this.representation = representation;
-    }
-
-    @Override
-    public String getRepresentation() {
-        return representation;
-    }
-
-    @Override
-    public boolean isPrimitive() {
-        return true;
-    }
+    ValueType STRING = new StringType();
 }

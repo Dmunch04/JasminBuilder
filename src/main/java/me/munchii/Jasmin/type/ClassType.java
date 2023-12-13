@@ -1,6 +1,7 @@
 package me.munchii.Jasmin.type;
 
-public class ClassType implements JasminType, ReturnableType {
+public class ClassType implements ReturnableType, ValueType {
+    // TODO: is this value type?
     private final String className;
 
     public ClassType(String className) {

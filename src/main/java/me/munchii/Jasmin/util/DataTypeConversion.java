@@ -4,7 +4,7 @@ import me.munchii.Jasmin.type.*;
 
 public class DataTypeConversion {
     public static String getJavaTypeName(JasminType type) {
-        if (type instanceof ValueType valueType) {
+        if (type instanceof PrimitiveType valueType) {
             return switch (valueType) {
                 case BOOLEAN -> "boolean";
                 case BYTE -> "byte";

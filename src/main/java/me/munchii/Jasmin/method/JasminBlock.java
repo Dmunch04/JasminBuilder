@@ -11,31 +11,26 @@ public class JasminBlock implements InstructionAcceptor<JasminBlock> {
     // TODO thoughts: is there a better way to write "blocks" than in a separate class? because this way it may confuse,
     // TODO in relation to if the user uses the variable system or other similar systems
 
-    // this is temporary solution i guess. im not a fan, since i actually liked the idea of being able to reuse blocks
-    private final JasminMethod method;
+    // no reusable blocks anymore. no reusable anything anymore
+    private final JasminMethod parent;
     private final String label;
     private final List<IJasminInstruction> instructions;
 
-    public JasminBlock(JasminMethod method, String label) {
-        this.method = method;
+    public JasminBlock(JasminMethod parent, String label) {
+        this.parent = parent;
         this.label = label;
         this.instructions = new ArrayList<>();
+
+        parent.registerBlock(this);
     }
 
     public JasminBlock declareVariable(String name, JasminValue value) {
-        int variableIndex = method.getCurrentVariableIndex();
+        int variableIndex = parent.getCurrentVariableIndex();
 
         LocalVariable variable = new LocalVariable(name, variableIndex, value);
         addInstructions(variable.declare());
 
-        method.localVariableMap.put(name, variable);
-
-        return this;
-    }
-
-    @Override
-    public JasminBlock addInstruction(IJasminInstruction... instruction) {
-        instructions.addAll(Arrays.stream(instruction).toList());
+        parent.localVariableMap.put(name, variable);
 
         return this;
     }
@@ -45,11 +40,6 @@ public class JasminBlock implements InstructionAcceptor<JasminBlock> {
         instructions.add(instruction);
 
         return this;
-    }
-
-    @Override
-    public JasminBlock addInstructions(IJasminInstruction... instructions) {
-        return addInstruction(instructions);
     }
 
     @Override
@@ -67,7 +57,7 @@ public class JasminBlock implements InstructionAcceptor<JasminBlock> {
     }
 
     public JasminMethod getMethod() {
-        return method;
+        return parent;
     }
 
     public String getLabel() {

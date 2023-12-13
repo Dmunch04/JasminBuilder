@@ -1,6 +1,7 @@
 package me.munchii.Jasmin.type;
 
 public class ReferenceType implements JasminType {
+    // TODO: is this value or returnable or both? or none
     private final String className;
 
     public ReferenceType(String className) {

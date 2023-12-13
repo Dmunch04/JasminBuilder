@@ -14,17 +14,20 @@ import me.munchii.Jasmin.statement.PrintStatement;
 import me.munchii.Jasmin.type.*;
 import me.munchii.Jasmin.value.ConstantValue;
 import me.munchii.Jasmin.value.JasminValue;
+import me.munchii.Jasmin.value.Returnable;
 
+import java.util.EnumSet;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
         JasminFile file = new JasminFile("", "TEST");
-        JasminClass testClass = new JasminClass("Foo", ClassAccessSpec.PUBLIC);
+        JasminClass testClass = new JasminClass("Foo", EnumSet.of(ClassAccessSpec.PUBLIC));
 
-        JasminMethod method = new JasminMethod("main",
-                MethodAccessSpec.COMBINED(MethodAccessSpec.PUBLIC, MethodAccessSpec.FINAL),
-                ValueType.VOID_TYPE,
+        JasminMethod method = new JasminMethod(testClass,
+                "main",
+                EnumSet.of(MethodAccessSpec.PUBLIC, MethodAccessSpec.FINAL),
+                PrimitiveType.VOID_TYPE,
                 List.of(new ArrayType(new ClassType("java/lang/String"))));
 
         method.addInstruction(new Instruction(JasminInstructions.GET_STATIC, "java/lang/System/out", "Ljava/io/PrintStream;"));
@@ -32,10 +35,10 @@ public class Main {
         method.addInstruction(new Instruction(JasminInstructions.INVOKE_VIRTUAL, "java/io/PrintStream/println(Ljava/lang/String;)V"));
         method.addInstruction(new Instruction(JasminInstructions.RETURN));
 
-        method.declareVariable("test", new JasminValue(3, ValueType.INTEGER));
-        method.addInstruction(method.getVariable("this").get().load().toArray(new IJasminInstruction[0]));
+        method.declareVariable("test", new JasminValue(3, PrimitiveType.INTEGER));
+        method.addInstructions(method.getVariable("this").get().load());
         PrintStatement.println(method, new ConstantValue("Hello, World!", JavaStd.JAVA_STRING_INSTANCE));
-        PrintStatement.print(method, new ConstantValue(5, ValueType.INTEGER));
+        PrintStatement.print(method, new ConstantValue(5, PrimitiveType.INTEGER));
 
         JasminBlock block = new JasminBlock(method, "Test");
         block.addInstruction(new Instruction(JasminInstructions.NOP, "YEEEEEEET"));
@@ -46,9 +49,7 @@ public class Main {
         block.addInstruction(new Instruction(JasminInstructions.LOAD_CONSTANT, "\"adsadsa\""));
         block.addInstructions(method.getVariable("arg1").get().store());
 
-        method.registerBlock(block);
-
-        testClass.registerMethod(method);
+        //testClass.registerMethod(method);
         file.addClass(testClass);
 
         StringBuilder builder = new StringBuilder();
@@ -73,17 +74,17 @@ public class Main {
 
     public static void test() {
         JasminFile accountFile = new JasminFile("", "Account");
-        JasminClass accountClass = new JasminClass("Account", ClassAccessSpec.PUBLIC);
-        JasminField accountFieldBalance = new JasminField("balance", FieldAccessSpec.PRIVATE, ValueType.DOUBLE);
+        JasminClass accountClass = new JasminClass("Account", EnumSet.of(ClassAccessSpec.PUBLIC));
+        JasminField accountFieldBalance = new JasminField(accountClass, "balance", EnumSet.of(FieldAccessSpec.PRIVATE), PrimitiveType.DOUBLE);
         // constructor
-        JasminMethod accountMethodGetBalance = new JasminMethod("getBalance", MethodAccessSpec.PUBLIC, ValueType.DOUBLE);
+        JasminMethod accountMethodGetBalance = new JasminMethod(accountClass, "getBalance", EnumSet.of(MethodAccessSpec.PUBLIC), PrimitiveType.DOUBLE);
         // .returnField(JasminClass/String class, JasminField field)
         // .returnField(JasminClass/String class, String fieldName, IDataType fieldType)
         accountMethodGetBalance.addInstructions(accountMethodGetBalance.getVariable("this").get().load())
                 .addInstruction(new Instruction(JasminInstructions.GET_FIELD, "Account/balance", "D"))
                 .addInstruction(new Instruction(JasminInstructions.RETURN_DOUBLE));
 
-        JasminMethod accountMethodDeposit = new JasminMethod("deposit", MethodAccessSpec.PUBLIC, ValueType.VOID_TYPE, List.of(ValueType.DOUBLE));
+        JasminMethod accountMethodDeposit = new JasminMethod(accountClass, "deposit", EnumSet.of(MethodAccessSpec.PUBLIC), PrimitiveType.VOID_TYPE, List.of(PrimitiveType.DOUBLE));
         accountMethodDeposit.addInstructions(accountMethodDeposit.getVariable("this").get().load())
                 .addInstructions(accountMethodDeposit.getVariable("this").get().load())
                 .addInstruction(new Instruction(JasminInstructions.GET_FIELD, "Account/balance", "D"))
@@ -92,9 +93,9 @@ public class Main {
                 .addInstruction(new Instruction(JasminInstructions.PUT_FIELD, "Account/balance", "D"))
                 .addInstruction(new Instruction(JasminInstructions.RETURN));
 
-        accountClass.registerField(accountFieldBalance);
-        accountClass.registerMethod(accountMethodGetBalance);
-        accountClass.registerMethod(accountMethodDeposit);
+        //accountClass.registerField(accountFieldBalance);
+        //accountClass.registerMethod(accountMethodGetBalance);
+        //accountClass.registerMethod(accountMethodDeposit);
         accountFile.addClass(accountClass);
 
         StringBuilder builder = new StringBuilder();

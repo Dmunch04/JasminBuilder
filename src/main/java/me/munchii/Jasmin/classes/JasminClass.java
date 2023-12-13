@@ -2,14 +2,16 @@ package me.munchii.Jasmin.classes;
 
 import me.munchii.Jasmin.IWritable;
 import me.munchii.Jasmin.field.JasminField;
+import me.munchii.Jasmin.method.ConstructorMethod;
 import me.munchii.Jasmin.method.JasminMethod;
 import me.munchii.Jasmin.type.JasminType;
 import me.munchii.Jasmin.type.ReferenceType;
+import me.munchii.Jasmin.type.ValueType;
 import me.munchii.Jasmin.util.DataTypeConversion;
+import me.munchii.Jasmin.util.FieldSpec;
+import me.munchii.Jasmin.util.MethodSpec;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class JasminClass implements IWritable {
@@ -19,8 +21,9 @@ public class JasminClass implements IWritable {
 
     private final List<String> implementsClasses;
 
-    private final List<JasminField> fields;
-    private final List<JasminMethod> methods;
+    private final Map<String, JasminField> fields;
+    private final Map<String, ConstructorMethod> constructors;
+    private final Map<String, JasminMethod> methods;
 
     public JasminClass(String className, EnumSet<ClassAccessSpec> accessSpec) {
         this(className, accessSpec, "java/lang/Object");
@@ -32,8 +35,9 @@ public class JasminClass implements IWritable {
         this.superClass = superClass;
 
         this.implementsClasses = new ArrayList<>();
-        this.fields = new ArrayList<>();
-        this.methods = new ArrayList<>();
+        this.fields = new HashMap<>();
+        this.constructors = new HashMap<>();
+        this.methods = new HashMap<>();
     }
 
     public JasminClass implement(ReferenceType classReference) {
@@ -46,8 +50,8 @@ public class JasminClass implements IWritable {
         return this;
     }
 
-    public JasminClass genConstructor(List<JasminType> paramTypes) {
-        this.methods.add(null);
+    public JasminClass genConstructor(List<ValueType> paramTypes) {
+        this.methods.put("", null);
 
         return this;
     }
@@ -64,12 +68,12 @@ public class JasminClass implements IWritable {
         implementsClasses.forEach(cl -> builder.append(".implements ").append(cl).append("\n"));
         builder.append("\n");
 
-        fields.forEach(field -> {
+        fields.forEach((key, field) -> {
             field.write(builder);
             builder.append("\n");
         });
 
-        methods.forEach(method -> {
+        methods.forEach((key, method) -> {
             StringBuilder methodComment = new StringBuilder();
             methodComment.append("; method: ")
                     .append(String.join(" ", accessSpec.stream().map(ClassAccessSpec::getValue).collect(Collectors.toSet()))).append(" ")
@@ -84,14 +88,24 @@ public class JasminClass implements IWritable {
         });
     }
 
+    public ReferenceType getReference() {
+        return new ReferenceType(className);
+    }
+
     public JasminClass registerField(JasminField field) {
-        fields.add(field);
+        fields.putIfAbsent(FieldSpec.makeFieldSpec(getReference(), field), field);
+
+        return this;
+    }
+
+    public JasminClass registerConstructor(ConstructorMethod constructor) {
+        constructors.putIfAbsent(MethodSpec.makeMethodSpec(getReference(), constructor), constructor);
 
         return this;
     }
 
     public JasminClass registerMethod(JasminMethod method) {
-        methods.add(method);
+        methods.putIfAbsent(MethodSpec.makeMethodSpec(getReference(), method), method);
 
         return this;
     }

@@ -5,7 +5,7 @@ import me.munchii.Jasmin.type.*;
 public class ConstantValue implements IValueContainer {
     private JasminValue value;
     
-    public ConstantValue(Object value, JasminType valueType) {
+    public ConstantValue(Object value, ValueType valueType) {
         this(new JasminValue(value, valueType));
     }
     

@@ -8,6 +8,9 @@
 
 package me.munchii.Jasmin.result;
 
-public interface JasminInfo {
-    String getMessage();
+public record JasminError(String error) implements JasminInfo {
+    @Override
+    public String getMessage() {
+        return error;
+    }
 }

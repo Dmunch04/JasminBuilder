@@ -1,12 +1,31 @@
-/*
- * Copyright (c) 2023. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
- */
-
 package me.munchii.Jasmin.type;
 
-public interface PrimitiveType {
+public enum PrimitiveType implements ReturnableType, ValueType {
+    BOOLEAN("Z"),
+    BYTE("B"),
+    CHAR("C"),
+    DOUBLE("D"),
+    FLOAT("F"),
+    INTEGER("I"),
+    LONG("J"),
+    SHORT("S");
+
+    public static final VoidType VOID_TYPE = new VoidType();
+    public static final StringType STRING_TYPE = new StringType();
+
+    private final String representation;
+
+    PrimitiveType(String representation) {
+        this.representation = representation;
+    }
+
+    @Override
+    public String getRepresentation() {
+        return representation;
+    }
+
+    @Override
+    public boolean isPrimitive() {
+        return true;
+    }
 }

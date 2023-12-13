@@ -8,7 +8,7 @@
 
 package me.munchii.Jasmin.type;
 
-public class StringType implements JasminType {
+public class StringType implements ReturnableType, ValueType {
     @Override
     public String getRepresentation() {
         // TODO: which?

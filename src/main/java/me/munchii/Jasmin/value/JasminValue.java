@@ -7,9 +7,9 @@ import me.munchii.Jasmin.type.*;
 
 public class JasminValue {
     private Object value;
-    private JasminType valueType;
+    private ValueType valueType;
 
-    public JasminValue(Object value, JasminType valueType) {
+    public JasminValue(Object value, ValueType valueType) {
         this.value = value;
         this.valueType = valueType;
     }
@@ -18,17 +18,17 @@ public class JasminValue {
         return value;
     }
 
-    public JasminType getValueType() {
+    public ValueType getValueType() {
         return valueType;
     }
 
-    public void setValue(Object value, JasminType valueType) {
+    public void setValue(Object value, ValueType valueType) {
         this.value = value;
         this.valueType = valueType;
     }
 
     public IJasminInstruction getDeclarationInstruction() {
-        if (valueType instanceof ValueType type) {
+        if (valueType instanceof PrimitiveType type) {
             switch (type) {
                 case BOOLEAN -> {
                     boolean val = (boolean) value;
@@ -107,13 +107,12 @@ public class JasminValue {
                     return new Instruction(JasminInstructions.SI_PUSH, String.valueOf(val));
                 }
             };
-        } else if (valueType instanceof VoidType) {
-            return new Instruction(JasminInstructions.NOP, " ; dont do this");
-        } else if (valueType instanceof ReferenceType referenceType) {
+        /*} else if (valueType instanceof ReferenceType referenceType) {
             //instructions.add(new Instruction(JasminInstructions.NOP, " ; how?"));
             // TODO: this should call constructor right? if so, what about the args
             String val = String.valueOf(value);
             return new Instruction(JasminInstructions.LOAD_CONSTANT, val);
+         */
         } else if (valueType instanceof ClassType classType) {
             //instructions.add(new Instruction(JasminInstructions.NOP, " ; how?"));
             // TODO: this should call constructor right? if so, what about the args
@@ -133,17 +132,16 @@ public class JasminValue {
 
     public IJasminInstruction getStoreInstruction(int id) {
         String index = String.valueOf(id);
-        if (valueType instanceof ValueType type) {
+        if (valueType instanceof PrimitiveType type) {
             return switch (type) {
                 case BOOLEAN, BYTE, CHAR, INTEGER, SHORT -> new Instruction(JasminInstructions.STORE_INTEGER, index);
                 case DOUBLE -> new Instruction(JasminInstructions.STORE_DOUBLE, index);
                 case FLOAT -> new Instruction(JasminInstructions.STORE_FLOAT, index);
                 case LONG -> new Instruction(JasminInstructions.STORE_LONG, index);
             };
-        } else if (valueType instanceof VoidType) {
-            return new Instruction(JasminInstructions.NOP, " ; dont do this");
-        } else if (valueType instanceof ReferenceType referenceType) {
+        /*} else if (valueType instanceof ReferenceType referenceType) {
             return new Instruction(JasminInstructions.STORE_REFERENCE, index);
+         */
         } else if (valueType instanceof ClassType classType) {
             return new Instruction(JasminInstructions.STORE_REFERENCE, index);
         } else if (valueType instanceof StringType stringType) {
@@ -158,17 +156,16 @@ public class JasminValue {
 
     public IJasminInstruction getLoadInstruction(int id) {
         String index = String.valueOf(id);
-        if (valueType instanceof ValueType type) {
+        if (valueType instanceof PrimitiveType type) {
             return switch (type) {
                 case BOOLEAN, SHORT, INTEGER, BYTE, CHAR -> new Instruction(JasminInstructions.LOAD_INTEGER, index);
                 case DOUBLE -> new Instruction(JasminInstructions.LOAD_DOUBLE, index);
                 case FLOAT -> new Instruction(JasminInstructions.LOAD_FLOAT, index);
                 case LONG -> new Instruction(JasminInstructions.LOAD_LONG, index);
             };
-        } else if (valueType instanceof VoidType) {
-            return new Instruction(JasminInstructions.NOP, " ; dont do this");
-        } else if (valueType instanceof ReferenceType referenceType) {
+        /*} else if (valueType instanceof ReferenceType referenceType) {
             return new Instruction(JasminInstructions.LOAD_REFERENCE, index);
+         */
         } else if (valueType instanceof ClassType classType) {
             return new Instruction(JasminInstructions.LOAD_REFERENCE, index);
         } else if (valueType instanceof ArrayType arrayType) {

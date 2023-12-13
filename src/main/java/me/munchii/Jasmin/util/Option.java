@@ -20,7 +20,7 @@ public class Option<K, V> {
     @Nullable
     private final V second;
 
-    protected Option(K first, V second) {
+    public Option(@Nullable K first, @Nullable V second) {
         this.first = first;
         this.second = second;
     }

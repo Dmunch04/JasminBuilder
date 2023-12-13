@@ -31,7 +31,7 @@ public interface JasminType {
             return true;
         }
 
-        if (other instanceof ValueType) {
+        if (other instanceof PrimitiveType) {
             return compare(other);
         }
 

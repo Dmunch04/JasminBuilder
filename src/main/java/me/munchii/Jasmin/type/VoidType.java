@@ -1,6 +1,6 @@
 package me.munchii.Jasmin.type;
 
-public class VoidType implements JasminType, ReturnableType {
+public class VoidType implements ReturnableType {
     @Override
     public String getRepresentation() {
         return "V";

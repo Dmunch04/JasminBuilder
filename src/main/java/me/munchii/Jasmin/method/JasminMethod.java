@@ -1,19 +1,25 @@
 package me.munchii.Jasmin.method;
 
 import me.munchii.Jasmin.IWritable;
+import me.munchii.Jasmin.classes.JasminClass;
 import me.munchii.Jasmin.instruction.IJasminInstruction;
+import me.munchii.Jasmin.instruction.Instruction;
+import me.munchii.Jasmin.instruction.JasminInstructions;
 import me.munchii.Jasmin.type.ClassType;
-import me.munchii.Jasmin.type.JasminType;
+import me.munchii.Jasmin.type.ReturnableType;
+import me.munchii.Jasmin.type.ValueType;
 import me.munchii.Jasmin.value.JasminValue;
+import me.munchii.Jasmin.value.Returnable;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class JasminMethod implements IWritable, InstructionAcceptor<JasminMethod> {
+    public final JasminClass parent;
     public final EnumSet<MethodAccessSpec> accessSpec;
     public final String methodName;
-    public final JasminType returnType;
-    public final List<JasminType> paramTypes;
+    public final ReturnableType returnType;
+    public final List<ValueType> paramTypes;
 
     private List<IJasminInstruction> instructions;
     private Map<String, JasminBlock> blocks;
@@ -25,11 +31,12 @@ public class JasminMethod implements IWritable, InstructionAcceptor<JasminMethod
     private int stackLimit = 100;
     private int localsLimit = 100;
 
-    public JasminMethod(String methodName, EnumSet<MethodAccessSpec> accessSpec, JasminType returnType) {
-        this(methodName, accessSpec, returnType, new ArrayList<>());
+    public JasminMethod(JasminClass parent, String methodName, EnumSet<MethodAccessSpec> accessSpec, ReturnableType returnType) {
+        this(parent, methodName, accessSpec, returnType, new ArrayList<>());
     }
 
-    public JasminMethod(String methodName, EnumSet<MethodAccessSpec> accessSpec, JasminType returnType, List<JasminType> paramTypes) {
+    public JasminMethod(JasminClass parent, String methodName, EnumSet<MethodAccessSpec> accessSpec, ReturnableType returnType, List<ValueType> paramTypes) {
+        this.parent = parent;
         this.accessSpec = accessSpec;
         this.methodName = methodName;
         this.returnType = returnType;
@@ -41,7 +48,8 @@ public class JasminMethod implements IWritable, InstructionAcceptor<JasminMethod
 
         if (!accessSpec.contains(MethodAccessSpec.STATIC)) {
             //localVariableMap.put("this", new LocalVariable("this", 0, new JasminValue("this", new ReferenceType("this"))));
-            localVariableMap.put("this", new VariableReference("this", 0, new ClassType("this")));
+            // TODO: class or reference type?
+            localVariableMap.put("this", new VariableReference("this", 0, new ClassType(parent.className)));
             variablePointer++;
         }
 
@@ -52,6 +60,8 @@ public class JasminMethod implements IWritable, InstructionAcceptor<JasminMethod
             variablePointer++;
             i.getAndIncrement();
         });
+
+        parent.registerMethod(this);
     }
 
     public String getDescriptor() {
@@ -107,22 +117,8 @@ public class JasminMethod implements IWritable, InstructionAcceptor<JasminMethod
     }
 
     @Override
-    public JasminMethod addInstruction(IJasminInstruction... instruction) {
-        instructions.addAll(List.of(instruction));
-
-        return this;
-    }
-
-    @Override
     public JasminMethod addInstruction(IJasminInstruction instruction) {
         instructions.add(instruction);
-
-        return this;
-    }
-
-    @Override
-    public JasminMethod addInstructions(IJasminInstruction... instructions) {
-        addInstruction(instructions);
 
         return this;
     }
@@ -172,6 +168,15 @@ public class JasminMethod implements IWritable, InstructionAcceptor<JasminMethod
         blocks.remove(label);
 
         return this;
+    }
+
+    public void returnEnd() {
+        instructions.add(new Instruction(JasminInstructions.RETURN));
+    }
+
+    public void returnEnd(Returnable returnable) {
+        // push returnable value to stack
+        // push correct return instruction
     }
 
     public int getStackLimit() {

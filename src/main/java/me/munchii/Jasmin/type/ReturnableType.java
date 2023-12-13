@@ -8,5 +8,16 @@
 
 package me.munchii.Jasmin.type;
 
-public interface ReturnableType {
+public interface ReturnableType extends JasminType {
+    ReturnableType BOOLEAN = PrimitiveType.BOOLEAN;
+    ReturnableType BYTE = PrimitiveType.BYTE;
+    ReturnableType CHAR = PrimitiveType.CHAR;
+    ReturnableType DOUBLE = PrimitiveType.DOUBLE;
+    ReturnableType FLOAT = PrimitiveType.FLOAT;
+    ReturnableType INTEGER = PrimitiveType.INTEGER;
+    ReturnableType LONG = PrimitiveType.LONG;
+    ReturnableType SHORT = PrimitiveType.SHORT;
+
+    ReturnableType STRING = new StringType();
+    ReturnableType VOID = new VoidType();
 }

@@ -8,6 +8,8 @@
 
 package me.munchii.Jasmin.type;
 
+import me.munchii.Jasmin.instruction.IJasminInstruction;
+
 public interface ValueType extends JasminType {
     ValueType BOOLEAN = PrimitiveType.BOOLEAN;
     ValueType BYTE = PrimitiveType.BYTE;
@@ -19,4 +21,12 @@ public interface ValueType extends JasminType {
     ValueType SHORT = PrimitiveType.SHORT;
 
     ValueType STRING = new StringType();
+
+    // TODO: should we do it like this?
+
+    //IJasminInstruction getPushInstruction(Object value);
+
+    //IJasminInstruction getStoreInstruction(int id);
+
+    //IJasminInstruction getLoadInstruction(int id);
 }

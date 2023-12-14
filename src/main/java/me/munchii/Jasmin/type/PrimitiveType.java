@@ -1,5 +1,7 @@
 package me.munchii.Jasmin.type;
 
+import me.munchii.Jasmin.instruction.IJasminInstruction;
+
 public enum PrimitiveType implements ReturnableType, ValueType {
     BOOLEAN("Z"),
     BYTE("B"),

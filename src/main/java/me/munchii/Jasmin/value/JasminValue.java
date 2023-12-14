@@ -5,6 +5,8 @@ import me.munchii.Jasmin.instruction.IJasminInstruction;
 import me.munchii.Jasmin.instruction.JasminInstructions;
 import me.munchii.Jasmin.type.*;
 
+import java.util.List;
+
 public class JasminValue {
     private Object value;
     private ValueType valueType;
@@ -27,84 +29,84 @@ public class JasminValue {
         this.valueType = valueType;
     }
 
-    public IJasminInstruction getDeclarationInstruction() {
+    public List<IJasminInstruction> getDeclarationInstruction() {
         if (valueType instanceof PrimitiveType type) {
             switch (type) {
                 case BOOLEAN -> {
                     boolean val = (boolean) value;
 
-                    return new Instruction(val ? JasminInstructions.INTEGER_CONSTANT_1 : JasminInstructions.INTEGER_CONSTANT_0);
+                    return List.of(new Instruction(val ? JasminInstructions.INTEGER_CONSTANT_1 : JasminInstructions.INTEGER_CONSTANT_0));
                 }
                 case BYTE -> {
                     byte val = (byte) value;
 
-                    return new Instruction(JasminInstructions.BI_PUSH, String.valueOf(val));
+                    return List.of(new Instruction(JasminInstructions.BI_PUSH, String.valueOf(val)));
                 }
                 case CHAR -> {
                     char val = (char) value;
 
-                    return new Instruction(JasminInstructions.BI_PUSH, String.valueOf((int) val));
+                    return List.of(new Instruction(JasminInstructions.BI_PUSH, String.valueOf((int) val)));
                 }
                 case DOUBLE -> {
                     double val = (double) value;
 
                     if (val == 0.0d) {
-                        return new Instruction(JasminInstructions.PUSH_DOUBLE_0);
+                        return List.of(new Instruction(JasminInstructions.PUSH_DOUBLE_0));
                     } else if (val == 1.0d) {
-                        return new Instruction(JasminInstructions.PUSH_DOUBLE_1);
+                        return List.of(new Instruction(JasminInstructions.PUSH_DOUBLE_1));
                     } else {
-                        return new Instruction(JasminInstructions.LOAD_CONSTANT_2_WIDE, String.valueOf(val));
+                        return List.of(new Instruction(JasminInstructions.LOAD_CONSTANT_2_WIDE, String.valueOf(val)));
                     }
                 }
                 case FLOAT -> {
                     float val = (float) value;
 
                     if (val == 0.0f) {
-                        return new Instruction(JasminInstructions.FLOAT_CONSTANT_0);
+                        return List.of(new Instruction(JasminInstructions.FLOAT_CONSTANT_0));
                     } else if (val == 1.0f) {
-                        return new Instruction(JasminInstructions.FLOAT_CONSTANT_1);
+                        return List.of(new Instruction(JasminInstructions.FLOAT_CONSTANT_1));
                     } else if (val == 2.0f) {
-                        return new Instruction(JasminInstructions.FLOAT_CONSTANT_2);
+                        return List.of(new Instruction(JasminInstructions.FLOAT_CONSTANT_2));
                     } else {
-                        return new Instruction(JasminInstructions.LOAD_CONSTANT, String.valueOf(val));
+                        return List.of(new Instruction(JasminInstructions.LOAD_CONSTANT, String.valueOf(val)));
                     }
                 }
                 case INTEGER -> {
                     int val = (int) value;
 
                     if (val == -1) {
-                        return new Instruction(JasminInstructions.INTEGER_CONSTANT_NEGATIVE_1);
+                        return List.of(new Instruction(JasminInstructions.INTEGER_CONSTANT_NEGATIVE_1));
                     } else if (val == 0) {
-                        return new Instruction(JasminInstructions.INTEGER_CONSTANT_0);
+                        return List.of(new Instruction(JasminInstructions.INTEGER_CONSTANT_0));
                     } else if (val == 1) {
-                        return new Instruction(JasminInstructions.INTEGER_CONSTANT_1);
+                        return List.of(new Instruction(JasminInstructions.INTEGER_CONSTANT_1));
                     } else if (val == 2) {
-                        return new Instruction(JasminInstructions.INTEGER_CONSTANT_2);
+                        return List.of(new Instruction(JasminInstructions.INTEGER_CONSTANT_2));
                     } else if (val == 3) {
-                        return new Instruction(JasminInstructions.INTEGER_CONSTANT_3);
+                        return List.of(new Instruction(JasminInstructions.INTEGER_CONSTANT_3));
                     } else if (val == 4) {
-                        return new Instruction(JasminInstructions.INTEGER_CONSTANT_4);
+                        return List.of(new Instruction(JasminInstructions.INTEGER_CONSTANT_4));
                     } else if (val == 5) {
-                        return new Instruction(JasminInstructions.INTEGER_CONSTANT_5);
+                        return List.of(new Instruction(JasminInstructions.INTEGER_CONSTANT_5));
                     } else {
-                        return new Instruction(JasminInstructions.BI_PUSH, String.valueOf(val));
+                        return List.of(new Instruction(JasminInstructions.BI_PUSH, String.valueOf(val)));
                     }
                 }
                 case LONG -> {
                     long val = (long) value;
 
                     if (val == 0) {
-                        return new Instruction(JasminInstructions.LONG_CONSTANT_0);
+                        return List.of(new Instruction(JasminInstructions.LONG_CONSTANT_0));
                     } else if (val == 1) {
-                        return new Instruction(JasminInstructions.LONG_CONSTANT_1);
+                        return List.of(new Instruction(JasminInstructions.LONG_CONSTANT_1));
                     } else {
-                        return new Instruction(JasminInstructions.LOAD_CONSTANT_2_WIDE, String.valueOf(val));
+                        return List.of(new Instruction(JasminInstructions.LOAD_CONSTANT_2_WIDE, String.valueOf(val)));
                     }
                 }
                 case SHORT -> {
                     short val = (short) value;
 
-                    return new Instruction(JasminInstructions.SI_PUSH, String.valueOf(val));
+                    return List.of(new Instruction(JasminInstructions.SI_PUSH, String.valueOf(val)));
                 }
             };
         /*} else if (valueType instanceof ReferenceType referenceType) {
@@ -117,17 +119,17 @@ public class JasminValue {
             //instructions.add(new Instruction(JasminInstructions.NOP, " ; how?"));
             // TODO: this should call constructor right? if so, what about the args
             String val = String.valueOf(value);
-            return new Instruction(JasminInstructions.LOAD_CONSTANT, val);
+            return List.of(new Instruction(JasminInstructions.LOAD_CONSTANT, val));
         } else if (valueType instanceof StringType) {
             String val = "\"" + value + "\"";
-            return new Instruction(JasminInstructions.LOAD_CONSTANT, val);
+            return List.of(new Instruction(JasminInstructions.LOAD_CONSTANT, val));
         } else if (valueType instanceof ArrayType arrayType) {
-            return new Instruction(JasminInstructions.A_NEW_ARRAY, valueType.getRepresentation());
+            return List.of(new Instruction(JasminInstructions.A_NEW_ARRAY, valueType.getRepresentation()));
         } else {
-            return new Instruction(JasminInstructions.NOP, " ; idk?");
+            return List.of(new Instruction(JasminInstructions.NOP, " ; idk?"));
         }
 
-        return new Instruction(JasminInstructions.NOP, " ; idk?");
+        return List.of(new Instruction(JasminInstructions.NOP, " ; idk?"));
     }
 
     public IJasminInstruction getStoreInstruction(int id) {

@@ -15,4 +15,9 @@ public class LocalVariableInstruction implements IJasminInstruction {
     public void write(StringBuilder builder) {
         builder.append(type.getRepresentation()).append(" ").append(index);
     }
+
+    @Override
+    public int getStackChange() {
+        return type.getStackChange();
+    }
 }

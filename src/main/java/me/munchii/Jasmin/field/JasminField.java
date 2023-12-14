@@ -3,6 +3,7 @@ package me.munchii.Jasmin.field;
 import me.munchii.Jasmin.IWritable;
 import me.munchii.Jasmin.classes.JasminClass;
 import me.munchii.Jasmin.type.JasminType;
+import me.munchii.Jasmin.type.ValueType;
 
 import java.util.EnumSet;
 import java.util.stream.Collectors;
@@ -11,10 +12,10 @@ public class JasminField implements IWritable {
     public final JasminClass parent;
     public final EnumSet<FieldAccessSpec> accessSpec;
     public final String fieldName;
-    public final JasminType fieldType;
+    public final ValueType fieldType;
     // TODO: allow for value holding (value upon creation - .field <spec> <name> <type> = VALUE - is only allowed for final fields)
 
-    public JasminField(JasminClass parent, String fieldName, EnumSet<FieldAccessSpec> accessSpec, JasminType fieldType) {
+    public JasminField(JasminClass parent, String fieldName, EnumSet<FieldAccessSpec> accessSpec, ValueType fieldType) {
         this.parent = parent;
         this.accessSpec = accessSpec;
         this.fieldName = fieldName;

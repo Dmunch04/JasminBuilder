@@ -12,18 +12,25 @@ import java.util.List;
 public class MethodInvokationInstruction implements IJasminInstruction {
     private final MethodInvokationInstructionType type;
     private final String methodSpec;
+    private final int args;
 
     public MethodInvokationInstruction(MethodInvokationInstructionType type, ReferenceType classReference, String methodName, ReturnableType returnType, List<ValueType> paramTypes) {
-        this(type, MethodSpec.makeMethodSpec(classReference, methodName, returnType, paramTypes));
+        this(type, MethodSpec.makeMethodSpec(classReference, methodName, returnType, paramTypes), paramTypes.size());
     }
 
-    public MethodInvokationInstruction(MethodInvokationInstructionType type, String methodSpec) {
+    public MethodInvokationInstruction(MethodInvokationInstructionType type, String methodSpec, int argsAmount) {
         this.type = type;
         this.methodSpec = methodSpec;
+        this.args = argsAmount;
     }
 
     @Override
     public void write(StringBuilder builder) {
         builder.append(type.getRepresentation()).append(" ").append(methodSpec);
+    }
+
+    @Override
+    public int getStackChange() {
+        return type.getStackChange() - args;
     }
 }

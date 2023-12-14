@@ -105,7 +105,7 @@ public class JasminClass implements IWritable {
     }
 
     public JasminClass registerMethod(JasminMethod method) {
-        methods.putIfAbsent(MethodSpec.makeMethodSpec(getReference(), method), method);
+        methods.putIfAbsent(method.getDescriptor(true), method);
 
         return this;
     }

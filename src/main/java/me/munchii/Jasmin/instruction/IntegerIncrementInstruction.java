@@ -13,4 +13,9 @@ public class IntegerIncrementInstruction implements IJasminInstruction {
     public void write(StringBuilder builder) {
         builder.append("iinc ").append(variableIndex).append(" ").append(value);
     }
+
+    @Override
+    public int getStackChange() {
+        return JasminInstructions.INCREMENT.getStackChange();
+    }
 }

@@ -43,4 +43,9 @@ public class LoadConstantInstruction implements IJasminInstruction {
             builder.append(value);
         }
     }
+
+    @Override
+    public int getStackChange() {
+        return type.getStackChange();
+    }
 }

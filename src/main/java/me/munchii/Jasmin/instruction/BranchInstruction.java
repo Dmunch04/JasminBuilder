@@ -15,4 +15,9 @@ public class BranchInstruction implements IJasminInstruction {
     public void write(StringBuilder builder) {
         builder.append(type.getRepresentation()).append(" ").append(label);
     }
+
+    @Override
+    public int getStackChange() {
+        return type.getStackChange();
+    }
 }

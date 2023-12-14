@@ -16,4 +16,9 @@ public class ObjectInstruction implements IJasminInstruction {
     public void write(StringBuilder builder) {
         builder.append(type.getRepresentation()).append(" ").append(classReference.getRepresentation());
     }
+
+    @Override
+    public int getStackChange() {
+        return type.getStackChange();
+    }
 }

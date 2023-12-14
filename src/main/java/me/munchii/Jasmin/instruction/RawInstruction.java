@@ -10,13 +10,20 @@ package me.munchii.Jasmin.instruction;
 
 public class RawInstruction implements IJasminInstruction {
     private final String instruction;
+    private final int stackChange;
 
-    public RawInstruction(String instruction) {
+    public RawInstruction(String instruction, int stackChange) {
         this.instruction = instruction;
+        this.stackChange = stackChange;
     }
 
     @Override
     public void write(StringBuilder builder) {
         builder.append(instruction);
+    }
+
+    @Override
+    public int getStackChange() {
+        return stackChange;
     }
 }

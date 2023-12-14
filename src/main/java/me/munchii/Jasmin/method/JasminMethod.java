@@ -30,6 +30,7 @@ public class JasminMethod implements IWritable, InstructionAcceptor<JasminMethod
 
     private int stackLimit = 100;
     private int localsLimit = 100;
+    private boolean autoLimits = true;
 
     public JasminMethod(JasminClass parent, String methodName, EnumSet<MethodAccessSpec> accessSpec, ReturnableType returnType) {
         this(parent, methodName, accessSpec, returnType, new ArrayList<>());
@@ -94,6 +95,11 @@ public class JasminMethod implements IWritable, InstructionAcceptor<JasminMethod
 
     @Override
     public void write(StringBuilder builder) {
+        if (autoLimits) {
+            localsLimit = paramTypes.size() + localVariableMap.size();
+            stackLimit = calculateMaxStack();
+        }
+
         builder.append(getSignature()).append("\n")
                 .append("\t").append(".limit stack ").append(stackLimit).append("\n")
                 .append("\t").append(".limit locals ").append(localsLimit).append("\n");
@@ -197,6 +203,37 @@ public class JasminMethod implements IWritable, InstructionAcceptor<JasminMethod
         localsLimit = limit;
 
         return this;
+    }
+
+    public JasminMethod setAutoLimits(boolean enabled) {
+        autoLimits = enabled;
+
+        return this;
+    }
+
+    public int calculateMaxStack() {
+        AtomicInteger highestStack = new AtomicInteger();
+        AtomicInteger currentStack = new AtomicInteger();
+
+        instructions.forEach(instruction -> {
+            currentStack.addAndGet(instruction.getStackChange());
+
+            if (currentStack.get() > highestStack.get()) {
+                highestStack.set(currentStack.get());
+            }
+        });
+
+        blocks.forEach((label, jasminBlock) -> {
+            jasminBlock.getInstructions().forEach(instruction -> {
+                currentStack.addAndGet(instruction.getStackChange());
+
+                if (currentStack.get() > highestStack.get()) {
+                    highestStack.set(currentStack.get());
+                }
+            });
+        });
+
+        return highestStack.get();
     }
 
     public int getCurrentVariableIndex() {

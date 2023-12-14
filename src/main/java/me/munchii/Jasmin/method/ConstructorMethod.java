@@ -36,11 +36,30 @@ public class ConstructorMethod implements IWritable, InstructionAcceptor<Constru
         parent.registerConstructor(this);
     }
 
+    public String getDescriptor() {
+        return getDescriptor(false);
+    }
+
+    public String getDescriptor(boolean includeMethodName) {
+        StringBuilder builder = new StringBuilder();
+        if (includeMethodName) {
+            builder.append(methodName);
+        }
+
+        builder.append("(");
+        paramTypes.forEach(param -> builder.append(param.getRepresentation()));
+        builder.append(")");
+        builder.append(returnType.getRepresentation());
+
+        return builder.toString();
+    }
+
     public ConstructorMethod initSuper() {
         addInstruction(new Instruction(JasminInstructions.LOAD_REFERENCE_FROM_LOCAL_VARIABLE_0));
         addInstruction(new MethodInvokationInstruction(
                 MethodInvokationInstructionType.INVOKE_VIRTUAL,
-                MethodSpec.makeMethodSpec(new ReferenceType(parent.superClass), "<init>", ReturnableType.VOID, List.of())
+                MethodSpec.makeMethodSpec(new ReferenceType(parent.superClass), "<init>", ReturnableType.VOID, List.of()),
+                paramTypes.size()
         ));
 
         return this;

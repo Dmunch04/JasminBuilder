@@ -10,4 +10,9 @@ public class NewArrayInstruction implements IJasminInstruction {
     public void write(StringBuilder builder) {
 
     }
+
+    @Override
+    public int getStackChange() {
+        return 0;
+    }
 }

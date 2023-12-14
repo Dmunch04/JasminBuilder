@@ -13,4 +13,9 @@ public class NoParameterInstruction implements IJasminInstruction {
     public void write(StringBuilder builder) {
         builder.append(type.getRepresentation());
     }
+
+    @Override
+    public int getStackChange() {
+        return type.getStackChange();
+    }
 }

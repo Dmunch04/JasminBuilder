@@ -11,6 +11,7 @@ package me.munchii.Jasmin.result;
 import me.munchii.Jasmin.util.Option;
 
 import java.util.Optional;
+import java.util.function.BiConsumer;
 
 public class JasminResult<T> {
     private final Option<T, JasminInfo> option;
@@ -33,6 +34,10 @@ public class JasminResult<T> {
 
     public Optional<T> getResult() {
         return option.getFirst();
+    }
+
+    public void unpack(BiConsumer<Optional<T>, Optional<JasminInfo>> consumer) {
+        consumer.accept(getResult(), getInfo());
     }
 
     public Optional<JasminInfo> getInfo() {

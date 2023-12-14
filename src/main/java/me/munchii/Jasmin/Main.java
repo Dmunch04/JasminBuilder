@@ -2,24 +2,48 @@ package me.munchii.Jasmin;
 
 import me.munchii.Jasmin.classes.ClassAccessSpec;
 import me.munchii.Jasmin.classes.JasminClass;
-import me.munchii.Jasmin.field.FieldAccessSpec;
-import me.munchii.Jasmin.field.JasminField;
-import me.munchii.Jasmin.instruction.Instruction;
-import me.munchii.Jasmin.instruction.IJasminInstruction;
-import me.munchii.Jasmin.instruction.JasminInstructions;
-import me.munchii.Jasmin.method.JasminBlock;
+import me.munchii.Jasmin.instruction.FieldManipulationInstruction;
+import me.munchii.Jasmin.instruction.LoadConstantInstruction;
+import me.munchii.Jasmin.instruction.MethodInvokationInstruction;
+import me.munchii.Jasmin.instruction.type.FieldManipulationInstructionType;
+import me.munchii.Jasmin.instruction.type.LoadConstantInstructionType;
+import me.munchii.Jasmin.instruction.type.MethodInvokationInstructionType;
+import me.munchii.Jasmin.method.ConstructorMethod;
 import me.munchii.Jasmin.method.JasminMethod;
 import me.munchii.Jasmin.method.MethodAccessSpec;
-import me.munchii.Jasmin.statement.PrintStatement;
-import me.munchii.Jasmin.type.*;
-import me.munchii.Jasmin.value.ConstantValue;
-import me.munchii.Jasmin.value.JasminValue;
-import me.munchii.Jasmin.value.Returnable;
+import me.munchii.Jasmin.type.ArrayType;
+import me.munchii.Jasmin.type.ClassType;
+import me.munchii.Jasmin.type.JavaStd;
+import me.munchii.Jasmin.type.ReturnableType;
 
 import java.util.EnumSet;
 import java.util.List;
 
 public class Main {
+    public static void main(String[] args) {
+        JasminFile file = new JasminFile("", "TEST");
+
+        JasminClass testClass = new JasminClass("Foo", EnumSet.of(ClassAccessSpec.PUBLIC));
+        ConstructorMethod constructor = new ConstructorMethod(testClass, EnumSet.of(MethodAccessSpec.PUBLIC), List.of())
+                .initSuper();
+        JasminMethod mainMethod = new JasminMethod(testClass,
+                "main",
+                EnumSet.of(MethodAccessSpec.PUBLIC, MethodAccessSpec.STATIC),
+                ReturnableType.VOID,
+                List.of(new ArrayType(JavaStd.JAVA_STRING_INSTANCE)))
+                .addInstruction(new FieldManipulationInstruction(FieldManipulationInstructionType.GET_STATIC, "java/lang/System/out", JavaStd.JAVA_PRINT_STREAM_INSTANCE))
+                .addInstruction(new LoadConstantInstruction(LoadConstantInstructionType.LOAD_CONSTANT, "Hello, World!"))
+                .addInstruction(new MethodInvokationInstruction(MethodInvokationInstructionType.INVOKE_VIRTUAL, JavaStd.JAVA_PRINT_STREAM_REFERENCE, "println", ReturnableType.VOID, List.of(JavaStd.JAVA_STRING_INSTANCE)))
+                .returnEnd();
+
+        file.addClass(testClass);
+
+        StringBuilder builder = new StringBuilder();
+        file.write(builder);
+        System.out.println(builder);
+    }
+
+    /*
     public static void main(String[] args) {
         JasminFile file = new JasminFile("", "TEST");
         JasminClass testClass = new JasminClass("Foo", EnumSet.of(ClassAccessSpec.PUBLIC));
@@ -70,6 +94,7 @@ public class Main {
                 new ClassType("java/lang/String")
         ));
          */
+    /*
     }
 
     public static void test() {
@@ -102,4 +127,5 @@ public class Main {
         accountFile.write(builder);
         System.out.println(builder);
     }
+    */
 }

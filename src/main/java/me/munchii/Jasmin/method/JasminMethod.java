@@ -176,8 +176,10 @@ public class JasminMethod implements IWritable, InstructionAcceptor<JasminMethod
         return this;
     }
 
-    public void returnEnd() {
+    public JasminMethod returnEnd() {
         instructions.add(new Instruction(JasminInstructions.RETURN));
+
+        return this;
     }
 
     public void returnEnd(Returnable returnable) {

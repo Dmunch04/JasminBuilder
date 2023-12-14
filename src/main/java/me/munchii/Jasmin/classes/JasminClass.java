@@ -4,6 +4,7 @@ import me.munchii.Jasmin.IWritable;
 import me.munchii.Jasmin.field.JasminField;
 import me.munchii.Jasmin.method.ConstructorMethod;
 import me.munchii.Jasmin.method.JasminMethod;
+import me.munchii.Jasmin.method.MethodAccessSpec;
 import me.munchii.Jasmin.type.JasminType;
 import me.munchii.Jasmin.type.ReferenceType;
 import me.munchii.Jasmin.type.ValueType;
@@ -73,10 +74,24 @@ public class JasminClass implements IWritable {
             builder.append("\n");
         });
 
+        constructors.forEach((key, constructor) -> {
+            StringBuilder methodComment = new StringBuilder();
+            methodComment.append("; method: ")
+                    .append(String.join(" ", constructor.accessSpec.stream().map(MethodAccessSpec::getValue).collect(Collectors.toSet()))).append(" ")
+                    .append(DataTypeConversion.getJavaTypeName(constructor.returnType)).append(" ")
+                    .append(constructor.methodName).append("(")
+                    .append(constructor.paramTypes.stream().map(DataTypeConversion::getJavaTypeName).collect(Collectors.joining(", ")))
+                    .append(");").append("\n");
+
+            builder.append(methodComment);
+            constructor.write(builder);
+            builder.append("\n");
+        });
+
         methods.forEach((key, method) -> {
             StringBuilder methodComment = new StringBuilder();
             methodComment.append("; method: ")
-                    .append(String.join(" ", accessSpec.stream().map(ClassAccessSpec::getValue).collect(Collectors.toSet()))).append(" ")
+                    .append(String.join(" ", method.accessSpec.stream().map(MethodAccessSpec::getValue).collect(Collectors.toSet()))).append(" ")
                     .append(DataTypeConversion.getJavaTypeName(method.returnType)).append(" ")
                     .append(method.methodName).append("(")
                     .append(method.paramTypes.stream().map(DataTypeConversion::getJavaTypeName).collect(Collectors.joining(", ")))

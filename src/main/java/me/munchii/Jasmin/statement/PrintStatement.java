@@ -2,6 +2,7 @@ package me.munchii.Jasmin.statement;
 
 import me.munchii.Jasmin.instruction.Instruction;
 import me.munchii.Jasmin.instruction.JasminInstructions;
+import me.munchii.Jasmin.method.InstructionAcceptor;
 import me.munchii.Jasmin.method.JasminMethod;
 import me.munchii.Jasmin.type.JavaStd;
 import me.munchii.Jasmin.type.PrimitiveType;
@@ -30,7 +31,7 @@ public class PrintStatement implements Statement {
     }
 
     @Override
-    public void writeToMethod(JasminMethod method) {
+    public <T> void write(InstructionAcceptor<T> acceptor) {
 
     }
 }

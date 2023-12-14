@@ -14,10 +14,14 @@ import me.munchii.Jasmin.type.ValueType;
 import me.munchii.Jasmin.util.MethodSpec;
 import me.munchii.Jasmin.value.JasminValue;
 
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ConstructorMethod implements IWritable, InstructionAcceptor<ConstructorMethod> {
+    // TODO: maybe constructor method should just extend JasminMethod?
+
     public final JasminClass parent;
     public final EnumSet<MethodAccessSpec> accessSpec;
     public final String methodName = "<init>";
@@ -26,12 +30,16 @@ public class ConstructorMethod implements IWritable, InstructionAcceptor<Constru
 
     private List<IJasminInstruction> instructions;
 
-    private final int stackLimit = 100;
+    private int stackLimit = 100;
+    private int localsLimit = 100;
+    private boolean autoLimits = true;
 
     public ConstructorMethod(JasminClass parent, EnumSet<MethodAccessSpec> accessSpec, List<ValueType> paramTypes) {
         this.parent = parent;
         this.accessSpec = accessSpec;
         this.paramTypes = paramTypes;
+
+        this.instructions = new ArrayList<>();
 
         parent.registerConstructor(this);
     }
@@ -50,6 +58,16 @@ public class ConstructorMethod implements IWritable, InstructionAcceptor<Constru
         paramTypes.forEach(param -> builder.append(param.getRepresentation()));
         builder.append(")");
         builder.append(returnType.getRepresentation());
+
+        return builder.toString();
+    }
+
+    public String getSignature() {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(".method ");
+        accessSpec.forEach(spec -> builder.append(spec.getValue()).append(" "));
+        builder.append(getDescriptor(true));
 
         return builder.toString();
     }
@@ -73,8 +91,10 @@ public class ConstructorMethod implements IWritable, InstructionAcceptor<Constru
         return this;
     }
 
-    public void returnEnd() {
+    public ConstructorMethod returnEnd() {
         instructions.add(new Instruction(JasminInstructions.RETURN));
+
+        return this;
     }
 
     @Override
@@ -105,6 +125,85 @@ public class ConstructorMethod implements IWritable, InstructionAcceptor<Constru
 
     @Override
     public void write(StringBuilder builder) {
+        if (autoLimits) {
+            localsLimit = paramTypes.size() /*+ localVariableMap.size()*/ + 1;
+            stackLimit = calculateMaxStack();
+        }
 
+        builder.append(getSignature()).append("\n")
+                .append("\t").append(".limit stack ").append(stackLimit).append("\n")
+                .append("\t").append(".limit locals ").append(localsLimit).append("\n");
+
+        instructions.forEach(instruction -> {
+            builder.append("\t");
+            instruction.write(builder);
+            builder.append("\n");
+        });
+
+        /*
+        blocks.forEach((label, jasminBlock) -> {
+            builder.append(label).append(":").append("\n");
+            jasminBlock.getInstructions().forEach(instruction -> {
+                builder.append("\t");
+                instruction.write(builder);
+                builder.append("\n");
+            });
+        });
+         */
+
+        builder.append(".end method");
+    }
+
+    public int getStackLimit() {
+        return stackLimit;
+    }
+
+    public int getLocalsLimit() {
+        return localsLimit;
+    }
+
+    public ConstructorMethod setStackLimit(int limit) {
+        stackLimit = limit;
+
+        return this;
+    }
+
+    public ConstructorMethod setLocalsLimit(int limit) {
+        localsLimit = limit;
+
+        return this;
+    }
+
+    public ConstructorMethod setAutoLimits(boolean enabled) {
+        autoLimits = enabled;
+
+        return this;
+    }
+
+    public int calculateMaxStack() {
+        AtomicInteger highestStack = new AtomicInteger();
+        AtomicInteger currentStack = new AtomicInteger();
+
+        instructions.forEach(instruction -> {
+            currentStack.addAndGet(instruction.getStackChange());
+
+            if (currentStack.get() > highestStack.get()) {
+                highestStack.set(currentStack.get());
+            }
+        });
+
+        /*
+        blocks.forEach((label, jasminBlock) -> {
+            jasminBlock.getInstructions().forEach(instruction -> {
+                currentStack.addAndGet(instruction.getStackChange());
+
+                if (currentStack.get() > highestStack.get()) {
+                    highestStack.set(currentStack.get());
+                }
+            });
+        });
+         */
+
+        return highestStack.get();
     }
 }

@@ -1,6 +1,7 @@
 package me.munchii.Jasmin.method;
 
 import me.munchii.Jasmin.instruction.IJasminInstruction;
+import me.munchii.Jasmin.statement.Statement;
 import me.munchii.Jasmin.value.JasminValue;
 
 import java.util.ArrayList;
@@ -67,5 +68,12 @@ public class JasminBlock implements InstructionAcceptor<JasminBlock> {
     @Override
     public List<IJasminInstruction> getInstructions() {
         return instructions;
+    }
+
+    @Override
+    public JasminBlock addStatement(Statement statement) {
+        statement.write(this);
+
+        return this;
     }
 }

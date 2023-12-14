@@ -5,6 +5,7 @@ import me.munchii.Jasmin.classes.JasminClass;
 import me.munchii.Jasmin.instruction.IJasminInstruction;
 import me.munchii.Jasmin.instruction.Instruction;
 import me.munchii.Jasmin.instruction.JasminInstructions;
+import me.munchii.Jasmin.statement.Statement;
 import me.munchii.Jasmin.type.ClassType;
 import me.munchii.Jasmin.type.ReturnableType;
 import me.munchii.Jasmin.type.ValueType;
@@ -146,6 +147,13 @@ public class JasminMethod implements IWritable, InstructionAcceptor<JasminMethod
     @Override
     public List<IJasminInstruction> getInstructions() {
         return instructions;
+    }
+
+    @Override
+    public JasminMethod addStatement(Statement statement) {
+        statement.write(this);
+
+        return this;
     }
 
     /**

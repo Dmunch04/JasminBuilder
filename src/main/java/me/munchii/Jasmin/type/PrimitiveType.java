@@ -10,9 +10,6 @@ public enum PrimitiveType implements ReturnableType, ValueType {
     LONG("J"),
     SHORT("S");
 
-    public static final VoidType VOID_TYPE = new VoidType();
-    public static final StringType STRING_TYPE = new StringType();
-
     private final String representation;
 
     PrimitiveType(String representation) {

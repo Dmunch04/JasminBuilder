@@ -8,6 +8,7 @@ import me.munchii.Jasmin.instruction.Instruction;
 import me.munchii.Jasmin.instruction.JasminInstructions;
 import me.munchii.Jasmin.instruction.MethodInvokationInstruction;
 import me.munchii.Jasmin.instruction.type.MethodInvokationInstructionType;
+import me.munchii.Jasmin.statement.Statement;
 import me.munchii.Jasmin.type.ReferenceType;
 import me.munchii.Jasmin.type.ReturnableType;
 import me.munchii.Jasmin.type.ValueType;
@@ -121,6 +122,13 @@ public class ConstructorMethod implements IWritable, InstructionAcceptor<Constru
     @Override
     public List<IJasminInstruction> getInstructions() {
         return instructions;
+    }
+
+    @Override
+    public ConstructorMethod addStatement(Statement statement) {
+        statement.write(this);
+
+        return this;
     }
 
     @Override

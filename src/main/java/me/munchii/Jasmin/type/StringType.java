@@ -8,21 +8,8 @@
 
 package me.munchii.Jasmin.type;
 
-public class StringType implements ReturnableType, ValueType {
-    @Override
-    public String getRepresentation() {
-        // TODO: which?
-        //return JavaStd.JAVA_STRING_INSTANCE.getRepresentation();
-        return JavaStd.JAVA_STRING_REFERENCE.getRepresentation();
-    }
-
-    @Override
-    public String getIdentifier() {
-        return "a";
-    }
-
-    @Override
-    public boolean isReference() {
-        return true;
+public class StringType extends ClassType implements ReturnableType, ValueType {
+    public StringType() {
+        super(JavaStd.JAVA_STRING_REFERENCE.getRepresentation());
     }
 }

@@ -109,25 +109,14 @@ public class JasminValue {
                     return List.of(new Instruction(JasminInstructions.SI_PUSH, String.valueOf(val)));
                 }
             };
-        /*} else if (valueType instanceof ReferenceType referenceType) {
-            //instructions.add(new Instruction(JasminInstructions.NOP, " ; how?"));
-            // TODO: this should call constructor right? if so, what about the args
-            String val = String.valueOf(value);
-            return new Instruction(JasminInstructions.LOAD_CONSTANT, val);
-         */
-        } else if (valueType instanceof ClassType classType) {
-            //instructions.add(new Instruction(JasminInstructions.NOP, " ; how?"));
-            // TODO: this should call constructor right? if so, what about the args
-            String val = String.valueOf(value);
-            return List.of(new Instruction(JasminInstructions.LOAD_CONSTANT, val));
         } else if (valueType instanceof StringType) {
             String val = "\"" + value + "\"";
             return List.of(new Instruction(JasminInstructions.LOAD_CONSTANT, val));
-        } else if (valueType instanceof ArrayType arrayType) {
-            return List.of(new Instruction(JasminInstructions.A_NEW_ARRAY, valueType.getRepresentation()));
         } else {
             return List.of(new Instruction(JasminInstructions.NOP, " ; idk?"));
         }
+
+        // TODO: objects/classes and arrays? they would need to be initialized by call to constructor right?
 
         return List.of(new Instruction(JasminInstructions.NOP, " ; idk?"));
     }
@@ -141,15 +130,10 @@ public class JasminValue {
                 case FLOAT -> new Instruction(JasminInstructions.STORE_FLOAT, index);
                 case LONG -> new Instruction(JasminInstructions.STORE_LONG, index);
             };
-        /*} else if (valueType instanceof ReferenceType referenceType) {
-            return new Instruction(JasminInstructions.STORE_REFERENCE, index);
-         */
         } else if (valueType instanceof ClassType classType) {
             return new Instruction(JasminInstructions.STORE_REFERENCE, index);
-        } else if (valueType instanceof StringType stringType) {
-            return new Instruction(JasminInstructions.STORE_REFERENCE, index);
         } else if (valueType instanceof ArrayType arrayType) {
-            // TODO ?
+            // TODO: elements should be handled elsewhere right?
             return new Instruction(JasminInstructions.STORE_REFERENCE, index);
         } else {
             return new Instruction(JasminInstructions.NOP, " ; idk?");
@@ -165,12 +149,10 @@ public class JasminValue {
                 case FLOAT -> new Instruction(JasminInstructions.LOAD_FLOAT, index);
                 case LONG -> new Instruction(JasminInstructions.LOAD_LONG, index);
             };
-        /*} else if (valueType instanceof ReferenceType referenceType) {
-            return new Instruction(JasminInstructions.LOAD_REFERENCE, index);
-         */
         } else if (valueType instanceof ClassType classType) {
             return new Instruction(JasminInstructions.LOAD_REFERENCE, index);
         } else if (valueType instanceof ArrayType arrayType) {
+            // TODO: array elements handled elsewhere right?
             return new Instruction(JasminInstructions.LOAD_REFERENCE, index);
         } else {
             return new Instruction(JasminInstructions.NOP, " ; idk?");

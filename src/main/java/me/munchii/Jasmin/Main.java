@@ -2,9 +2,7 @@ package me.munchii.Jasmin;
 
 import me.munchii.Jasmin.classes.ClassAccessSpec;
 import me.munchii.Jasmin.classes.JasminClass;
-import me.munchii.Jasmin.method.ConstructorMethod;
-import me.munchii.Jasmin.method.JasminMethod;
-import me.munchii.Jasmin.method.MethodAccessSpec;
+import me.munchii.Jasmin.method.*;
 import me.munchii.Jasmin.statement.PrintStatement;
 import me.munchii.Jasmin.type.*;
 import me.munchii.Jasmin.value.ConstantValue;
@@ -29,6 +27,14 @@ public class Main {
                 List.of(new ArrayType(JavaStd.JAVA_STRING_INSTANCE)))
                 .addStatement(new PrintStatement(PrintStatement.PrintType.PRINTLN, new ConstantValue("Hello, World!", JavaStd.JAVA_STRING_INSTANCE)))
                 .returnEnd();
+
+        LocalVariable arg1 = mainMethod.getArg(1).get();
+        //arg1.load().forEach(inst -> System.out.println(inst.getString()));
+        //System.out.println(arg1.isArrayReference());
+        // push first element of arg1 to stack. maybe not very elegant?
+        if (arg1 instanceof VariableReferenceArray array) {
+            array.loadElement(0).forEach(inst -> System.out.println(inst.getString()));
+        }
 
         file.addClass(testClass);
 

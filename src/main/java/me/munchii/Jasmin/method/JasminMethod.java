@@ -6,6 +6,7 @@ import me.munchii.Jasmin.instruction.IJasminInstruction;
 import me.munchii.Jasmin.instruction.Instruction;
 import me.munchii.Jasmin.instruction.JasminInstructions;
 import me.munchii.Jasmin.statement.Statement;
+import me.munchii.Jasmin.type.ArrayType;
 import me.munchii.Jasmin.type.ClassType;
 import me.munchii.Jasmin.type.ReturnableType;
 import me.munchii.Jasmin.type.ValueType;
@@ -58,7 +59,11 @@ public class JasminMethod implements IWritable, InstructionAcceptor<JasminMethod
         AtomicInteger i = new AtomicInteger(1);
         paramTypes.forEach(param -> {
             String name = "arg" + i;
-            localVariableMap.put(name, new VariableReference(name, variablePointer, param));
+            if (param.isArray()) {
+                localVariableMap.put(name, new VariableReferenceArray(name, variablePointer, (ArrayType) param));
+            } else {
+                localVariableMap.put(name, new VariableReference(name, variablePointer, param));
+            }
             variablePointer++;
             i.getAndIncrement();
         });

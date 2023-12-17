@@ -29,19 +29,19 @@ public class PrintStatement implements Statement {
 
     public static void print(JasminMethod method, IValueContainer value) {
         method.addInstruction(new Instruction(JasminInstructions.GET_STATIC, "java/lang/System/out", JavaStd.JAVA_PRINT_STREAM_INSTANCE.getRepresentation()));
-        method.addInstruction(value.pushValue());
+        method.addInstructions(value.pushValue());
         method.addInstruction(new Instruction(JasminInstructions.INVOKE_VIRTUAL, MethodSpec.makeMethodSpec(JavaStd.JAVA_PRINT_STREAM_REFERENCE, "print", ReturnableType.VOID, Collections.singletonList(value.getValue().getValueType()))));
     }
 
     public static void println(JasminMethod method, IValueContainer value) {
         method.addInstruction(new Instruction(JasminInstructions.GET_STATIC, "java/lang/System/out", JavaStd.JAVA_PRINT_STREAM_INSTANCE.getRepresentation()));
-        method.addInstruction(value.pushValue());
+        method.addInstructions(value.pushValue());
         method.addInstruction(new Instruction(JasminInstructions.INVOKE_VIRTUAL, MethodSpec.makeMethodSpec(JavaStd.JAVA_PRINT_STREAM_REFERENCE, "println", ReturnableType.VOID, Collections.singletonList(value.getValue().getValueType()))));
     }
 
     public static void printfln(JasminMethod method, IValueContainer value) {
         method.addInstruction(new Instruction(JasminInstructions.GET_STATIC, "java/lang/System/out", JavaStd.JAVA_PRINT_STREAM_INSTANCE.getRepresentation()));
-        method.addInstruction(value.pushValue());
+        method.addInstructions(value.pushValue());
         method.addInstruction(new Instruction(JasminInstructions.INVOKE_VIRTUAL, MethodSpec.makeMethodSpec(JavaStd.JAVA_PRINT_STREAM_REFERENCE, "printfln", ReturnableType.VOID, Collections.singletonList(value.getValue().getValueType()))));
     }
 
@@ -50,7 +50,7 @@ public class PrintStatement implements Statement {
         String printMethodName = type.toString().toLowerCase(Locale.ROOT);
 
         acceptor.addInstruction(new Instruction(JasminInstructions.GET_STATIC, "java/lang/System/out", JavaStd.JAVA_PRINT_STREAM_INSTANCE.getRepresentation()));
-        acceptor.addInstruction(value.pushValue());
+        acceptor.addInstructions(value.pushValue());
         acceptor.addInstruction(new Instruction(JasminInstructions.INVOKE_VIRTUAL, MethodSpec.makeMethodSpec(JavaStd.JAVA_PRINT_STREAM_REFERENCE, printMethodName, ReturnableType.VOID, Collections.singletonList(value.getValue().getValueType()))));
     }
 }

@@ -9,6 +9,10 @@ public class ArrayType implements ReturnableType, ValueType {
     }
 
     public ArrayType(ValueType type, int dimensions) {
+        if (type.isArray()) {
+            throw new IllegalArgumentException("dont do this. make use of dimensions instead");
+        }
+
         this.type = type;
         this.dimensions = dimensions;
     }
@@ -23,7 +27,7 @@ public class ArrayType implements ReturnableType, ValueType {
         return true;
     }
 
-    public JasminType getType() {
+    public ValueType getType() {
         return type;
     }
 

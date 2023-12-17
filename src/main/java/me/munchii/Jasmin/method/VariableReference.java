@@ -20,60 +20,7 @@ public class VariableReference extends LocalVariable {
     }
 
     @Override
-    public List<IJasminInstruction> declare() {
-        return super.declare();
-    }
-
-    @Override
-    public List<IJasminInstruction> load() {
-        String index = String.valueOf(id);
-        List<IJasminInstruction> instructions = new ArrayList<>();
-        if (variableType instanceof PrimitiveType valueType) {
-            switch (valueType) {
-                case BOOLEAN, SHORT, INTEGER, BYTE, CHAR -> instructions.add(new Instruction(JasminInstructions.LOAD_INTEGER, index));
-                case DOUBLE -> instructions.add(new Instruction(JasminInstructions.LOAD_DOUBLE, index));
-                case FLOAT -> instructions.add(new Instruction(JasminInstructions.LOAD_FLOAT, index));
-                case LONG -> instructions.add(new Instruction(JasminInstructions.LOAD_LONG, index));
-            };
-        /*} else if (variableType instanceof ReferenceType referenceType) {
-            instructions.add(new Instruction(JasminInstructions.LOAD_REFERENCE, index));
-         */
-        } else if (variableType instanceof ClassType classType) {
-            instructions.add(new Instruction(JasminInstructions.LOAD_REFERENCE, index));
-        } else if (variableType instanceof ArrayType arrayType) {
-            instructions.add(new Instruction(JasminInstructions.LOAD_REFERENCE, index));
-        } else {
-            instructions.add(new Instruction(JasminInstructions.NOP, " ; idk?"));
-        }
-
-        return instructions;
-    }
-
-    @Override
-    public List<IJasminInstruction> store() {
-        String index = String.valueOf(id);
-        List<IJasminInstruction> instructions = new ArrayList<>();
-        if (variableType instanceof PrimitiveType valueType) {
-            switch (valueType) {
-                case BOOLEAN, BYTE, CHAR, INTEGER, SHORT -> instructions.add(new Instruction(JasminInstructions.STORE_INTEGER, index));
-                case DOUBLE -> instructions.add(new Instruction(JasminInstructions.STORE_DOUBLE, index));
-                case FLOAT -> instructions.add(new Instruction(JasminInstructions.STORE_FLOAT, index));
-                case LONG -> instructions.add(new Instruction(JasminInstructions.STORE_LONG, index));
-            };
-        /*} else if (variableType instanceof ReferenceType referenceType) {
-            instructions.add(new Instruction(JasminInstructions.STORE_REFERENCE, index));
-         */
-        } else if (variableType instanceof ClassType classType) {
-            instructions.add(new Instruction(JasminInstructions.STORE_REFERENCE, index));
-        } else if (variableType instanceof StringType stringType) {
-            instructions.add(new Instruction(JasminInstructions.STORE_REFERENCE, index));
-        } else if (variableType instanceof ArrayType arrayType) {
-            // TODO ?
-            instructions.add(new Instruction(JasminInstructions.STORE_REFERENCE, index));
-        } else {
-            instructions.add(new Instruction(JasminInstructions.NOP, " ; idk?"));
-        }
-
-        return instructions;
+    public boolean isReference() {
+        return true;
     }
 }

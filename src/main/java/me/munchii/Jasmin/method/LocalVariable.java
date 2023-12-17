@@ -4,6 +4,7 @@ import me.munchii.Jasmin.instruction.IJasminInstruction;
 import me.munchii.Jasmin.value.JasminValue;
 import me.munchii.Jasmin.value.IValueContainer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class LocalVariable implements IValueContainer {
@@ -19,7 +20,9 @@ public class LocalVariable implements IValueContainer {
     }
 
     public List<IJasminInstruction> declare() {
-        return List.of(value.getDeclarationInstruction(), value.getStoreInstruction(id));
+        List<IJasminInstruction> instructions = new ArrayList<>(value.getDeclarationInstruction());
+        instructions.add(value.getStoreInstruction(id));
+        return instructions;
     }
 
     public List<IJasminInstruction> load() {
@@ -33,6 +36,14 @@ public class LocalVariable implements IValueContainer {
     public List<IJasminInstruction> storeNewValue(JasminValue value) {
         this.value = value;
         return declare();
+    }
+
+    public boolean isReference() {
+        return false;
+    }
+
+    public boolean isArrayReference() {
+        return false;
     }
 
     @Override
